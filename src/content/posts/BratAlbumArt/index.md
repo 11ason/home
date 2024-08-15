@@ -3,10 +3,11 @@ title: Brat Album Art by Charli XCX
 published: 2024-08-05  
 description: "Album art design for Charli XCX's album *Brat*."  
 image: "./BratAlbumArt.PNG"  
-tags: ["Album Art", "Graphic Design", "CD Sleeves"]  
-category: Album_Art  
+tags: ["Album Art", "Graphic Design", "CD Sleeves", "Photoshop"]  
+category: Album-Art  
 draft: false
 ---
+This Project was designed in Adobe Photoshop and uses imagery uploaded by [@Charli_xcx](x.com/charli_xcx) to her respective public social platforms. 
 
 **Brat Album Art by Charli XCX**
 

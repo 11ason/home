@@ -4,9 +4,10 @@ published: 2024-08-15
 description: "Album art design for the Dead Plate soundtrack."  
 image: "./DeadPlateAlbumArt.png"  
 tags: ["Album Art", "Graphic Design", "CD Sleeve", "Photoshop"]  
-category: Album_Art  
+category: Album-Art  
 draft: false
 ---
+This Project was designed in Adobe Photoshop and uses assets from both the game "DeadPlate" and the creator [@RachelDrawsThis](x.com/racheldrawsthis) public social platforms.
 
 **Dead Plate Soundtrack Album Art**
 
