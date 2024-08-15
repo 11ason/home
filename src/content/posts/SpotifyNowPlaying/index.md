@@ -4,7 +4,7 @@ published: 2024-06-18
 description: "A screensaver that displays your currently playing Spotify track."
 image: "./SpotifyNowPlayingBanner.png"
 tags: ["Spotify", "Web Development", "Screensaver", "VSC", "Java"]
-category: Web-Development
+category: Web-Dev
 draft: false
 ---
 This Project was designed in Visual Studio Code, This project is not endorsed by Spotify, The Spotify logo and branding are copyrighted symboles that have been authorized for use in this project.
