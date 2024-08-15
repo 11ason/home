@@ -64,16 +64,6 @@ export const profileConfig: ProfileConfig = {
       icon: 'fa6-brands:github',
       url: 'https://github.com/11ason',
     },
-    {
-      name: 'Instagram',
-      icon: 'bxl:instagram-alt',
-      url: 'https://github.com/11ason',
-    },
-    {
-      name: 'Instagram',
-      icon: 'bxl:instagram-alt',
-      url: 'https://github.com/11ason',
-    },
   ],
 }
 
