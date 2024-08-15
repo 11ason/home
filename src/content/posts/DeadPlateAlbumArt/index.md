@@ -3,7 +3,7 @@ title: Dead Plate Soundtrack Album Art
 published: 2024-08-15  
 description: "Album art design for the Dead Plate soundtrack."  
 image: "./DeadPlateAlbumArt.png"  
-tags: ["Album Art", "Graphic Design", "CD Sleeve", "Photoshop"]  
+tags: ["Album Art", "Graphic Design", "Photoshop"]  
 category: Album-Art  
 draft: false
 ---

@@ -3,7 +3,7 @@ title: Fuji Shibukura Flower Festival Slideshow
 published: 2024-01-01  
 description: "A slideshow project promoting the Fuji Shibukura Flower Festival in Japan, created as part of a group assignment in English class."  
 image: "./Flowerfestival.png"  
-tags: ["Slideshow", "Japan", "Classwork", "Canva"]  
+tags: ["Slideshow", "Classwork", "Canva"]  
 category: Projects  
 draft: false
 ---

@@ -3,7 +3,7 @@ title: Spotify Now Playing
 published: 2024-06-18
 description: "A screensaver that displays your currently playing Spotify track."
 image: "./SpotifyNowPlayingBanner.png"
-tags: ["Spotify", "Web Dev", "Screensaver", "VSC", "Java"]
+tags: ["Web Dev", "Screensaver", "Java"]
 category: Web-Dev
 draft: false
 ---
