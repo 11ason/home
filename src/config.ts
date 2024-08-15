@@ -15,7 +15,7 @@ export const siteConfig: SiteConfig = {
     fixed: false,     // Hide the theme color picker for visitors
   },
   banner: {
-    enable: false,
+    enable: true,
     src: 'assets/images/banner.png',   // Relative to the /src directory. Relative to the /public directory if it starts with '/'
     position: 'center', // Equivalent to object-position, defaults center
     credit: {
@@ -56,12 +56,22 @@ export const profileConfig: ProfileConfig = {
       icon: 'fa6-brands:twitter',       // Visit https://icones.js.org/ for icon codes
                                         // You will need to install the corresponding icon set if it's not already included
                                         // `pnpm add @iconify-json/<icon-set-name>`
-      url: 'https://twitter.com/11ason',
+      url: 'https://twitter.com/11asonn',
     },
     
     {
       name: 'GitHub',
       icon: 'fa6-brands:github',
+      url: 'https://github.com/11ason',
+    },
+    {
+      name: 'Instagram',
+      icon: 'bxl:instagram-alt',
+      url: 'https://github.com/11ason',
+    },
+    {
+      name: 'Instagram',
+      icon: 'bxl:instagram-alt',
       url: 'https://github.com/11ason',
     },
   ],
