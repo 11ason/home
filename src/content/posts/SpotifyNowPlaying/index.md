@@ -8,8 +8,6 @@ category: projects
 draft: false
 ---
 
-> Cover image source: [Source](https://github.com/11ason/Spotify-Now-Playing/assets/146950994/2d4e8cdc-a574-4f6f-802a-7081d92c56a4)
-
 Spotify Now Playing is a web-based screensaver designed to enhance your music experience by displaying the currently playing song from your Spotify account. With this app, you can see real-time updates of the album art, song title, and artist name as you listen to your favorite tracks. The sleek design and dynamic visuals make it an engaging way to enjoy your music.
 
 ## What You Can Do with Spotify Now Playing
