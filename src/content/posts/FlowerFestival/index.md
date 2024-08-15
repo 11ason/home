@@ -19,7 +19,6 @@ The Fuji Shibukura Flower Festival is a celebrated event held annually at the ba
 
 ## Visual Showcase
 
-![1](https://github.com/11ason/Sitefiles/blob/main/2024_Flower-Festival-1.png?raw=true)
 ![2](https://github.com/11ason/Sitefiles/blob/main/2024_Flower-Festival-2.png?raw=true)
 ![3](https://github.com/11ason/Sitefiles/blob/main/2024_Flower-Festival-3.png?raw=true)
 ![4](https://github.com/11ason/Sitefiles/blob/main/2024_Flower-Festival-4.png?raw=true)
