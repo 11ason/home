@@ -1,5 +1,5 @@
 ---
-title: To Hell With It Album Art by PinkPantheress  
+title: To Hell With It Album Art
 published: 2024-07-25  
 description: "A design for PinkPantheress's mixtape *To Hell With It*."  
 image: "./thwi.png"  
