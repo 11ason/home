@@ -22,10 +22,10 @@ I aimed to translate the game's tension and mystery into the album art, using a 
 
 ## Visual Showcase
 
-![Closed (Outside View)](./DeadPlateClosed.png)
-![Half-Open (Front View)](./DeadPlateFront.png)
-![Half-Open (Top View)](./DeadPlateTop.png)
-![Open (Inside View)](./DeadPlateInside.png)
+![Closed (Outside View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateClosed.png?raw=true)
+![Half-Open (Front View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateFront.png?raw=true)
+![Half-Open (Top View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateTop.png?raw=true)
+![Open (Inside View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateInside.png?raw=true)
 
 .psd files for this project will be avalible soon
 
