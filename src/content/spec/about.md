@@ -1,9 +1,6 @@
 # About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+Hi, My name is Mason
+I'm a junior high school student passionate about graphic design, web development, and video game development. With three years of experience in graphic design, two in Python scripting, and one in web development, I've honed my skills across various tools and languages, including C++, Java, Python, Luma, Photoshop, Illustrator, and Premiere Pro. I enjoy bringing creative ideas to life, whether through coding or design.
 
-::github{repo="saicaca/fuwari"}
-
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+> ### This site was designed using Fuwari a astro template by Saicaca 
+> - [Fuwari](https://github.com/saicaca/fuwari)
