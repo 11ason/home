@@ -73,7 +73,7 @@ export const profileConfig: ProfileConfig = {
 
     {
       name: 'VSCO',
-      icon: 'fa6-brands:vsco',
+      icon: 'fa6-regular:image',
       url: 'https://vsco.co/11ason/gallery',
     },
   ],
