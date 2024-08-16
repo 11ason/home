@@ -17,7 +17,9 @@ This Project was designed in Visual Studio Code and uses open-source software de
 ## Why?
 I created this site as a way of collecting & consolidating of my work into one single easy to use place, before this site i had a FTP server that was in charge of hosting a large folder of all the work that im currently displaying, this meant that in order to view my projects you had to first go to a specifc ip address and search through layers of folders to find a project for example this is what the path to one of my projects used to look like:
 >E:\projects\CD Album Art\Charli XCX\brat\Renders\BratAlbumArt.PNG
+
 now the same file can be viewed on any device anywhere by going to:
+
 >https://11ason.space/posts/bratalbumart/ or https://11ason.space/archive/
 
 This makes showing off my work sooo much easier and more enjoyable for both me and the viewer weather that be a peer, mentor, company, or even just a random person who found my work.
