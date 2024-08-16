@@ -11,16 +11,16 @@ Projects displayed in this post are from multiple sources, therefore if you choo
 :::
 
 ### Album Art
->>[Dead Plate Soundtrack - Bell Kalenger](https://11ason.space/posts/deadplatealbumart/)
+>[Dead Plate Soundtrack - Bell Kalenger](https://11ason.space/posts/deadplatealbumart/)
 
->>[Brat - Charli XCX](https://11ason.space/posts/bratalbumart/)
+>[Brat - Charli XCX](https://11ason.space/posts/bratalbumart/)
 
->>[To Hell With It - PinkPanthress](https://11ason.space/posts/thwialbumart/)
-
+>[To Hell With It - PinkPanthress](https://11ason.space/posts/thwialbumart/)
+---
 
 ### Web Development
 ![Spotify Now Playing](https://github.com/11ason/Sitefiles/blob/main/brat-cd-sleeve-inside-cover-preview.PNG?raw=true)
-
+---
 
 ### Slideshows
 ![Fuji Shibukura Flower Festival](https://github.com/11ason/Sitefiles/blob/main/brat-cd-sleeve-inside-cover-preview.PNG?raw=true)
