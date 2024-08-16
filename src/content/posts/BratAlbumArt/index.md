@@ -7,7 +7,7 @@ tags: ["Album Art", "Graphic Design", "Photoshop"]
 category: Album-Art  
 draft: false
 ---
-This Project was designed in Adobe Photoshop and uses imagery uploaded by [@Charli_xcx](x.com/charli_xcx) to her respective public social platforms. 
+This Project was designed in Adobe Photoshop and uses imagery uploaded by [@Charli_xcx](https://x.com/charli_xcx) to her respective public social platforms. 
 
 **Brat Album Art by Charli XCX**
 

@@ -7,7 +7,7 @@ tags: ["Album Art", "Graphic Design", "Photoshop"]
 category: Album-Art  
 draft: false
 ---
-This Project was designed in Adobe Photoshop and uses assets from both the game "DeadPlate" and the creator [@RachelDrawsThis](x.com/racheldrawsthis) public social platforms.
+This Project was designed in Adobe Photoshop and uses assets from both the game "DeadPlate" and the creator [@RachelDrawsThis](https://x.com/racheldrawsthis) public social platforms.
 
 **Dead Plate Soundtrack Album Art**
 
