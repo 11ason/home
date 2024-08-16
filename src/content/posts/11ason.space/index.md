@@ -26,7 +26,7 @@ if you're any of those people thanks for checking this out!
 Anyways im constantly working on updating this site (it's been up for about 24 hours at this point and I have already made 62 commits to the github repo for this site) please stay tunned for my content i post and if you like it feel free to contact me on instagram [@11as0n](Https://instagram.com/11as0n)
 
 
-[11ason.space GitHub Repository](https://github.com/11ason/home)
+::github{repo="11ason/home"}
 
 ---
 
