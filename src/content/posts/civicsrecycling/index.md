@@ -16,7 +16,6 @@ Our civics class project focused on promoting recycling and offering resources f
 
 ## Visual Showcase
 
-![1](https://github.com/11ason/Sitefiles/blob/main/Civics%20recycling%20presentation/1.png?raw=true)
 ![2](https://github.com/11ason/Sitefiles/blob/main/Civics%20recycling%20presentation/2.png?raw=true)
 ![3](https://github.com/11ason/Sitefiles/blob/main/Civics%20recycling%20presentation/3.png?raw=true)
 ![4](https://github.com/11ason/Sitefiles/blob/main/Civics%20recycling%20presentation/4.png?raw=true)
