@@ -43,6 +43,11 @@
             animation: blink 1s infinite;
         }
 
+        .subtext {
+            font-size: calc(10px + 0.5vw);
+            margin-top: 10px;
+        }
+
         @keyframes blink {
             0% { opacity: 1; }
             50% { opacity: 0; }
@@ -70,6 +75,7 @@
     <div class="content">
         <a href="https://11ason.space">
             <span id="text"></span><span class="cursor"></span>
+            <div class="subtext">(click text to continue)</div>
         </a>
     </div>
     <div class="footer">Made with &lt;3 by Mason Matchett</div>
