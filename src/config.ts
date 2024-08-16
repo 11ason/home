@@ -39,11 +39,6 @@ export const navBarConfig: NavBarConfig = {
     LinkPreset.Archive,
     LinkPreset.About,
     {
-      name: 'GitHub',
-      url: 'https://github.com/11ason',     // Internal links should not include the base path, as it is automatically added
-      external: true,                               // Show an external link icon and will open in a new tab
-    },
-    {
       name: 'Drive',
       url: 'https://drive.google.com/drive/folders/19fOf-5_ig8dpoKxn--qdZcsKKqOQPYmV?usp=sharing',     // Internal links should not include the base path, as it is automatically added
       external: true,                               // Show an external link icon and will open in a new tab
