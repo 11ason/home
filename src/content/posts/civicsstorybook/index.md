@@ -9,10 +9,10 @@ draft: false
 ---
 This Project was designed in canva and uses assets from the canva libary
 
-**Fuji Shibukura Flower Festival Slideshow**
+**Civics Story Book Language Diversity**
 
 This civics class project focused on embracing language diversity, specifically embracing french culture in canada
----
+
 
 ## Visual Showcase
 
