@@ -1,6 +1,6 @@
 ---
 title: Windfarm Proposal
-published: 2023-05-07  
+published: 2024-05-07  
 description: "A poster project promoting the idea of a windfarm instalation on native land" 
 tags: ["Poster", "Classwork", "Canva"]  
 category: Projects  
