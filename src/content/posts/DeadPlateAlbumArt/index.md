@@ -7,9 +7,9 @@ tags: ["Album Art", "Graphic Design", "Photoshop"]
 category: Album-Art  
 draft: false
 ---
-This Project was designed in Adobe Photoshop and uses assets from both the game "DeadPlate" and the creator [@RachelDrawsThis](https://x.com/racheldrawsthis) public social platforms.
+This Project was designed in Adobe Photoshop and uses assets from both the game "Dead Plate" and the creator [@RachelDrawsThis](https://x.com/racheldrawsthis) public social platforms.
 
-**Dead Plate Soundtrack Album Art**
+## Dead Plate Soundtrack Album Art
 
 The album art for the *Dead Plate* soundtrack is designed to capture the intense, eerie atmosphere of the game. Created for RachelDrawsThis's haunting video game, the artwork reflects the suspenseful and dark narrative that players experience throughout the game.
 
