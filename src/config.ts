@@ -43,6 +43,11 @@ export const navBarConfig: NavBarConfig = {
       url: 'https://github.com/11ason',     // Internal links should not include the base path, as it is automatically added
       external: true,                               // Show an external link icon and will open in a new tab
     },
+    {
+      name: 'Drive',
+      url: 'https://github.com/11ason',     // Internal links should not include the base path, as it is automatically added
+      external: true,                               // Show an external link icon and will open in a new tab
+    },
   ],
 }
 

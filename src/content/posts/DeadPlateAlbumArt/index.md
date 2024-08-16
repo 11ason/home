@@ -28,7 +28,7 @@ I aimed to translate the game's tension and mystery into the album art, using a 
 ![Half-Open (Top View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateTop.png?raw=true)
 ![Open (Inside View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateInside.png?raw=true)
 
-.psd files for this project will be avalible soon
+.psd files for this project will be avalible following authorization from the game's creator
 
 ---
 
