@@ -1,5 +1,5 @@
 ---
-title: Civics Final:\ Recycling Presentation | FR  
+title: Civics Final Recycling Presentation | FR  
 published: 2024-06-01  
 description: "A slideshow project promoting recycling"  
 image: "./1.png"  
