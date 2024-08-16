@@ -36,9 +36,10 @@ Projects displayed in this post are from multiple sources, therefore if you choo
 
 ### Slideshows
 >[Fuji Shibukura Flower Festival](https://11ason.space/posts/flowerfestival/)
->[Civics Final: Recycling | FR](https://11ason.space/posts/civicsrecycling/)
->[Civics: Embracing Language Diversity Storybook | FR](https://11ason.space/posts/civicsstorybook/)
 
+>[Civics Final: Recycling | FR](https://11ason.space/posts/civicsrecycling/)
+
+>[Civics: Embracing Language Diversity Storybook | FR](https://11ason.space/posts/civicsstorybook/)
 ---
 
 Made with <3 by Mason
