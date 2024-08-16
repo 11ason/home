@@ -1,7 +1,7 @@
 ---
-title: Business card design projects from 2023
+title: Business Card Design Projects | 2023
 published: 2023-12-31  
-description: "title says it all"    
+description: "A collection of my card designs from 2023"    
 tags: ["2023", "Graphic Design", "Card", "Canva", "Commercial"]  
 category: Projects  
 draft: false
