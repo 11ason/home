@@ -39,8 +39,8 @@ export const navBarConfig: NavBarConfig = {
     LinkPreset.Archive,
     LinkPreset.About,
     {
-      name: 'Drive',
-      url: 'https://drive.google.com/drive/folders/19fOf-5_ig8dpoKxn--qdZcsKKqOQPYmV?usp=sharing',     // Internal links should not include the base path, as it is automatically added
+      name: 'Photography',
+      url: 'https://vsco.co/11ason/gallery',     // Internal links should not include the base path, as it is automatically added
       external: true,                               // Show an external link icon and will open in a new tab
     },
   ],
@@ -69,6 +69,12 @@ export const profileConfig: ProfileConfig = {
       name: 'Instagram',
       icon: 'fa6-brands:instagram',
       url: 'https://instagram.com/11as0n',
+    },
+
+    {
+      name: 'VSCO',
+      icon: 'fa6-brands:vsco',
+      url: 'https://vsco.co/11ason/gallery',
     },
   ],
 }
