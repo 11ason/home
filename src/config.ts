@@ -45,7 +45,7 @@ export const navBarConfig: NavBarConfig = {
     },
     {
       name: 'Drive',
-      url: 'https://github.com/11ason',     // Internal links should not include the base path, as it is automatically added
+      url: 'https://drive.google.com/drive/folders/19fOf-5_ig8dpoKxn--qdZcsKKqOQPYmV?usp=sharing',     // Internal links should not include the base path, as it is automatically added
       external: true,                               // Show an external link icon and will open in a new tab
     },
   ],
@@ -68,6 +68,12 @@ export const profileConfig: ProfileConfig = {
       name: 'GitHub',
       icon: 'fa6-brands:github',
       url: 'https://github.com/11ason',
+    },
+
+    {
+      name: 'Instagram',
+      icon: 'fa6-brands:Instagram',
+      url: 'https://instagram.com/11as0n',
     },
   ],
 }
