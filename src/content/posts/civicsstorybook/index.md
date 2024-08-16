@@ -1,6 +1,6 @@
 ---
 title: Civics Story Book Language Diversity  
-published: 2024-01-01  
+published: 2024-06-01  
 description: "A storybook project about embracing diffrent cultures and languages"  
 image: "./Title.png"  
 tags: ["Slideshow", "Classwork", "Canva"]  
