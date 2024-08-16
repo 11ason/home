@@ -1,6 +1,6 @@
 ---
 title: Pre-2023 Designs Megathread
-published: 2023-01-01  
+published: 2022-12-31  
 description: "A megathread of all pre-2023 projects I could gather"    
 tags: ["2023", "Graphic Design"]  
 category: Projects  
