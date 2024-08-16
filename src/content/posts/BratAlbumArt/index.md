@@ -1,7 +1,7 @@
 ---
 title: Brat Album Art
 published: 2024-08-05  
-description: "Album art design for Charli XCX's album *Brat*."  
+description: "Album art design for Charli XCX's album Brat."  
 image: "./BratAlbumArt.PNG"  
 tags: ["Album Art", "Graphic Design", "Photoshop"]  
 category: Album-Art  
