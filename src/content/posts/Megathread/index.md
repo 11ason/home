@@ -25,7 +25,7 @@ Projects displayed in this post are from multiple sources, therefore if you choo
 ---
 
 ### Posters
->[Schizopherenia Fact Sheet Poster](https://11ason.space/SchizophreniaFactSheetPoster)
+>[Schizopherenia Fact Sheet Poster](https://11ason.space/posts/schizophreniafactsheetposter/)
 
 >[Wind Farm Proposal](https://11ason.space/posts/windfarmproposal/)
 

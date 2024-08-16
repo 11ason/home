@@ -11,7 +11,6 @@ This Project was designed in canva and uses assets from the canva libary
 **The Dangers of Cannabis in schools Poster**
 
 This digital prod. class project focused on helping us learn how to inform people in a easily readable format.
----
 
 ## Visual Showcase
 

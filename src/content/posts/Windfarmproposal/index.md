@@ -8,10 +8,9 @@ draft: false
 ---
 This Project was designed in canva and uses assets from the canva libary
 
-**Schizopherenia Fact Sheet Poster**
+**Windfarm Proposal Poster**
 
 This Civics class project focused on helping us learn how to convince a community, specifically the native tribes of New Brunswick, CA
----
 
 ## Visual Showcase
 
