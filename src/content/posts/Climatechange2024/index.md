@@ -1,6 +1,6 @@
 ---
 title: Climate Change Awareness Poster
-published: 2024-05-07  
+published: 2024-03-13  
 description: "A poster project warning of the effects of climate change" 
 tags: ["Poster", "Classwork", "Canva"]  
 category: Projects  

@@ -1,6 +1,6 @@
 ---
 title: The Dangers of Cannabis in schools
-published: 2024-05-07  
+published: 2024-02-09  
 description: "A poster project warning of the effects of climate change" 
 tags: ["Poster", "Classwork", "Canva"]  
 category: Projects  
