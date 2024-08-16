@@ -11,11 +11,11 @@ Projects displayed in this post are from multiple sources, therefore if you choo
 :::
 
 ### Album Art
--[Dead Plate Soundtrack - Bell Kalenger](https://11ason.space/posts/deadplatealbumart/)
+>>[Dead Plate Soundtrack - Bell Kalenger](https://11ason.space/posts/deadplatealbumart/)
 
--[Brat - Charli XCX](https://11ason.space/posts/bratalbumart/)
+>>[Brat - Charli XCX](https://11ason.space/posts/bratalbumart/)
 
--[To Hell With It - PinkPanthress](https://11ason.space/posts/thwialbumart/)
+>>[To Hell With It - PinkPanthress](https://11ason.space/posts/thwialbumart/)
 
 
 ### Web Development
