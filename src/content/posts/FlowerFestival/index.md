@@ -7,8 +7,9 @@ tags: ["Slideshow", "Classwork", "Canva"]
 category: Projects  
 draft: false
 ---
+:::note
 This Project was designed in canva and uses assets from the canva libary
-
+:::
 **Fuji Shibukura Flower Festival Slideshow**
 
 Our English class project focused on promoting the vibrant Fuji Shibukura Flower Festival in Japan. This festival, renowned for its breathtaking floral displays and cultural activities, provided an exciting topic for our group assignment.

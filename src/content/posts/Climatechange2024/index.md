@@ -6,8 +6,9 @@ tags: ["Poster", "Classwork", "Canva"]
 category: Projects  
 draft: false
 ---
+:::note
 This Project was designed in canva and uses assets from the canva libary
-
+:::
 **Schizopherenia Fact Sheet Poster**
 
 This english class project focused on helping us learn how to inform people in a easily readable format.

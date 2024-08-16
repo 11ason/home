@@ -7,8 +7,9 @@ tags: ["Album Art", "Graphic Design", "Photoshop"]
 category: Album-Art  
 draft: false
 ---
+:::note
 This Project was designed in Adobe Photoshop and uses imagery uploaded by [@Charli_xcx](https://x.com/charli_xcx) to her respective public social platforms. 
-
+:::
 **Brat Album Art by Charli XCX**
 
 This album art for Charli XCX's *Brat* captures the bold and vibrant essence of her music. Designed to complement the dynamic and edgy style of the album, this artwork reflects the energy and attitude of Charli’s latest release.

@@ -7,7 +7,9 @@ tags: ["Slideshow", "Classwork", "Canva"]
 category: Projects  
 draft: false
 ---
+:::note
 This Project was designed in canva and uses assets from the canva libary
+:::
 
 **Civics Story Book Language Diversity**
 

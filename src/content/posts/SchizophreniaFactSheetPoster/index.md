@@ -6,8 +6,9 @@ tags: ["Poster", "Classwork", "Canva"]
 category: Projects  
 draft: false
 ---
+:::note
 This Project was designed in canva and uses assets from the canva libary
-
+:::note
 **Schizopherenia Fact Sheet Poster**
 
 This PDCP class project focused on raising awareness to mental ilness my topic was schizopherenia.

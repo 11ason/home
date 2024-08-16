@@ -7,8 +7,9 @@ tags: ["Web Dev", "Personal", "Java", "Astro"]
 category: Web-Dev
 draft: false
 ---
+:::note
 This Project was designed in Visual Studio Code and uses open-source software designed by Saicaca for more information about the software used in this site go [here](https://github.com/saicaca/fuwari)
-
+:::
 
 ## What?
 11ason.space is a platform designed specifically to my needs, it features a archive of all of my publicly displayed works and acts as a portfolio of what i can do, ontop of being (in my opinion) visually stunning it is extremley optimized to fit my workflow, it was designed with the future in mind and i plan to continue to update this site with all of my future work.

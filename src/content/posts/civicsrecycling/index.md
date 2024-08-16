@@ -7,8 +7,9 @@ tags: ["Slideshow", "Classwork", "Canva"]
 category: Projects  
 draft: false
 ---
+:::note
 This Project was designed in canva and uses assets from the canva libary
-
+:::
 **Civics Final: Recycling Slideshow**
 
 Our civics class project focused on promoting recycling and offering resources for learning how to properly recycle your trash.

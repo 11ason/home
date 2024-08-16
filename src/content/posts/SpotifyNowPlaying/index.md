@@ -7,8 +7,9 @@ tags: ["Web Dev", "Screensaver", "Java"]
 category: Web-Dev
 draft: false
 ---
+:::note
 This Project was designed in Visual Studio Code, This project is not endorsed by Spotify, The Spotify logo and branding are copyrighted symboles that have been authorized for use in this project.
-
+:::
 Spotify Now Playing is a web-based screensaver designed to enhance your music experience by displaying the currently playing song from your Spotify account. With this app, you can see real-time updates of the album art, song title, and artist name as you listen to your favorite tracks. The sleek design and dynamic visuals make it an engaging way to enjoy your music.
 
 ## What You Can Do with Spotify Now Playing
