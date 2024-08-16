@@ -2,9 +2,9 @@
 title: Apple X BMO Design
 published: 2023-10-04  
 description: "A simple debit card design for bmo bank cards in apple pay"  
-image: "./1.PNG"  
+image: "./1.png"  
 tags: ["Card", "Graphic Design", "Photoshop"]  
-category: Album-Art  
+category: Projects  
 draft: false
 ---
 :::note
