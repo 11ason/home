@@ -15,8 +15,8 @@ The ETA's given to these projects will probably change over time as I find motiv
 ## In Progress
 Troye Sivan Album Art | ETA: Within the next week
 >Bloom | Planning Post
-  
->Something To Give Each Other | Rendering
+
+Something To Give Each Other | Rendering
 
 ## Upcoming
 >Elevator Hitch Album Art | Planning | ETA: Within the next 2 weeks
