@@ -12,7 +12,7 @@ This Project was designed in Adobe Photoshop
 :::
 
 :::warning[Credits]  
-This project utilizes a significant amount of art by [@RachelDrawsThis](https://x.com/hankatun0921). All imagery and characters featured in this design are the original works of the artist. ==I do not claim ownership of any of their art==. Please support the artist and feel free to contact me if there are any concerns or issues.  
+This project utilizes a significant amount of art by [@RachelDrawsThis](https://x.com/hankatun0921). All imagery and characters featured in this design are the original works of the artist. `I do not claim ownership of any of their art`. Please support the artist and feel free to contact me if there are any concerns or issues.  
 :::
 
 ## What?  
