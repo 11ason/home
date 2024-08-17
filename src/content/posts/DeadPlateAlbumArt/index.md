@@ -5,31 +5,33 @@ description: "Album art design for the Dead Plate soundtrack."
 image: "./DeadPlateAlbumArt.png"  
 tags: ["Album Art", "Graphic Design", "Photoshop"]  
 category: Album-Art  
-draft: false
----
-:::note
-This Project was designed in Adobe Photoshop and uses assets from both the game "Dead Plate" and the creator [@RachelDrawsThis](https://x.com/racheldrawsthis) public social platforms.
+draft: false  
+---  
+:::note  
+This Project was designed in Adobe Photoshop  
 :::
-## Dead Plate Soundtrack Album Art
 
-The album art for the *Dead Plate* soundtrack is designed to capture the intense, eerie atmosphere of the game. Created for RachelDrawsThis's haunting video game, the artwork reflects the suspenseful and dark narrative that players experience throughout the game.
+:::warning[Credits]  
+This project utilizes a significant amount of art by [@RachelDrawsThis](https://x.com/hankatun0921). All imagery and characters featured in this design are the original works of the artist. I do not claim ownership of any of their art. Please support the artist and feel free to contact me if there are any concerns or issues.  
+:::
 
-## About Dead Plate
+## What?  
+I’ve recently been fascinated by RachelDrawsThis’s unique art style and the character design in "Dead Plate." (and their other works). So When i found out there was an official soundtrack, I knew I had to design a cover for it, something that I could display on my shelf that showed of the game and it's beautiful art. The game’s eerie yet charming atmosphere, combined with the intriguing characters of Rody & Vincent, really drew me in and inspired this piece.
 
-*Dead Plate* is an atmospheric video game developed by RachelDrawsThis, known for her unique style and captivating storytelling. The game places players in a tense world where every decision carries weight, and the soundtrack complements this experience perfectly.
+## Game Overview  
+"Dead Plate" is a 2D restaurant tycoon-themed RPG horror game with visual novel and point-and-click elements, set in 1960s France. The game centers around Rody, a spirited waiter who must navigate the challenges of running a high-end bistro owned by the renowned chef Vincent Charbonneau. Players are forced to balance serving customers and optimizing profits while unraveling the darker mysteries lurking beneath the surface. The blend of restaurant management with horror and visual novel elements creates a tense and immersive experience that keeps you hooked from start to finish.
 
-## Album Art Details
-
-I aimed to translate the game's tension and mystery into the album art, using a combination of stark imagery and subtle details. The design is shown from four different angles to give a comprehensive view of how the visuals unfold:
+## Why?  
+I wanted this design to capture the essence of the game, highlighting both the mundane and the mysterious. The interior art showcases key moments from the game that dispaly the eerie events that unfold. Designing this was a great experience, and I’m excited to share it as part of my portfolio and express how much I love this game.
 
 ## Visual Showcase
 
-![Closed (Outside View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateClosed.png?raw=true)
-![Half-Open (Front View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateFront.png?raw=true)
-![Half-Open (Top View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateTop.png?raw=true)
+![Closed (Outside View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateClosed.png?raw=true)  
+![Half-Open (Front View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateFront.png?raw=true)  
+![Half-Open (Top View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateTop.png?raw=true)  
 ![Open (Inside View)](https://github.com/11ason/Sitefiles/blob/main/DeadPlateInside.png?raw=true)
 
-.psd files for this project will be avalible following authorization from the game's creator
+.psd files for this project not avalible at this time due to questionable legality of me posting this content, if this changes i will update this post with links to downloads and a guide for printing your own.
 
 ---
 
