@@ -34,7 +34,8 @@ The ETA's given to these projects will probably change over time as I find motiv
   >Finalize Lyrics Support | Curently in beta
 
 >**New Roblox Game**
-I know that I want to get back into making games but i need to plan out the game before realease an eta.
+
+  >I know that I want to get back into making games but i need to plan out the game before realease an eta.
 
 ---
 
