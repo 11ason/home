@@ -13,11 +13,10 @@ So  this is the first planning post I've made for this site, recently I have bee
 The ETA's given to these projects will probably change over time as I find motivation to do different projects and I will most likely add more to this list but im going to try to stay true to my word.
 
 ## In Progress
->Troye Sivan Album Art | ETA: Within the next week
-
-  >Bloom | Planning Post
+Troye Sivan Album Art | ETA: Within the next week
+>Bloom | Planning Post
   
-  >Something To Give Each Other | Rendering
+>Something To Give Each Other | Rendering
 
 ## Upcoming
 >Elevator Hitch Album Art | Planning | ETA: Within the next 2 weeks
@@ -25,17 +24,14 @@ The ETA's given to these projects will probably change over time as I find motiv
 >Rewrite the descriptions for projects older than 1 month.| ETA: Within  the next month
 
 ## Upcoming | No ETA for these yet
->**Website Updates**
+**Website Updates**
+>Stars UI for whole site
 
-   >Stars UI for whole site
+**SpotifyNowPlaying**
+>Finalize Lyrics Support | Curently in beta
 
->**SpotifyNowPlaying**
-
-  >Finalize Lyrics Support | Curently in beta
-
->**New Roblox Game**
-
-  >I know that I want to get back into making games but i need to plan out the game before realease an eta.
+**New Roblox Game**
+>I know that I want to get back into making games but i need to plan out the game before realease an eta.
 
 ---
 
