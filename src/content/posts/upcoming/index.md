@@ -5,7 +5,7 @@ description: ""
 image: ""
 tags: ["Future", "Plan", "Personal"]
 category: Updates
-draft: false
+draft: true
 ---
 Hey,
 So  this is the first planning post I've made for this site, recently I have been really into designing cd album art (As you can probably tell already) so a lot of my time has went into making these, and as much as I love making them I also want to do some new things, aswell as release some much needed updates to my other projects. So to give myself things to do I'm planning some future projects. 
