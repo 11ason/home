@@ -3,11 +3,11 @@ title: A New Game? & Update on the Future
 published: 2024-08-30
 description: "An update post about my future plans and a new project in the works."
 tags: ["Game", "Personal", "Update"]
-category: Web-Dev
+category: Update
 draft: false
 ---
 
-Hi everyone,
+Hi,
 
 I wanted to share an update on what's going on in my life and what you can expect in the near future.
 
@@ -37,7 +37,7 @@ Despite the challenges, having the opportunity to do something I'm passionate ab
 
 I'm still in the planning stages, but with the help of my friend (the artist for the game), we’ve been brainstorming what we want in the game and where we want the story to go. Here’s what we have so far:
 
-Your name is Ethan. You're a new hire at a movie theater known for its re-runs of old movies. You work alongside your childhood best friend and Bryce, the owner's nephew. In the afternoon, you're in charge of selling tickets, taking drink & popcorn orders, and cleaning up the theater with your friend. But once it’s showtime, and your friend swaps shifts with Bryce, you begin exploring the theater and the secrets it holds. You’ve heard rumors that the place is haunted, but you never believed them—until you saw them with your own eyes.
+Your name is Ethan. You're a new hire at a movie theater known for its re-runs of old movies. You work alongside your childhood best friend Olivia and Bryce, the owner's nephew. In the afternoon, you're in charge of selling tickets, taking drink & popcorn orders, and cleaning up the theater with Olivia. But once it’s showtime, and your friend swaps shifts with Bryce, you begin exploring the theater and the secrets it holds. You’ve heard rumors that the place is haunted, but you never believed them—until you saw them with your own eyes.
 
 ---
 
