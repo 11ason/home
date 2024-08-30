@@ -13,7 +13,7 @@ I wanted to share an update on what's going on in my life and what you can expec
 
 ## What's Happening?
 
-September is right around the corner, which means school is starting again. This means I'll need to focus more on my schoolwork and less on personal projects. However, this doesn't mean I’ll stop posting—if anything, I think this will give me more content to share, even if the situation isn't perfect.
+September is right around the corner, which means school is starting again. This means I'll need to focus more on my schoolwork and less on personal projects. However, this doesn't mean I’ll stop posting.
 
 ## Pros
 
