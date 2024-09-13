@@ -45,7 +45,7 @@ export const navBarConfig: NavBarConfig = {
     {
       name: 'NowPlaying',
       url: 'nowplaying/auth',     // Internal links should not include the base path, as it is automatically added
-      external: false,
+      external: true,
     },
     {
       name: 'Landing',
