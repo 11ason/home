@@ -17,6 +17,19 @@
         .container {
             text-align: center;
         }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #1db954;
+            color: white;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #17a347;
+        }
     </style>
 </head>
 <body>
@@ -24,14 +37,17 @@
         <h1>Spotify OAuth 2.0 Authorization</h1>
         <p>Click the button below to authorize this application to access your Spotify account.</p>
         <button onclick="authorizeSpotify()">Authorize with Spotify</button>
+        <br>
+        <button onclick="launchMain()">Launch Main</button>
+        <button onclick="launchTV()">Launch TV</button>
     </div>
 
     <script>
     function authorizeSpotify() {
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/auth'; // Redirect URI after authorization (Use the ngrok url if you want use this site outside your local network)
+        const redirect_uri = 'https://11ason.space/NowPlaying/auth'; // Redirect URI after authorization
         const scopes = [
-            'user-read-currently-playing', //Read access to a user’s currently playing content.
+            'user-read-currently-playing', // Read access to a user’s currently playing content
             'user-read-playback-state', // Read access to user's playback state
             'streaming' // Control playback of a Spotify track
         ]; 
@@ -39,6 +55,14 @@
         const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
 
         window.location.href = authUrl;
+    }
+
+    function launchMain() {
+        window.location.href = 'https://11ason.space/nowplaying/main';
+    }
+
+    function launchTV() {
+        window.location.href = 'https://11ason.space/nowplaying/tv';
     }
     </script>
 </body>
