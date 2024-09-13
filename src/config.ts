@@ -35,6 +35,11 @@ export const siteConfig: SiteConfig = {
 
 export const navBarConfig: NavBarConfig = {
   links: [
+    {
+      name: '☆',
+      url: 'landing',     // Internal links should not include the base path, as it is automatically added
+      external: true,
+    },
     LinkPreset.Archive,
     LinkPreset.About,
     {
@@ -45,11 +50,6 @@ export const navBarConfig: NavBarConfig = {
     {
       name: 'Now ▷',
       url: 'nowplaying/auth',     // Internal links should not include the base path, as it is automatically added
-      external: true,
-    },
-    {
-      name: '☆',
-      url: 'landing',     // Internal links should not include the base path, as it is automatically added
       external: true,
     },
   ],
