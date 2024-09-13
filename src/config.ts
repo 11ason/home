@@ -48,7 +48,7 @@ export const navBarConfig: NavBarConfig = {
       external: true,
     },
     {
-      name: 'Landing',
+      name: '☆',
       url: 'landing',     // Internal links should not include the base path, as it is automatically added
       external: false,
     },
