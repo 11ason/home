@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Screensaver</title>
+    <title>Spotify Screensaver with Lyrics</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
     <style>
         body {
             display: flex;
@@ -12,105 +13,166 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Titillium Web', sans-serif;
+            font-family: 'Nunito', sans-serif; /* Updated font-family */
+            background-color: #000; /* Ensure a non-white background */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            backdrop-filter: blur(140px);
             transition: background 1s ease;
+            backdrop-filter: blur(100px); /* Adjust blur intensity as needed */
         }
-        #songInfo {
-            text-align: center;
-            margin-top: 20px;
-            color: white;
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Align items to the start of the container */
+            width: 100%;
+            max-width: 1000px; /* Adjust as needed */
             position: relative;
-            transition: opacity 0.3s ease;
+            margin-bottom: 20px; /* Space between container and progress bar */
+            background: rgba(0, 0, 0, 0.096); /* Slightly opaque background for readability */
+            padding: 20px; /* Add some padding to avoid text overlap */
+            border-radius: 30px; /* Rounded corners */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226); /* Add shadow to enhance fade effect */
+            backdrop-filter: blur(10px); /* Add blur effect for a more pronounced fade */
         }
+
         #albumImage {
-            width: 500px;
-            height: 500px;
-            margin-bottom: 10px;
+            width: 350px; /* Adjust as needed */
+            height: 350px; /* Adjust as needed */
             border-radius: 15px;
             transition: opacity 0.3s ease, transform 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow to enhance fade effect */
+            margin-right: 20px; /* Space between album image and lyrics */
         }
-        #info p {
-            margin: 3px 0;
+
+        #lyrics-container {
+            color: white;
+            font-size: 20px; /* Reduced font size */
+            text-align: left;
+            max-width: 600px; /* Adjust width as needed */
+            position: relative; /* Ensure relative positioning for fade effect */
+            overflow: hidden; /* Hide the overflow for smooth scrolling effect */
         }
+
+        .lyric {
+            color: rgba(255, 255, 255, 0.500);
+            margin: 5px;
+            opacity: 1; /* Initially hide lyrics */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transition for scroll effect */
+        }
+
+        #current-lyric {
+            color: rgba(255, 255, 255, 0.842);
+            font-weight: bold;
+            font-size: 28px; /* Adjusted font size */
+        }
+
         .progress-bar-container {
-            margin: 0 auto;
-            position: relative;
-            width: 400px;
+            width: 100%;
+            max-width: 1000px; /* Match the max-width of the main container */
             margin-top: 10px;
-            transition: opacity 0.3s ease;
+            position: relative;
+            text-align: center;
         }
+
         .progress-bar {
             width: 100%;
             height: 10px;
-            background-color: #bbbbbb77;
+            background-color: #bbbbbb34;
             border-radius: 5px;
             overflow: hidden;
-            transition: opacity 0.3s ease;
         }
+
         .progress {
             height: 100%;
-            background-color: #00000094;
+            background-color: #ffffff85;
             width: 0%;
         }
+
         #time {
+            font-weight: bold;
             position: absolute;
-            bottom: -20px;
-            left: 0;
             width: 100%;
             font-size: 12px;
             text-align: center;
-            transition: opacity 0.3s ease;
-            color: white;
+            color: rgba(255, 255, 255, 0.76);
         }
+
         #elapsed-time {
             position: absolute;
             left: 0;
             bottom: -20px;
             font-size: 12px;
         }
+
         #total-time {
             position: absolute;
             right: 0;
             bottom: -20px;
             font-size: 12px;
         }
-        #songInfo:hover #toggleButton {
-            opacity: 1;
+
+        #songInfo {
+            text-align: center;
+            color: white;
+            margin-top: 10px;
+            font-size: 22px;
+        }
+
+        #trackInfo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 100px; /* Reduced gap */
+            font-size: 22px;
+        }
+
+        #trackName, #artistName {
+            margin: 0;
+            font-size: 22px; /* Ensure both have the same size */
         }
     </style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@700&display=swap">
 </head>
 <body>
-    <div id="songInfo">
-        <img id="albumImage" alt="Album Cover">
-        <div id="info"></div>
-        <div class="progress-bar-container">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-            <p id="time">
-                <span id="elapsed-time"></span>
-                <span id="total-time"></span>
-            </p>
+    <div class="main-container">
+        <img id="albumImage" src="cover.jpg" alt="Album Cover">
+        <div id="lyrics-container">
+            <div id="previous-lyric" class="lyric"></div>
+            <div id="current-lyric" class="lyric"></div>
+            <div id="next-lyric" class="lyric"></div>
         </div>
     </div>
-
+    <div class="progress-bar-container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div id="time">
+            <div id="elapsed-time"></div>
+            <div id="total-time"></div>
+        </div>
+    </div>
+    <div id="songInfo">
+        <div id="trackInfo">
+            <h2 id="trackName">Track Name</h2>
+            <span id="artistName">Artist Name</span>
+        </div>
+    </div>
     <script>
         let previousTime = 0;
-        let intervalId;
-        let isPlaying = true;
         let currentAlbumImage = '';
-
+        let playbackStartTime = 0;
+        let lastProgressUpdate = 0;
+        let currentTrackDuration = 0;
+        let lyrics = [];
+        let syncOffset = 300; // Adjust sync offset as needed
+    
         function getAccessToken() {
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
             return params.get('access_token');
         }
-
+    
         function fetchCurrentlyPlayingSong(accessToken) {
             fetch('https://api.spotify.com/v1/me/player/currently-playing', {
                 headers: {
@@ -119,181 +181,114 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.error) {
-                    document.getElementById('info').innerHTML = '<p>Error: ' + data.error.message + '</p>';
-                } else if (data.item) {
-                    const songName = data.item.name;
-                    const artists = data.item.artists.map(artist => artist.name).join(', ');
-                    const albumImage = data.item.album.images[0].url;
-
-                    // Check if the album image has changed
-                    if (albumImage !== currentAlbumImage) {
-                        currentAlbumImage = albumImage;
-                        const albumImageElement = document.getElementById('albumImage');
-                        const backgroundImageElement = document.body;
-
-                        // Apply transition effects
-                        albumImageElement.style.opacity = '0';
-                        albumImageElement.style.transform = 'scale(0.9)';
-
-                        setTimeout(() => {
-                            albumImageElement.src = albumImage;
-                            backgroundImageElement.style.backgroundImage = `url(${albumImage})`;
-                            backgroundImageElement.style.backgroundColor = 'transparent';
-                            albumImageElement.style.opacity = '1';
-                            albumImageElement.style.transform = 'scale(1)';
-                        }, 500);
-                    }
-
-                    const durationMs = data.item.duration_ms;
-                    const progressMs = data.progress_ms;
-
-                    document.getElementById('info').innerHTML = `
-                        <p>${songName}</p>
-                        <p>${artists}</p>
-                    `;
-
-                    const progressBar = document.querySelector('.progress');
-                    const percentProgress = (progressMs / durationMs) * 100;
-                    progressBar.style.width = percentProgress + '%';
-
-                    const currentTime = Date.now();
-                    const timeDiff = currentTime - previousTime;
-                    previousTime = currentTime;
-
-                    updateTime(timeDiff, progressMs, durationMs);
-
-                    adjustButtonColors(albumImage);
-
-                    // Show elements when music is playing
-                    document.getElementById('songInfo').style.opacity = '1';
-                    document.querySelector('.progress-bar-container').style.opacity = '1';
-                } else {
-                    document.body.style.backgroundImage = 'none';
-                    document.body.style.backgroundColor = 'black';
-
-                    // Hide elements when no music is playing
-                    document.getElementById('songInfo').style.opacity = '0';
-                    document.querySelector('.progress-bar-container').style.opacity = '0';
+                console.log('Currently playing song data:', data); // Debug log
+                if (data.item) {
+                    updateTrackInfo(data.item);
+                    updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
+                    fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
                 }
             })
-            .catch(error => {
-                document.getElementById('info').innerHTML = '<p>Error: ' + error.message + '</p>';
-            });
+            .catch(error => console.error('Error fetching currently playing song:', error));
         }
-
-        function formatTime(ms) {
-            const totalSeconds = Math.floor(ms / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }
-
-        function updateTime(timeDiff, progressMs, durationMs) {
-            const elapsedTime = progressMs + timeDiff;
-            const totalTime = durationMs;
-
-            document.getElementById('elapsed-time').textContent = formatTime(elapsedTime);
-            document.getElementById('total-time').textContent = formatTime(totalTime);
-
-            const progressBar = document.querySelector('.progress');
-            const percentProgress = (elapsedTime / totalTime) * 100;
-            progressBar.style.width = percentProgress + '%';
-        }
-        function adjustButtonColors(imageUrl) {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.src = imageUrl;
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, img.width, img.height);
-                const imageData = ctx.getImageData(0, 0, img.width, img.height);
-                let totalBrightness = 0;
-                for (let i = 0; i < imageData.data.length; i += 4) {
-                    const r = imageData.data[i];
-                    const g = imageData.data[i + 1];
-                    const b = imageData.data[i + 2];
-                    totalBrightness += (r + g + b) / 3;
-                }
-                const averageBrightness = totalBrightness / (imageData.data.length / 4);
-                const controlButtons = document.querySelectorAll('.control-button');
-                if (averageBrightness < 128) {
-                    controlButtons.forEach(button => {
-                        button.style.color = 'white';
-                    });
-                } else {
-                    controlButtons.forEach(button => {
-                        button.style.color = 'black';
-                    });
-                }
-            };
-        }
-
-        window.onload = function() {
-            const accessToken = getAccessToken();
-            if (accessToken) {
-                fetchCurrentlyPlayingSong(accessToken);
-                setInterval(function() {
-                    fetchCurrentlyPlayingSong(accessToken);
-                }, 1000);
-            } else {
-                document.getElementById('info').innerHTML = '<p>Error: Access token not found.</p>';
+    
+        function updateTrackInfo(item) {
+            const songName = item.name;
+            const artists = item.artists.map(artist => artist.name).join(', ');
+            const albumImage = item.album.images[0].url;
+    
+            document.getElementById('trackName').textContent = songName;
+            document.getElementById('artistName').textContent = artists;
+    
+            if (albumImage !== currentAlbumImage) {
+                currentAlbumImage = albumImage;
+                const albumImageElement = document.getElementById('albumImage');
+                albumImageElement.style.opacity = '0';
+                setTimeout(() => {
+                    albumImageElement.src = albumImage;
+                    albumImageElement.style.opacity = '1';
+                    document.body.style.backgroundImage = `url(${albumImage})`;
+                }, 300);
             }
-            var fortyFiveMinutes = 60 * 45, // 45 minutes in seconds
-            display = document.querySelector('#time'); // Selecting the display element
-            startTimer(fortyFiveMinutes, display);
-        };
-
-        function authorizeSpotify() {
-        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/tv'; // Redirect URI after authorization (Use the ngrok url if you want use this site outside your local network)
-        const scopes = [
-            'user-read-currently-playing', //Read access to a user’s currently playing content.
-            'user-read-playback-state', // Read access to user's playback state
-            'streaming' // Control playback of a Spotify track
-        ]; 
-
-        const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
-
-        window.location.href = authUrl;
         }
-
-    // Function to start the countdown timer
-    function startTimer(duration) {
-      var timer = duration, minutes, seconds;
-
-      // Interval to update the display every second
-      var displayInterval = setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        if (--timer < 0) {
-          clearInterval(displayInterval); // Clear interval when timer is finished
-          clearInterval(consoleInterval); // Clear console interval as well
-          timer = 0;
+    
+        function updatePlaybackInfo(progressMs, durationMs) {
+            playbackStartTime = Date.now() - (progressMs + syncOffset);
+            currentTrackDuration = durationMs / 1000;
+            lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
         }
-      }, 1000);
-
-      // Interval to log the remaining time to the console every 10 seconds
-      var consoleInterval = setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-        console.log("Time remaining: " + minutes + " minutes " + seconds + " seconds");
-      }, 10000);
-
-      // Set a timeout to trigger the end function after the specified duration
-      setTimeout(function() {
-        authorizeSpotify();
-        clearInterval(displayInterval); // Clear interval when timer ends
-        clearInterval(consoleInterval); // Clear console interval when timer ends
-      }, duration * 1000);
-    }
-
+    
+        function fetchLyrics(trackName, artistName, albumName, duration) {
+            const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Lyrics data:', data); // Debug log
+                    if (data.syncedLyrics) {
+                        lyrics = parseLRC(data.syncedLyrics);
+                        console.log('Parsed lyrics:', lyrics); // Debug log
+                        displayLyrics();
+                    }
+                })
+                .catch(error => console.error('Error fetching lyrics:', error));
+        }
+    
+        function parseLRC(lrcText) {
+            const lines = lrcText.split('\n');
+            return lines.map(line => {
+                const timeMatch = line.match(/\[(\d{2}):(\d{2}\.\d{2})\]/);
+                if (timeMatch) {
+                    const time = parseFloat(timeMatch[1]) * 60 + parseFloat(timeMatch[2]);
+                    const text = line.replace(/\[.*?\]/g, '').trim();
+                    return { time, text };
+                }
+                return null;
+            }).filter(line => line !== null);
+        }
+    
+        function displayLyrics() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+    
+            const previousLyric = lyrics[lyricIndex - 2] || { text: '' }; // Two lines before
+            const currentLyric = lyrics[lyricIndex - 1] || { text: '' }; // One line before
+            const nextLyric = lyrics[lyricIndex] || { text: '' }; // Current line
+            
+            document.getElementById('previous-lyric').textContent = previousLyric.text;
+            document.getElementById('current-lyric').textContent = currentLyric.text;
+            document.getElementById('next-lyric').textContent = nextLyric.text;
+        }
+    
+        function updateLyrics() {
+            displayLyrics();
+        }
+    
+        function updateProgressBar() {
+            const progress = ((Date.now() - playbackStartTime) / 1000) / currentTrackDuration * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('elapsed-time').textContent = formatTime((Date.now() - playbackStartTime) / 1000);
+            document.getElementById('total-time').textContent = formatTime(currentTrackDuration);
+        }
+    
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${minutes}:${secs}`;
+        }
+    
+        function syncPlaybackClock() {
+            const elapsed = (Date.now() - playbackStartTime) / 1000;
+            document.getElementById('elapsed-time').textContent = formatTime(elapsed);
+        }
+    
+        function update() {
+            fetchCurrentlyPlayingSong(getAccessToken());
+            updateLyrics();
+            updateProgressBar();
+            syncPlaybackClock();
+        }
+    
+        setInterval(update, 1000); // Fetch every 3 seconds
     </script>
+    
 </body>
 </html>
