@@ -6,7 +6,7 @@
     <title>Spotify OAuth 2.0</title>
     <style>
         /* Import a modern font for a sleeker look */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
         
         /* General body styling */
         body {
@@ -89,19 +89,13 @@
 <body>
     <div class="container">
         <h1>NowPlaying</h1>
-        <p>Authorize With Spotify below then select a mode</p>
-        <button onclick="authorizeSpotify()">Authorize</button>
-        
-        <div class="button-container">
-            <button onclick="launchMain()">Launch Main</button>
-            <button onclick="launchTV()">Launch TV</button>
-        </div>
-    </div>
+        <p>Press the button below to authorize with spotify</p>
+        <button onclick="authorizeSpotify()">Launch</button>
 
     <script>
     function authorizeSpotify() {
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/auth'; // Redirect URI after authorization
+        const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
         const scopes = [
             'user-read-currently-playing', // Read access to a user’s currently playing content
             'user-read-playback-state', // Read access to user's playback state
@@ -121,16 +115,6 @@
             params[key] = value;
         });
         return params;
-    }
-
-    function launchMain() {
-        const hashParams = window.location.hash;
-        window.location.href = `https://11ason.space/nowplaying/main/${hashParams}`;
-    }
-
-    function launchTV() {
-        const hashParams = window.location.hash;
-        window.location.href = `https://11ason.space/nowplaying/tv/${hashParams}`;
     }
 
     // Automatically capture the hash params and store them for future use
