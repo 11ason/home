@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Screensaver with Lyrics</title>
+    <title>11ason.space | NowPlaying</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
     <style>
         body {
@@ -47,26 +47,27 @@
         }
 
         #lyrics-container {
-            color: white;
-            font-size: 20px; /* Reduced font size */
-            text-align: left;
-            max-width: 600px; /* Adjust width as needed */
-            position: relative; /* Ensure relative positioning for fade effect */
-            overflow: hidden; /* Hide the overflow for smooth scrolling effect */
-        }
+    position: relative;
+    height: 100px; /* Adjust height as needed */
+}
 
-        .lyric {
-            color: rgba(255, 255, 255, 0.500);
-            margin: 5px;
-            opacity: 1; /* Initially hide lyrics */
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transition for scroll effect */
-        }
+.lyric {
+    color: rgba(255, 255, 255, 0.500);
+    font-size: 20px; /* Adjusted font size */
+}
 
-        #current-lyric {
-            color: rgba(255, 255, 255, 0.842);
-            font-weight: bold;
-            font-size: 28px; /* Adjusted font size */
-        }
+
+#current-lyric {
+    color: rgba(255, 255, 255, 0.842);
+    font-weight: bold;
+    font-size: 28px; /* Adjusted font size */
+}
+
+#previous-lyric, #next-lyric {
+    color: rgba(255, 255, 255, 0.500);
+    font-size: 20px; /* Adjusted font size */
+}
+
 
         .progress-bar-container {
             width: 100%;
@@ -116,7 +117,7 @@
         #songInfo {
             text-align: center;
             color: white;
-            margin-top: 10px;
+            margin-top: 20px;
             font-size: 22px;
         }
 
@@ -246,17 +247,28 @@
         }
     
         function displayLyrics() {
-            const now = (Date.now() - playbackStartTime) / 1000;
-            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+    const now = (Date.now() - playbackStartTime) / 1000;
+    const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+
+    const previousLyric = lyrics[lyricIndex - 2] || { text: '' }; // Two lines before
+    const currentLyric = lyrics[lyricIndex - 1] || { text: '' }; // One line before
+    const nextLyric = lyrics[lyricIndex] || { text: '' }; // Current line
     
-            const previousLyric = lyrics[lyricIndex - 2] || { text: '' }; // Two lines before
-            const currentLyric = lyrics[lyricIndex - 1] || { text: '' }; // One line before
-            const nextLyric = lyrics[lyricIndex] || { text: '' }; // Current line
-            
-            document.getElementById('previous-lyric').textContent = previousLyric.text;
-            document.getElementById('current-lyric').textContent = currentLyric.text;
-            document.getElementById('next-lyric').textContent = nextLyric.text;
-        }
+    document.getElementById('previous-lyric').textContent = previousLyric.text;
+    document.getElementById('current-lyric').textContent = currentLyric.text;
+    document.getElementById('next-lyric').textContent = nextLyric.text;
+    
+    // Ensure elements are visible
+    document.getElementById('previous-lyric').style.display = 'block';
+    document.getElementById('current-lyric').style.display = 'block';
+    document.getElementById('next-lyric').style.display = 'block';
+    
+    console.log('Previous lyric:', previousLyric.text); // Debug log
+    console.log('Current lyric:', currentLyric.text);   // Debug log
+    console.log('Next lyric:', nextLyric.text);        // Debug log
+}
+
+
     
         function updateLyrics() {
             displayLyrics();
