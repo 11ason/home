@@ -13,68 +13,78 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Nunito', sans-serif; /* Updated font-family */
-            background-color: #000; /* Ensure a non-white background */
+            font-family: 'Nunito', sans-serif;
+            background-color: #000;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             transition: background 1s ease;
-            backdrop-filter: blur(100px); /* Adjust blur intensity as needed */
+            backdrop-filter: blur(100px);
+        }
+        .blur-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            z-index: -1;
         }
 
         .main-container {
+            position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Align items to the start of the container */
+            justify-content: flex-start;
             width: 100%;
-            max-width: 1000px; /* Adjust as needed */
+            max-width: 1000px;
             position: relative;
-            margin-bottom: 20px; /* Space between container and progress bar */
-            background: rgba(0, 0, 0, 0.096); /* Slightly opaque background for readability */
-            padding: 20px; /* Add some padding to avoid text overlap */
-            border-radius: 30px; /* Rounded corners */
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226); /* Add shadow to enhance fade effect */
-            backdrop-filter: blur(10px); /* Add blur effect for a more pronounced fade */
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.096);
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
+            backdrop-filter: blur(10px);
         }
 
         #albumImage {
-            width: 350px; /* Adjust as needed */
-            height: 350px; /* Adjust as needed */
+            width: 350px;
+            height: 350px;
             border-radius: 15px;
             transition: opacity 0.3s ease, transform 0.5s ease;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow to enhance fade effect */
-            margin-right: 20px; /* Space between album image and lyrics */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-right: 20px;
         }
 
         #lyrics-container {
-    position: relative;
-    height: 100px; /* Adjust height as needed */
-}
+            position: relative;
+            height: 100px;
+        }
 
-.lyric {
-    color: rgba(255, 255, 255, 0.500);
-    font-size: 20px; /* Adjusted font size */
-}
+        .lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
 
+        #current-lyric {
+            color: rgba(255, 255, 255, 0.842);
+            font-weight: bold;
+            font-size: 28px;
+        }
 
-#current-lyric {
-    color: rgba(255, 255, 255, 0.842);
-    font-weight: bold;
-    font-size: 28px; /* Adjusted font size */
-}
-
-#previous-lyric, #next-lyric {
-    color: rgba(255, 255, 255, 0.500);
-    font-size: 20px; /* Adjusted font size */
-}
-
+        #previous-lyric, #next-lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
 
         .progress-bar-container {
             width: 100%;
-            max-width: 1000px; /* Match the max-width of the main container */
+            max-width: 1000px;
             margin-top: 10px;
             position: relative;
             text-align: center;
+            height: 40px; /* Adjust height as needed to accommodate timestamps */
         }
 
         .progress-bar {
@@ -93,24 +103,24 @@
 
         #time {
             font-weight: bold;
-            position: absolute;
             width: 100%;
             font-size: 12px;
             text-align: center;
             color: rgba(255, 255, 255, 0.76);
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
         }
 
         #elapsed-time {
-            position: absolute;
-            left: 0;
-            bottom: -20px;
             font-size: 12px;
         }
 
         #total-time {
-            position: absolute;
-            right: 0;
-            bottom: -20px;
             font-size: 12px;
         }
 
@@ -125,17 +135,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 100px; /* Reduced gap */
+            gap: 100px;
             font-size: 22px;
         }
 
         #trackName, #artistName {
             margin: 0;
-            font-size: 22px; /* Ensure both have the same size */
+            font-size: 22px;
         }
     </style>
 </head>
 <body>
+    <div class="blur-background"></div>
     <div class="main-container">
         <img id="albumImage" src="cover.jpg" alt="Album Cover">
         <div id="lyrics-container">
@@ -149,8 +160,8 @@
             <div class="progress" id="progress"></div>
         </div>
         <div id="time">
-            <div id="elapsed-time"></div>
-            <div id="total-time"></div>
+            <div id="elapsed-time">00:00</div>
+            <div id="total-time">00:00</div>
         </div>
     </div>
     <div id="songInfo">
@@ -220,6 +231,29 @@
             playbackStartTime = Date.now() - (progressMs + syncOffset);
             currentTrackDuration = durationMs / 1000;
             lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
+            updateProgressBar();
+            updateTimestamps();
+        }
+
+        function updateProgressBar() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const progressPercentage = (now / currentTrackDuration) * 100;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+        }
+
+        function updateTimestamps() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const elapsed = formatTime(now);
+            const total = formatTime(currentTrackDuration);
+
+            document.getElementById('elapsed-time').textContent = elapsed;
+            document.getElementById('total-time').textContent = total;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
         function fetchLyrics(trackName, artistName, albumName, duration) {
@@ -276,7 +310,7 @@
         let currentTrackDuration = 0;
         let lastProgressUpdate = 0;
         let lyrics = [];
-        let syncOffset = -1300; // To be calculated based on the sync method used
+        let syncOffset = -1500; // To be calculated based on the sync method used
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
