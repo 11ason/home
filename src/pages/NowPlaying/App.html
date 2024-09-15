@@ -161,7 +161,7 @@
     </div>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
+        const redirect_uri = 'https://11ason.space/NowPlaying/tv'; // Redirect URI after authorization
         const scopes = [
             'user-read-currently-playing',
             'user-read-playback-state',
@@ -284,7 +284,7 @@
                 fetchCurrentlyPlayingSong(accessToken);
                 setInterval(() => {
                     fetchCurrentlyPlayingSong(accessToken);
-                }, 30000); // Refresh song info every 30 seconds
+                }, 1000); // Refresh song info every 30 seconds
                 setInterval(() => {
                     refreshToken();
                 }, 3300000); // Refresh access token every 55 minutes
