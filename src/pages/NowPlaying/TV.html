@@ -160,20 +160,25 @@
         </div>
     </div>
     <script>
-        let previousTime = 0;
-        let currentAlbumImage = '';
-        let playbackStartTime = 0;
-        let lastProgressUpdate = 0;
-        let currentTrackDuration = 0;
-        let lyrics = [];
-        let syncOffset = 300; // Adjust sync offset as needed
-    
+        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
+        const redirect_uri = 'https://11ason.space/NowPlaying/tv'; // Redirect URI after authorization
+        const scopes = [
+            'user-read-currently-playing',
+            'user-read-playback-state',
+            'streaming'
+        ];
+
         function getAccessToken() {
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
             return params.get('access_token');
         }
-    
+
+        function refreshToken() {
+            const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+            window.location.href = authUrl;
+        }
+
         function fetchCurrentlyPlayingSong(accessToken) {
             fetch('https://api.spotify.com/v1/me/player/currently-playing', {
                 headers: {
@@ -182,7 +187,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Currently playing song data:', data); // Debug log
                 if (data.item) {
                     updateTrackInfo(data.item);
                     updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
@@ -191,15 +195,15 @@
             })
             .catch(error => console.error('Error fetching currently playing song:', error));
         }
-    
+
         function updateTrackInfo(item) {
             const songName = item.name;
             const artists = item.artists.map(artist => artist.name).join(', ');
             const albumImage = item.album.images[0].url;
-    
+
             document.getElementById('trackName').textContent = songName;
             document.getElementById('artistName').textContent = artists;
-    
+
             if (albumImage !== currentAlbumImage) {
                 currentAlbumImage = albumImage;
                 const albumImageElement = document.getElementById('albumImage');
@@ -211,28 +215,26 @@
                 }, 300);
             }
         }
-    
+
         function updatePlaybackInfo(progressMs, durationMs) {
             playbackStartTime = Date.now() - (progressMs + syncOffset);
             currentTrackDuration = durationMs / 1000;
             lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
         }
-    
+
         function fetchLyrics(trackName, artistName, albumName, duration) {
             const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Lyrics data:', data); // Debug log
                     if (data.syncedLyrics) {
                         lyrics = parseLRC(data.syncedLyrics);
-                        console.log('Parsed lyrics:', lyrics); // Debug log
                         displayLyrics();
                     }
                 })
                 .catch(error => console.error('Error fetching lyrics:', error));
         }
-    
+
         function parseLRC(lrcText) {
             const lines = lrcText.split('\n');
             return lines.map(line => {
@@ -245,62 +247,51 @@
                 return null;
             }).filter(line => line !== null);
         }
-    
+
         function displayLyrics() {
-    const now = (Date.now() - playbackStartTime) / 1000;
-    const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
 
-    const previousLyric = lyrics[lyricIndex - 2] || { text: '' }; // Two lines before
-    const currentLyric = lyrics[lyricIndex - 1] || { text: '' }; // One line before
-    const nextLyric = lyrics[lyricIndex] || { text: '' }; // Current line
-    
-    document.getElementById('previous-lyric').textContent = previousLyric.text;
-    document.getElementById('current-lyric').textContent = currentLyric.text;
-    document.getElementById('next-lyric').textContent = nextLyric.text;
-    
-    // Ensure elements are visible
-    document.getElementById('previous-lyric').style.display = 'block';
-    document.getElementById('current-lyric').style.display = 'block';
-    document.getElementById('next-lyric').style.display = 'block';
-    
-    console.log('Previous lyric:', previousLyric.text); // Debug log
-    console.log('Current lyric:', currentLyric.text);   // Debug log
-    console.log('Next lyric:', nextLyric.text);        // Debug log
-}
+            if (lyricIndex > 0) {
+                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
+            } else {
+                document.getElementById('previous-lyric').textContent = '';
+            }
 
+            if (lyricIndex < lyrics.length) {
+                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
+            } else {
+                document.getElementById('current-lyric').textContent = '';
+            }
 
-    
-        function updateLyrics() {
-            displayLyrics();
+            if (lyricIndex < lyrics.length - 1) {
+                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
+            } else {
+                document.getElementById('next-lyric').textContent = '';
+            }
         }
-    
-        function updateProgressBar() {
-            const progress = ((Date.now() - playbackStartTime) / 1000) / currentTrackDuration * 100;
-            document.getElementById('progress').style.width = progress + '%';
-            document.getElementById('elapsed-time').textContent = formatTime((Date.now() - playbackStartTime) / 1000);
-            document.getElementById('total-time').textContent = formatTime(currentTrackDuration);
-        }
-    
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-            return `${minutes}:${secs}`;
-        }
-    
-        function syncPlaybackClock() {
-            const elapsed = (Date.now() - playbackStartTime) / 1000;
-            document.getElementById('elapsed-time').textContent = formatTime(elapsed);
-        }
-    
-        function update() {
-            fetchCurrentlyPlayingSong(getAccessToken());
-            updateLyrics();
-            updateProgressBar();
-            syncPlaybackClock();
-        }
-    
-        setInterval(update, 1000); // Fetch every 3 seconds
+
+        let currentAlbumImage = '';
+        let playbackStartTime = 0;
+        let currentTrackDuration = 0;
+        let lastProgressUpdate = 0;
+        let lyrics = [];
+        let syncOffset = 0; // To be calculated based on the sync method used
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let accessToken = getAccessToken();
+            if (accessToken) {
+                fetchCurrentlyPlayingSong(accessToken);
+                setInterval(() => {
+                    fetchCurrentlyPlayingSong(accessToken);
+                }, 30000); // Refresh song info every 30 seconds
+                setInterval(() => {
+                    refreshToken();
+                }, 30000); // Refresh access token every 30 seconds
+            } else {
+                refreshToken();
+            }
+        });
     </script>
-    
 </body>
 </html>
