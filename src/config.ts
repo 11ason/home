@@ -49,7 +49,7 @@ export const navBarConfig: NavBarConfig = {
     },
     {
       name: 'Now ▷',
-      url: 'nowplaying/auth',     // Internal links should not include the base path, as it is automatically added
+      url: 'nowplaying',     // Internal links should not include the base path, as it is automatically added
       external: true,
     },
   ],
