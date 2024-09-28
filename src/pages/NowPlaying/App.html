@@ -134,17 +134,30 @@
             margin: 0;
             font-size: 22px;
         }
+
+        #smallImage {
+    position: absolute;
+    top: -20px; /* Adjust this value to change the position */
+    left: 20px; /* Adjust this value to change the horizontal position */
+    width: 50px; /* Set a suitable width */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 2; /* Ensure it stays above other elements */
+}
     </style>
 </head>
 <body>
     <div class="blur-background"></div>
-    <div class="main-container">
-        <img id="albumImage" src="cover.jpg" alt="Album Cover">
-        <div id="lyrics-container">
-            <div id="previous-lyric" class="lyric"></div>
-            <div id="current-lyric" class="lyric"></div>
-            <div id="next-lyric" class="lyric"></div>
-        </div>
+<div class="main-container">
+    <img id="smallImage" src="small-image.jpg" alt="Small Image">
+    <img id="albumImage" src="cover.jpg" alt="Album Cover">
+    <div id="lyrics-container">
+        <div id="previous-lyric" class="lyric"></div>
+        <div id="current-lyric" class="lyric"></div>
+        <div id="next-lyric" class="lyric"></div>
+    </div>
+</div>
     </div>
     <div class="progress-bar-container">
         <div class="progress-bar">
