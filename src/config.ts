@@ -37,8 +37,8 @@ export const navBarConfig: NavBarConfig = {
   links: [
     {
       name: '☆',
-      url: 'landing',     // Internal links should not include the base path, as it is automatically added
-      external: true,
+      url: 'https://11ason.space/landing/',     // Internal links should not include the base path, as it is automatically added
+      external: false,
     },
     LinkPreset.Archive,
     LinkPreset.About,
@@ -49,7 +49,7 @@ export const navBarConfig: NavBarConfig = {
     },
     {
       name: 'Now ▷',
-      url: 'nowplaying',     // Internal links should not include the base path, as it is automatically added
+      url: 'https://11ason.space/nowplaying/',     // Internal links should not include the base path, as it is automatically added
       external: true,
     },
   ],
