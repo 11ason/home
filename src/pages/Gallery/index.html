@@ -142,31 +142,33 @@
         const modalDescription = document.getElementById('modalDescription');
         const modalLink = document.getElementById('modalLink');
         const closeModal = document.getElementById('closeModal');
+        const folderPath = 'images/'; // Folder containing the photos
 
-        // Load images from the text file
-        async function loadPhotos() {
-            try {
-                const response = await fetch(photosFile);
-                const text = await response.text();
-                const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+// Load images from the text file
+async function loadPhotos() {
+    try {
+        const response = await fetch(photosFile);
+        const text = await response.text();
+        const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
 
-                lines.forEach(line => {
-                    const [filename, title, description, url] = line.split(',');
+        lines.forEach(line => {
+            const [filename, title, description, url] = line.split(',');
 
-                    const img = document.createElement('img');
-                    img.src = filename.trim();
-                    img.alt = title.trim();
-                    img.dataset.title = title.trim();
-                    img.dataset.description = description.trim();
-                    img.dataset.url = url.trim();
+            const img = document.createElement('img');
+            img.src = folderPath + filename.trim(); // Add folder path
+            img.alt = title.trim();
+            img.dataset.title = title.trim();
+            img.dataset.description = description.trim();
+            img.dataset.url = url.trim();
 
-                    img.addEventListener('click', () => openModal(img));
-                    gallery.appendChild(img);
-                });
-            } catch (error) {
-                console.error('Error loading photos:', error);
-            }
-        }
+            img.addEventListener('click', () => openModal(img));
+            gallery.appendChild(img);
+        });
+    } catch (error) {
+        console.error('Error loading photos:', error);
+    }
+}
+
 
         // Open the modal with the selected image data
         function openModal(img) {
