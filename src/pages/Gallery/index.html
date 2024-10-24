@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Showcase</title>
+
+    <style>
+        /* === SETTINGS SECTION === */
+        :root {
+            --gallery-gap: 10px; /* Space between images */
+            --modal-bg: rgba(0, 0, 0, 0.9); /* Modal background color */
+            --border-radius: 10px; /* Border radius for images and modal */
+            --hover-scale: 1.05; /* Scale effect on hover */
+            --button-color: #1DB954; /* Button color */
+        }
+
+        /* === GENERAL STYLING === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* === GALLERY STYLING === */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--gallery-gap);
+            padding: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(var(--hover-scale));
+        }
+
+        /* === MODAL STYLING === */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            max-width: 80%;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 50%;
+            border-radius: var(--border-radius);
+        }
+
+        .modal-text {
+            max-width: 45%;
+        }
+
+        .modal-text h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-text p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal button {
+            padding: 10px 20px;
+            background-color: var(--button-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal button:hover {
+            background-color: #17a143;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery" id="gallery"></div>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal">
+        <button class="close-btn" id="closeModal">&times;</button>
+        <div class="modal-content">
+            <img src="" alt="Expanded Image" id="modalImage">
+            <div class="modal-text">
+                <h2 id="modalTitle">Image Title</h2>
+                <p id="modalDescription">Image Description</p>
+                <button id="modalLink">View Full Page</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === SETTINGS ===
+        const photosFile = 'photos.txt'; // Path to the text file
+
+        // === DOM Elements ===
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalLink = document.getElementById('modalLink');
+        const closeModal = document.getElementById('closeModal');
+
+        // === Fetch and Display Images ===
+        async function loadPhotos() {
+            try {
+                const response = await fetch(photosFile);
+                const text = await response.text();
+                const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+
+                lines.forEach(line => {
+                    const [filename, title, description, link] = line.split(',');
+
+                    const img = document.createElement('img');
+                    img.src = filename.trim();
+                    img.alt = title.trim();
+                    img.dataset.title = title.trim();
+                    img.dataset.desc = description.trim();
+                    img.dataset.link = link.trim();
+
+                    img.addEventListener('click', () => openModal(img));
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.error('Error loading photos:', error);
+            }
+        }
+
+        // === Open Modal ===
+        function openModal(img) {
+            modal.classList.add('active');
+            modalImage.src = img.src;
+            modalTitle.textContent = img.dataset.title;
+            modalDescription.textContent = img.dataset.desc;
+            modalLink.onclick = () => window.location.href = img.dataset.link;
+        }
+
+        // === Close Modal ===
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Load photos on page load
+        loadPhotos();
+    </script>
+
+</body>
+</html>
