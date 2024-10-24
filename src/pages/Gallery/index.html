@@ -11,20 +11,25 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
+
+        /* Gallery with waterfall effect */
         .gallery {
-            column-count: 3; /* Adjust to get the waterfall layout */
+            column-count: 3; /* Adjust columns for different layouts */
             column-gap: 10px;
             max-width: 1200px;
             margin: 20px auto;
         }
+
         .gallery img {
-            width: 100%;
-            height: auto;
+            width: 100%;  /* Fit image to column width */
+            height: auto; /* Maintain aspect ratio */
             margin-bottom: 10px;
             display: block;
             border-radius: 8px;
             cursor: pointer;
         }
+
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -35,19 +40,28 @@
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
-            color: white;
+            overflow: hidden; /* Prevent scrolling */
         }
+
         .modal-content {
-            max-width: 800px;
-            width: 90%;
+            max-width: 90%;  /* Limit modal size */
+            max-height: 90%; /* Ensure it fits the screen */
             background: #333;
             padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         .modal img {
-            width: 100%;
-            height: auto;
+            max-width: 100%;  /* Ensure image fits within modal width */
+            max-height: 80vh; /* Maintain aspect ratio within screen height */
+            object-fit: contain; /* Preserve aspect ratio */
+            border-radius: 8px;
         }
+
         .close-btn {
             background: #ff5f5f;
             border: none;
@@ -55,6 +69,13 @@
             cursor: pointer;
             margin-top: 10px;
             border-radius: 5px;
+            font-size: 16px;
+        }
+
+        a {
+            color: #00bfff;
+            text-decoration: none;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -86,7 +107,7 @@
                     const [url, title, description, link] = line.split('|');
 
                     const img = document.createElement('img');
-                    img.src = url;
+                    img.src = url.trim();
                     img.alt = title;
 
                     img.addEventListener('click', () => {
@@ -101,7 +122,7 @@
         }
 
         function openModal(url, title, description, link) {
-            document.getElementById('modal-image').src = url;
+            document.getElementById('modal-image').src = url.trim();
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-description').textContent = description;
             document.getElementById('modal-link').href = link;
@@ -117,4 +138,3 @@
     </script>
 </body>
 </html>
-
