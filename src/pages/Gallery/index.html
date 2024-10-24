@@ -130,7 +130,8 @@
                 const gallery = document.getElementById('gallery');
                 const lines = text.trim().split('\n');
 
-                lines.forEach(line => {
+                // Reverse the order of the lines to display newer photos first
+                lines.reverse().forEach(line => {
                     const [url, title, description, link] = line.split('|');
 
                     const img = document.createElement('img');
