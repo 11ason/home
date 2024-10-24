@@ -31,7 +31,7 @@
         }
 
         .gallery img:hover {
-            transform: scale(1.3); /* Slight zoom on hover */
+            transform: scale(1.05); /* Slight zoom on hover */
         }
     </style>
 </head>
@@ -59,7 +59,7 @@
 
                     // Open the image URL in a new tab on click
                     img.addEventListener('click', () => {
-                        window.open(url.trim(), '_blank');
+                        window.open(link.trim(), '_blank');
                     });
 
                     gallery.appendChild(img);
