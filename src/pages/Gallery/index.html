@@ -12,7 +12,6 @@
             background-color: #f0f0f0;
         }
 
-        /* Gallery with waterfall effect */
         .gallery {
             column-count: 3;
             column-gap: 10px;
@@ -29,7 +28,7 @@
             cursor: pointer;
         }
 
-        /* Modal styles */
+        /* Modal overlay covering the whole screen */
         .modal {
             display: none;
             position: fixed;
@@ -38,14 +37,17 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.6);
-            justify-content: flex-start;
-            align-items: flex-start;
-            overflow: hidden;
-            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            padding: 40px;
         }
 
+        /* Content inside the modal */
         .modal-content {
             display: flex;
+            max-width: 90%;
+            max-height: 90%;
             gap: 20px;
             align-items: flex-start;
             padding: 20px;
@@ -55,33 +57,37 @@
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            flex-wrap: wrap;
         }
 
-        /* Image scaling logic */
+        /* Adjusted image size and scaling */
         .modal img {
             object-fit: contain;
-            max-width: 60%; /* No more than 60% of the viewport width */
-            max-height: 90vh; /* Fit within 90% of viewport height */
+            max-width: 60%; /* No more than 60% of the modal’s width */
+            max-height: 100%; /* Fit within the modal’s height */
             width: auto;
             height: auto;
             border-radius: 8px;
-            align-self: flex-start;
+            align-self: center;
         }
 
-        /* Content section next to image */
+        /* Content section with title, description, and link */
         .content-wrapper {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            height: auto;
+            justify-content: space-between;
+            height: 100%;
         }
 
         h2 {
             margin: 0;
+            font-size: 24px;
         }
 
         p {
-            font-size: 14px;
-            margin: 0;
+            font-size: 16px;
+            margin-top: 10px;
         }
 
         .close-btn {
@@ -129,7 +135,7 @@
                 const gallery = document.getElementById('gallery');
                 const lines = text.trim().split('\n');
 
-                // Reverse the order of the lines to display newer photos first
+                // Reverse order for newest images first
                 lines.reverse().forEach(line => {
                     const [url, title, description, link] = line.split('|');
 
