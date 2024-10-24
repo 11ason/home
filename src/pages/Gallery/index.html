@@ -142,24 +142,31 @@
         const modalDescription = document.getElementById('modalDescription');
         const modalLink = document.getElementById('modalLink');
         const closeModal = document.getElementById('closeModal');
-        const folderPath = './images/'; // Folder containing the photos
+        const photosFile = 'https://github.com/11ason/home/blob/main/src/pages/Gallery/photos.txt?raw=true'; // URL to photos.txt
 
-// Load images from the text file
 async function loadPhotos() {
     try {
         const response = await fetch(photosFile);
+        if (!response.ok) throw new Error(`Failed to load photos.txt: ${response.status}`);
+
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
 
         lines.forEach(line => {
-            const [filename, title, description, url] = line.split(',');
+            const parts = line.split(',');
+            if (parts.length < 4) {
+                console.error('Invalid entry:', line);
+                return;
+            }
+
+            const [imageUrl, title, description, pageUrl] = parts.map(part => part.trim());
 
             const img = document.createElement('img');
-            img.src = folderPath + filename.trim(); // Add folder path
-            img.alt = title.trim();
-            img.dataset.title = title.trim();
-            img.dataset.description = description.trim();
-            img.dataset.url = url.trim();
+            img.src = imageUrl;
+            img.alt = title;
+            img.dataset.title = title;
+            img.dataset.description = description;
+            img.dataset.url = pageUrl;
 
             img.addEventListener('click', () => openModal(img));
             gallery.appendChild(img);
@@ -168,6 +175,21 @@ async function loadPhotos() {
         console.error('Error loading photos:', error);
     }
 }
+
+function openModal(img) {
+    const modal = document.getElementById('modal');
+    modal.querySelector('img').src = img.src;
+    modal.querySelector('.title').textContent = img.dataset.title;
+    modal.querySelector('.description').textContent = img.dataset.description;
+    modal.querySelector('a').href = img.dataset.url;
+    modal.style.display = 'block';
+}
+
+document.getElementById('modal').addEventListener('click', () => {
+    document.getElementById('modal').style.display = 'none';
+});
+
+document.addEventListener('DOMContentLoaded', loadPhotos);
 
 
         // Open the modal with the selected image data
