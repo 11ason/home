@@ -14,15 +14,15 @@
 
         /* Gallery with waterfall effect */
         .gallery {
-            column-count: 3; /* Adjust columns for different layouts */
+            column-count: 3;
             column-gap: 10px;
             max-width: 1200px;
             margin: 20px auto;
         }
 
         .gallery img {
-            width: 100%;  /* Fit image to column width */
-            height: auto; /* Maintain aspect ratio */
+            width: 100%;
+            height: auto;
             margin-bottom: 10px;
             display: block;
             border-radius: 8px;
@@ -40,26 +40,48 @@
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
         }
 
         .modal-content {
-            max-width: 90%;  /* Limit modal size */
-            max-height: 90%; /* Ensure it fits the screen */
+            max-width: 90%;
+            max-height: 90%;
             background: #333;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: row; /* Default: image left, content right */
+            gap: 20px;
         }
 
         .modal img {
-            max-width: 100%;  /* Ensure image fits within modal width */
-            max-height: 80vh; /* Maintain aspect ratio within screen height */
-            object-fit: contain; /* Preserve aspect ratio */
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
             border-radius: 8px;
+        }
+
+        .modal-content.landscape {
+            flex-direction: column; /* Switch to column for landscape images */
+            align-items: center;
+        }
+
+        .modal-content.landscape .content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .modal h2 {
+            margin: 10px 0;
+            color: white;
+        }
+
+        .modal p {
+            color: white;
+            font-size: 14px;
+            text-align: right;
         }
 
         .close-btn {
@@ -83,17 +105,19 @@
     <div class="gallery" id="gallery"></div>
 
     <div class="modal" id="modal">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-content">
             <img id="modal-image" src="" alt="">
-            <h2 id="modal-title"></h2>
-            <p id="modal-description"></p>
-            <a id="modal-link" href="#" target="_blank">Learn More</a>
+            <div class="content">
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+                <a id="modal-link" href="#" target="_blank">Learn More</a>
+            </div>
             <button class="close-btn" onclick="closeModal()">Close</button>
         </div>
     </div>
 
     <script>
-        const photosFile = 'https://11ason.space/photos.txt'; // URL to photos.txt
+        const photosFile = 'https://11ason.space/photos.txt';
 
         async function loadPhotos() {
             try {
@@ -122,7 +146,20 @@
         }
 
         function openModal(url, title, description, link) {
-            document.getElementById('modal-image').src = url.trim();
+            const modalImage = document.getElementById('modal-image');
+            const modalContent = document.getElementById('modal-content');
+
+            modalImage.src = url.trim();
+            modalImage.onload = () => {
+                const isLandscape = modalImage.naturalWidth > modalImage.naturalHeight;
+
+                if (isLandscape) {
+                    modalContent.classList.add('landscape');
+                } else {
+                    modalContent.classList.remove('landscape');
+                }
+            };
+
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-description').textContent = description;
             document.getElementById('modal-link').href = link;
