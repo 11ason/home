@@ -1,5 +1,5 @@
 # Format: filename,title,description,url
-https://github.com/11ason/home/blob/main/src/pages/Gallery/images/image1.jpg?raw=true,Project One,This is a brief description of Project One.,https://example.com/project1
-https://github.com/11ason/home/blob/main/src/pages/Gallery/images/image2.jpg?raw=true,Project Two,Description for Project Two.,https://example.com/project2
-https://github.com/11ason/home/blob/main/src/pages/Gallery/images/image3.jpg?raw=true,Project Three,Description of Project Three.,https://example.com/project3
-https://github.com/11ason/home/blob/main/src/pages/Gallery/images/image4.jpg?raw=true,Project Four,About Project Four.,https://example.com/project4
+https://11ason.space/images/image1.jpg,Project One,This is a brief description of Project One.,https://example.com/project1
+https://11ason.space/images/image2.jpg,Project Two,Description for Project Two.,https://example.com/project2
+https://11ason.space/images/image3.jpg,Project Three,Description of Project Three.,https://example.com/project3
+https://11ason.space/images/image4.jpg,Project Four,About Project Four.,https://example.com/project4
