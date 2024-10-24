@@ -12,24 +12,24 @@
             background-color: #f0f0f0;
         }
 
-        /* Gallery with waterfall effect */
+        /* Waterfall gallery layout */
         .gallery {
-            column-count: 3; /* Adjust columns for different layouts */
+            column-count: 3;
             column-gap: 10px;
             max-width: 1200px;
             margin: 20px auto;
         }
 
         .gallery img {
-            width: 100%;  /* Fit image to column width */
-            height: auto; /* Maintain aspect ratio */
+            width: 100%;
+            height: auto;
             margin-bottom: 10px;
             display: block;
             border-radius: 8px;
             cursor: pointer;
         }
 
-        /* Modal styles */
+        /* Modal overlay */
         .modal {
             display: none;
             position: fixed;
@@ -40,58 +40,62 @@
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Prevent scrolling */
+            color: white;
         }
 
+        /* Modal content wrapper */
         .modal-content {
-            max-width: 90%;  /* Limit modal size */
-            max-height: 90%; /* Ensure it fits the screen */
-            background: #333;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
-            gap: 20px;
-        }
-
-        .modal img {
-            max-width: 50%;  /* Image takes half of modal width */
-            max-height: 80vh; /* Maintain aspect ratio within screen height */
-            object-fit: contain; /* Preserve aspect ratio */
+            max-width: 90%;
+            width: 1200px;
+            background: #333;
             border-radius: 8px;
+            overflow: hidden;
         }
 
+        /* Image takes most space */
+        .modal img {
+            flex: 3;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Right side for text content */
         .modal-text {
+            flex: 2;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            width: 50%; /* Text takes the other half */
-            color: white;
-            text-align: left; /* Left-align all text */
+            justify-content: flex-start;
         }
 
         .modal-text h2 {
-            margin: 0 0 10px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 24px;
         }
 
         .modal-text p {
-            margin: 0 0 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.5;
         }
 
         .modal-text a {
-            color: #00bfff;
-            text-decoration: none;
+            color: #1e90ff;
             margin-bottom: 10px;
+            text-decoration: none;
         }
 
         .close-btn {
+            align-self: start;
             background: #ff5f5f;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
-            font-size: 16px;
-            align-self: flex-start; /* Align button to the left */
+            color: white;
         }
     </style>
 </head>
@@ -125,7 +129,7 @@
                     const [url, title, description, link] = line.split('|');
 
                     const img = document.createElement('img');
-                    img.src = url.trim();
+                    img.src = url;
                     img.alt = title;
 
                     img.addEventListener('click', () => {
@@ -140,7 +144,7 @@
         }
 
         function openModal(url, title, description, link) {
-            document.getElementById('modal-image').src = url.trim();
+            document.getElementById('modal-image').src = url;
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-description').textContent = description;
             document.getElementById('modal-link').href = link;
