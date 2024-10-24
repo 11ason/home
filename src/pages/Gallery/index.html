@@ -40,31 +40,31 @@
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
-            color: white;
         }
 
-        /* Modal content wrapper */
+        /* Modal content layout */
         .modal-content {
             display: flex;
             max-width: 90%;
             width: 1200px;
+            max-height: 90%;
             background: #333;
             border-radius: 8px;
             overflow: hidden;
         }
 
-        /* Image takes most space */
-        .modal img {
-            flex: 3;
-            width: 100%;
-            height: auto;
+        /* Image on the left */
+        .modal-content img {
+            flex: 1.5;
+            height: 100%;
             object-fit: contain;
         }
 
-        /* Right side for text content */
+        /* Right side text content */
         .modal-text {
-            flex: 2;
+            flex: 1;
             padding: 20px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -72,12 +72,12 @@
 
         .modal-text h2 {
             margin-top: 0;
-            margin-bottom: 10px;
             font-size: 24px;
+            margin-bottom: 10px;
         }
 
         .modal-text p {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-size: 16px;
             line-height: 1.5;
         }
@@ -89,13 +89,24 @@
         }
 
         .close-btn {
-            align-self: start;
             background: #ff5f5f;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
             color: white;
+            align-self: flex-start;
+            margin-top: auto;
+        }
+
+        /* Scroll bar for content if overflow */
+        .modal-text::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-text::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 8px;
         }
     </style>
 </head>
