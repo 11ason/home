@@ -12,6 +12,7 @@
             background-color: #f0f0f0;
         }
 
+        /* Gallery with waterfall effect */
         .gallery {
             column-count: 3;
             column-gap: 10px;
@@ -28,7 +29,7 @@
             cursor: pointer;
         }
 
-        /* Modal overlay covering the whole screen */
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -36,62 +37,59 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: flex-start; /* Align content to top-left */
             align-items: center;
-            overflow: auto;
-            padding: 40px;
-        }
-
-        /* Content inside the modal */
-        .modal-content {
-            display: flex;
-            max-width: 90%;
-            max-height: 90%;
-            gap: 20px;
-            align-items: flex-start;
-            padding: 20px;
-            border-radius: 12px;
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            flex-wrap: wrap;
+            padding: 20px;
         }
 
-        /* Adjusted image size and scaling */
+        .modal-content {
+            width: 95%; /* Extend box near the edge of the screen */
+            height: 90%; /* Cover most of the screen height */
+            background: rgba(255, 255, 255, 0.1); /* Transparent white */
+            display: flex;
+            gap: 20px;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(10px) saturate(150%); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+        }
+
+
+        /* Always left-align images and limit to 60% width */
         .modal img {
             object-fit: contain;
-            max-width: 60%; /* No more than 60% of the modal’s width */
-            max-height: 100%; /* Fit within the modal’s height */
-            width: auto;
+            max-width: 60%; /* Image won't exceed 60% of screen width */
             height: auto;
+            max-height: 100%; /* Ensure it fits within the modal */
             border-radius: 8px;
-            align-self: center;
+            align-self: flex-start; /* Align image to the left */
         }
 
-        /* Content section with title, description, and link */
-        .content-wrapper {
-            flex: 1;
+        .content {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100%;
+            width: 100%;
+            padding: 10px;
         }
 
         h2 {
+            color: white;
             margin: 0;
-            font-size: 24px;
         }
 
         p {
-            font-size: 16px;
-            margin-top: 10px;
+            color: white;
+            font-size: 14px;
+            margin: 0;
         }
 
         .close-btn {
-            background: rgba(255, 95, 95, 0.8);
+            background: #ff5f5f;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
@@ -113,14 +111,12 @@
     <div class="modal" id="modal">
         <div class="modal-content" id="modal-content">
             <img id="modal-image" src="" alt="">
-            <div class="content-wrapper">
-                <div class="content">
-                    <h2 id="modal-title"></h2>
-                    <p id="modal-description"></p>
-                    <a id="modal-link" href="#" target="_blank">Learn More</a>
-                </div>
-                <button class="close-btn" onclick="closeModal()">Close</button>
+            <div class="content">
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+                <a id="modal-link" href="#" target="_blank">Learn More</a>
             </div>
+            <button class="close-btn" onclick="closeModal()">Close</button>
         </div>
     </div>
 
@@ -135,7 +131,7 @@
                 const gallery = document.getElementById('gallery');
                 const lines = text.trim().split('\n');
 
-                // Reverse order for newest images first
+                // Reverse the order of the lines to display newer photos first
                 lines.reverse().forEach(line => {
                     const [url, title, description, link] = line.split('|');
 
@@ -156,21 +152,26 @@
 
         function openModal(url, title, description, link) {
             const modalImage = document.getElementById('modal-image');
-            const modal = document.getElementById('modal');
-            const contentWrapper = document.querySelector('.content-wrapper');
 
             modalImage.src = url.trim();
-
             modalImage.onload = () => {
-                const imageHeight = modalImage.getBoundingClientRect().height;
-                contentWrapper.style.height = `${imageHeight}px`;
+                // Adjust modal image size based on its aspect ratio
+                const isLandscape = modalImage.naturalWidth > modalImage.naturalHeight;
+
+                if (isLandscape) {
+                    modalImage.style.maxWidth = '60%'; // Landscape: Limit width to 60%
+                    modalImage.style.height = 'auto';
+                } else {
+                    modalImage.style.maxWidth = 'auto'; // Portrait/Square: Auto width
+                    modalImage.style.maxHeight = '100%'; // Fit vertically
+                }
             };
 
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-description').textContent = description;
             document.getElementById('modal-link').href = link;
 
-            modal.style.display = 'flex';
+            document.getElementById('modal').style.display = 'flex';
         }
 
         function closeModal() {
