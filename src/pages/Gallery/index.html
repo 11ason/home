@@ -134,86 +134,62 @@
     </div>
 
     <script>
-        const gallery = document.getElementById('gallery');
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDescription = document.getElementById('modalDescription');
-        const modalLink = document.getElementById('modalLink');
-        const closeModal = document.getElementById('closeModal');
-        const photosFile = 'https://github.com/11ason/home/blob/main/src/pages/Gallery/photos.txt?raw=true'; // URL to photos.txt
-
-async function loadPhotos() {
-    try {
-        const response = await fetch(photosFile);
-        if (!response.ok) throw new Error(`Failed to load photos.txt: ${response.status}`);
-
-        const text = await response.text();
-        const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
-
-        lines.forEach(line => {
-            const parts = line.split(',');
-            if (parts.length < 4) {
-                console.error('Invalid entry:', line);
-                return;
-            }
-
-            const [imageUrl, title, description, pageUrl] = parts.map(part => part.trim());
-
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            img.alt = title;
-            img.dataset.title = title;
-            img.dataset.description = description;
-            img.dataset.url = pageUrl;
-
-            img.addEventListener('click', () => openModal(img));
-            gallery.appendChild(img);
-        });
-    } catch (error) {
-        console.error('Error loading photos:', error);
-    }
-}
-
-function openModal(img) {
+        document.addEventListener('DOMContentLoaded', () => {
+    const photosFile = 'https://github.com/11ason/home/blob/main/src/pages/Gallery/photos.txt?raw=true'; // URL to photos.txt
+    const gallery = document.getElementById('gallery');
     const modal = document.getElementById('modal');
-    modal.querySelector('img').src = img.src;
-    modal.querySelector('.title').textContent = img.dataset.title;
-    modal.querySelector('.description').textContent = img.dataset.description;
-    modal.querySelector('a').href = img.dataset.url;
-    modal.style.display = 'block';
-}
+    const modalImage = modal.querySelector('img');
+    const modalTitle = modal.querySelector('.title');
+    const modalDescription = modal.querySelector('.description');
+    const modalLink = modal.querySelector('a');
 
-document.getElementById('modal').addEventListener('click', () => {
-    document.getElementById('modal').style.display = 'none';
+    async function loadPhotos() {
+        try {
+            const response = await fetch(photosFile);
+            if (!response.ok) throw new Error(`Failed to load photos.txt: ${response.status}`);
+
+            const text = await response.text();
+            const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+
+            lines.forEach(line => {
+                const parts = line.split(',');
+                if (parts.length < 4) {
+                    console.error('Invalid entry:', line);
+                    return;
+                }
+
+                const [imageUrl, title, description, pageUrl] = parts.map(part => part.trim());
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = title;
+                img.dataset.title = title;
+                img.dataset.description = description;
+                img.dataset.url = pageUrl;
+
+                img.addEventListener('click', () => openModal(img));
+                gallery.appendChild(img);
+            });
+        } catch (error) {
+            console.error('Error loading photos:', error);
+        }
+    }
+
+    function openModal(img) {
+        modalImage.src = img.src;
+        modalTitle.textContent = img.dataset.title;
+        modalDescription.textContent = img.dataset.description;
+        modalLink.href = img.dataset.url;
+        modal.style.display = 'block';
+    }
+
+    modal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    loadPhotos(); // Load photos once everything is set up
 });
 
-document.addEventListener('DOMContentLoaded', loadPhotos);
-
-
-        // Open the modal with the selected image data
-        function openModal(img) {
-            modal.classList.add('active');
-            modalImage.src = img.src;
-            modalTitle.textContent = img.dataset.title;
-            modalDescription.textContent = img.dataset.description;
-            modalLink.onclick = () => window.open(img.dataset.url, '_blank');
-        }
-
-        // Close the modal
-        closeModal.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-
-        // Close modal when clicking outside the content
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-
-        // Load photos on page load
-        loadPhotos();
     </script>
 
 </body>
