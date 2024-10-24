@@ -43,7 +43,7 @@ export const navBarConfig: NavBarConfig = {
     LinkPreset.Archive,
         {
       name: 'Gallery',
-      url: 'https:///11ason/gallery',     // Internal links should not include the base path, as it is automatically added
+      url: 'https:///11ason.space/gallery',     // Internal links should not include the base path, as it is automatically added
       external: true,                               // Show an external link icon and will open in a new tab
     },
     {
