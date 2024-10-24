@@ -9,15 +9,37 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #100d07
+            background-color: #100d07;
+        }
+
+        /* Centered container */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+
+        /* Return button */
+        .return-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .return-button:hover {
+            background-color: #45a049;
         }
 
         /* Gallery with waterfall effect */
         .gallery {
             column-count: 3;
             column-gap: 10px;
-            max-width: 1200px;
-            margin: 20px auto;
         }
 
         .gallery img {
@@ -36,7 +58,10 @@
     </style>
 </head>
 <body>
-    <div class="gallery" id="gallery"></div>
+    <div class="container">
+        <a href="https://11ason.space" class="return-button">Return to Home Page</a>
+        <div class="gallery" id="gallery"></div>
+    </div>
 
     <script>
         const photosFile = 'https://11ason.space/photos.txt'; // URL to your photos file
