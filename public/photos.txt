@@ -3,6 +3,7 @@ https://11ason.space/images/FlowerFestival.webp|Flower Festival|Presentation|htt
 https://11ason.space/images/KellyCard.png|card|blah|https://11ason.space/posts/businesscards2023/
 https://11ason.space/images/YardmanCard.png|card|blah|https://11ason.space/posts/businesscards2023/
 https://11ason.space/images/VSCOPreview.png|Vsco|teaser|https://vsco.co/11ason/gallery
+https://11ason.space/images/NowPlaying2.png|NowPlaying|Web Screensaver|https://11ason.space/posts/spotifynowplaying/
 https://11ason.space/images/NowPlaying.png|NowPlaying|Web Screensaver|https://11ason.space/posts/spotifynowplaying/
 https://11ason.space/images/NowPlayingLogo.webp|NowPlaying|Web Screensaver|https://11ason.space/posts/spotifynowplaying/
 https://11ason.space/images/ToHellWithIt.webp|To Hell With It Cd Art |Pinkpanthress|https://11ason.space/posts/thwialbumart/
