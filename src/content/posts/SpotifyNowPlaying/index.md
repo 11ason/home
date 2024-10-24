@@ -12,7 +12,7 @@ This Project was designed in Visual Studio Code, This project is not endorsed by
 :::
 
 :::caution[Update]
-You can now use this project on my site free of charge by clicking this [link](https://11ason.space/nowplaying/auth)
+You can now use this project on my site free of charge by clicking this [link](https://11ason.space/nowplaying)
 :::
 Spotify Now Playing is a web-based screensaver designed to enhance your music experience by displaying the currently playing song from your Spotify account. With this app, you can see real-time updates of the album art, song title, and artist name as you listen to your favorite tracks. The sleek design and dynamic visuals make it an engaging way to enjoy your music.
 
