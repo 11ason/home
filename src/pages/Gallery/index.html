@@ -38,7 +38,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.6);
-            justify-content: flex-start; /* Align content to top-left */
+            justify-content: flex-start;
             align-items: flex-start;
             overflow: hidden;
             padding: 20px;
@@ -57,25 +57,18 @@
             overflow: hidden;
         }
 
-        /* Image always left-aligned, dynamic width management */
+        /* Image scaling logic */
         .modal img {
             object-fit: contain;
-            max-width: 60%; /* No more than 60% of screen width */
-            max-height: 100%; /* Fit within the screen height */
+            max-width: 60%; /* No more than 60% of the viewport width */
+            max-height: 90vh; /* Fit within 90% of viewport height */
+            width: auto;
+            height: auto;
             border-radius: 8px;
             align-self: flex-start;
         }
 
-        /* Dynamically adjust height to fit image */
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 10px;
-            color: white;
-            width: auto;
-        }
-
+        /* Content section next to image */
         .content-wrapper {
             display: flex;
             flex-direction: column;
@@ -163,17 +156,6 @@
             modalImage.src = url.trim();
 
             modalImage.onload = () => {
-                const isLandscape = modalImage.naturalWidth > modalImage.naturalHeight;
-
-                if (isLandscape) {
-                    modalImage.style.maxWidth = '60%';
-                    modalImage.style.height = 'auto';
-                } else {
-                    modalImage.style.maxWidth = 'auto';
-                    modalImage.style.maxHeight = '100%';
-                }
-
-                // Adjust modal height based on image height
                 const imageHeight = modalImage.getBoundingClientRect().height;
                 contentWrapper.style.height = `${imageHeight}px`;
             };
