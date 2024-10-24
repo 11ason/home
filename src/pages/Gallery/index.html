@@ -10,6 +10,9 @@
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: #100d07;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* Centered container */
@@ -17,23 +20,7 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 0 10px;
-        }
-
-        /* Return button */
-        .return-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: background-color 0.2s;
-        }
-
-        .return-button:hover {
-            background-color: #45a049;
+            flex: 1; /* Ensures the gallery expands */
         }
 
         /* Gallery with waterfall effect */
@@ -55,12 +42,38 @@
         .gallery img:hover {
             transform: scale(1.03); /* Slight zoom on hover */
         }
+
+        /* Button container at the bottom */
+        .button-container {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #1a1913;
+        }
+
+        /* Return button */
+        .return-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .return-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="https://11ason.space" class="return-button">Return to Home Page</a>
         <div class="gallery" id="gallery"></div>
+    </div>
+
+    <div class="button-container">
+        <a href="https://11ason.space" class="return-button">Return to Home Page</a>
     </div>
 
     <script>
