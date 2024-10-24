@@ -12,24 +12,24 @@
             background-color: #f0f0f0;
         }
 
-        /* Waterfall gallery layout */
+        /* Gallery with waterfall effect */
         .gallery {
-            column-count: 3;
+            column-count: 3; /* Adjust columns for different layouts */
             column-gap: 10px;
             max-width: 1200px;
             margin: 20px auto;
         }
 
         .gallery img {
-            width: 100%;
-            height: auto;
+            width: 100%;  /* Fit image to column width */
+            height: auto; /* Maintain aspect ratio */
             margin-bottom: 10px;
             display: block;
             border-radius: 8px;
             cursor: pointer;
         }
 
-        /* Modal overlay */
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -40,52 +40,26 @@
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* Prevent scrolling */
         }
 
-        /* Modal content layout */
         .modal-content {
-            display: flex;
-            max-width: 90%;
-            width: 1200px;
-            max-height: 90%;
+            max-width: 90%;  /* Limit modal size */
+            max-height: 90%; /* Ensure it fits the screen */
             background: #333;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        /* Image on the left */
-        .modal-content img {
-            flex: 1.5;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* Right side text content */
-        .modal-text {
-            flex: 1;
             padding: 20px;
-            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            align-items: center;
         }
 
-        .modal-text h2 {
-            margin-top: 0;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .modal-text p {
-            margin-bottom: 10px;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .modal-text a {
-            color: #1e90ff;
-            margin-bottom: 10px;
-            text-decoration: none;
+        .modal img {
+            max-width: 100%;  /* Ensure image fits within modal width */
+            max-height: 80vh; /* Maintain aspect ratio within screen height */
+            object-fit: contain; /* Preserve aspect ratio */
+            border-radius: 8px;
         }
 
         .close-btn {
@@ -93,20 +67,15 @@
             border: none;
             padding: 10px 20px;
             cursor: pointer;
+            margin-top: 10px;
             border-radius: 5px;
-            color: white;
-            align-self: flex-start;
-            margin-top: auto;
+            font-size: 16px;
         }
 
-        /* Scroll bar for content if overflow */
-        .modal-text::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .modal-text::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 8px;
+        a {
+            color: #00bfff;
+            text-decoration: none;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -116,12 +85,10 @@
     <div class="modal" id="modal">
         <div class="modal-content">
             <img id="modal-image" src="" alt="">
-            <div class="modal-text">
-                <h2 id="modal-title"></h2>
-                <p id="modal-description"></p>
-                <a id="modal-link" href="#" target="_blank">Learn More</a>
-                <button class="close-btn" onclick="closeModal()">Close</button>
-            </div>
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+            <a id="modal-link" href="#" target="_blank">Learn More</a>
+            <button class="close-btn" onclick="closeModal()">Close</button>
         </div>
     </div>
 
@@ -140,7 +107,7 @@
                     const [url, title, description, link] = line.split('|');
 
                     const img = document.createElement('img');
-                    img.src = url;
+                    img.src = url.trim();
                     img.alt = title;
 
                     img.addEventListener('click', () => {
@@ -155,7 +122,7 @@
         }
 
         function openModal(url, title, description, link) {
-            document.getElementById('modal-image').src = url;
+            document.getElementById('modal-image').src = url.trim();
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-description').textContent = description;
             document.getElementById('modal-link').href = link;
