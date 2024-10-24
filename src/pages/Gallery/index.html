@@ -1,167 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery | 11ason</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-    }
-
-    #gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 10px;
-      padding: 10px;
-    }
-
-    #gallery img {
-      width: 100%; /* Keep image width responsive */
-      height: auto; /* Maintain original aspect ratio */
-      border-radius: 8px;
-      object-fit: cover; /* Keeps content filled in case of resizing */
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    #gallery img:hover {
-      transform: scale(1.03);
-    }
-
-    /* Modal styles */
-    #modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    #modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 800px;
-      width: 90%;
-      display: flex;
-      gap: 20px;
-    }
-
-    #modal img {
-      width: 60%; /* Display image in modal */
-      height: auto;
-      border-radius: 8px;
-    }
-
-    #modal-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    #modal-info h2 {
-      margin: 0;
-    }
-
-    #modal-info p {
-      margin-top: 10px;
-      font-size: 16px;
-    }
-
-    #modal-info a {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #3498db;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      text-align: center;
-    }
-
-    #modal-info a:hover {
-      background-color: #2980b9;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Showcase</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .gallery {
+            column-count: 3; /* Adjust to get the waterfall layout */
+            column-gap: 10px;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            display: block;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .modal img {
+            width: 100%;
+            height: auto;
+        }
+        .close-btn {
+            background: #ff5f5f;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
+    <div class="gallery" id="gallery"></div>
 
-<div id="gallery"></div>
-
-<div id="modal">
-  <div id="modal-content">
-    <img id="modal-img" src="" alt="Modal Image">
-    <div id="modal-info">
-      <h2 id="modal-title">Title</h2>
-      <p id="modal-description">Description</p>
-      <a id="modal-link" href="#" target="_blank">Go to page</a>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img id="modal-image" src="" alt="">
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+            <a id="modal-link" href="#" target="_blank">Learn More</a>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-  const photosFile = 'https://11ason.space/photos.txt'; // URL to photos.txt
-  const gallery = document.getElementById('gallery');
-  const modal = document.getElementById('modal');
-  const modalImg = document.getElementById('modal-img');
-  const modalTitle = document.getElementById('modal-title');
-  const modalDescription = document.getElementById('modal-description');
-  const modalLink = document.getElementById('modal-link');
+    <script>
+        const photosFile = 'https://11ason.space/photos.txt'; // URL to photos.txt
 
-  // Fetch photos.txt and load photos into the gallery
-  async function loadPhotos() {
-    try {
-      const response = await fetch(photosFile);
-      if (!response.ok) throw new Error('Failed to load photos.txt');
-      const data = await response.text();
-      const photos = data.trim().split('\n').map(line => {
-        const [url, title, description, link] = line.split('|');
-        return { url, title, description, link };
-      });
+        async function loadPhotos() {
+            try {
+                const response = await fetch(photosFile);
+                const text = await response.text();
 
-      photos.forEach(({ url, title, description, link }) => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = title;
-        img.dataset.title = title;
-        img.dataset.description = description;
-        img.dataset.url = link;
+                const gallery = document.getElementById('gallery');
+                const lines = text.trim().split('\n');
 
-        img.addEventListener('click', () => openModal(img));
-        gallery.appendChild(img);
-      });
-    } catch (error) {
-      console.error('Error loading photos:', error);
-    }
-  }
+                lines.forEach(line => {
+                    const [url, title, description, link] = line.split('|');
 
-  // Open the modal with image details
-  function openModal(img) {
-    modalImg.src = img.src;
-    modalTitle.textContent = img.dataset.title;
-    modalDescription.textContent = img.dataset.description;
-    modalLink.href = img.dataset.url;
-    modal.style.display = 'flex';
-  }
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.alt = title;
 
-  // Close the modal when clicking outside the content
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
-  });
+                    img.addEventListener('click', () => {
+                        openModal(url, title, description, link);
+                    });
 
-  loadPhotos();
-</script>
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.error('Error loading photos:', error);
+            }
+        }
 
+        function openModal(url, title, description, link) {
+            document.getElementById('modal-image').src = url;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-description').textContent = description;
+            document.getElementById('modal-link').href = link;
+
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        loadPhotos();
+    </script>
 </body>
 </html>
+
