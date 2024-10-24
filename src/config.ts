@@ -41,7 +41,11 @@ export const navBarConfig: NavBarConfig = {
       external: true,
     },
     LinkPreset.Archive,
-    LinkPreset.About,
+        {
+      name: 'Gallery',
+      url: 'https:///11ason/gallery',     // Internal links should not include the base path, as it is automatically added
+      external: true,                               // Show an external link icon and will open in a new tab
+    },
     {
       name: 'Photography',
       url: 'https://vsco.co/11ason/gallery',     // Internal links should not include the base path, as it is automatically added
