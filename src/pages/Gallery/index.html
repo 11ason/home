@@ -51,15 +51,37 @@
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            gap: 20px;
         }
 
         .modal img {
-            max-width: 100%;  /* Ensure image fits within modal width */
+            max-width: 50%;  /* Image takes half of modal width */
             max-height: 80vh; /* Maintain aspect ratio within screen height */
             object-fit: contain; /* Preserve aspect ratio */
             border-radius: 8px;
+        }
+
+        .modal-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 50%; /* Text takes the other half */
+            color: white;
+            text-align: left; /* Left-align all text */
+        }
+
+        .modal-text h2 {
+            margin: 0 0 10px;
+        }
+
+        .modal-text p {
+            margin: 0 0 10px;
+        }
+
+        .modal-text a {
+            color: #00bfff;
+            text-decoration: none;
+            margin-bottom: 10px;
         }
 
         .close-btn {
@@ -67,15 +89,9 @@
             border: none;
             padding: 10px 20px;
             cursor: pointer;
-            margin-top: 10px;
             border-radius: 5px;
             font-size: 16px;
-        }
-
-        a {
-            color: #00bfff;
-            text-decoration: none;
-            margin-top: 10px;
+            align-self: flex-start; /* Align button to the left */
         }
     </style>
 </head>
@@ -85,10 +101,12 @@
     <div class="modal" id="modal">
         <div class="modal-content">
             <img id="modal-image" src="" alt="">
-            <h2 id="modal-title"></h2>
-            <p id="modal-description"></p>
-            <a id="modal-link" href="#" target="_blank">Learn More</a>
-            <button class="close-btn" onclick="closeModal()">Close</button>
+            <div class="modal-text">
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+                <a id="modal-link" href="#" target="_blank">Learn More</a>
+                <button class="close-btn" onclick="closeModal()">Close</button>
+            </div>
         </div>
     </div>
 
