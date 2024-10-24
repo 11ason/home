@@ -1,0 +1,5 @@
+# Format: filename,title,description,url
+image1.jpg,Project One,This is a brief description of Project One.,https://example.com/project1
+image2.jpg,Project Two,Description for Project Two.,https://example.com/project2
+image3.jpg,Project Three,Description of Project Three.,https://example.com/project3
+image4.jpg,Project Four,About Project Four.,https://example.com/project4
