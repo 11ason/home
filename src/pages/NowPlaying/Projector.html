@@ -14,7 +14,7 @@
             height: 100vh;
             margin: 0;
             font-family: 'Nunito', sans-serif;
-            background-color: #000; /* Pure black background for the entire page */
+            background-color: #000; /* Black background for the entire page */
         }
 
         .main-container {
@@ -26,13 +26,13 @@
             width: 100%;
             max-width: 1000px;
             margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.7); /* Fallback color */
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent fallback */
             background-size: cover;
             background-position: center;
             padding: 20px;
             border-radius: 30px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
-            backdrop-filter: blur(10px); /* Blur effect only within the container */
+            backdrop-filter: blur(10px); /* Apply blur effect only inside the container */
         }
 
         #albumImage {
@@ -63,81 +63,6 @@
         #previous-lyric, #next-lyric {
             color: rgba(255, 255, 255, 0.500);
             font-size: 20px;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 10px;
-            position: relative;
-            text-align: center;
-            height: 40px; /* Adjust height as needed to accommodate timestamps */
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #bbbbbb34;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            background-color: #ffffff85;
-            width: 0%;
-        }
-
-        #time {
-            font-weight: bold;
-            width: 100%;
-            font-size: 12px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.76);
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0 10px;
-        }
-
-        #elapsed-time {
-            font-size: 12px;
-        }
-
-        #total-time {
-            font-size: 12px;
-        }
-
-        #songInfo {
-            text-align: center;
-            color: white;
-            margin-top: 20px;
-            font-size: 22px;
-        }
-
-        #trackInfo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 100px;
-            font-size: 22px;
-        }
-
-        #trackName, #artistName {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        #smallImage {
-            position: relative;
-            top: -160px; /* Adjust this value to change the position */
-            left: 960px; /* Adjust this value to change the horizontal position */
-            width: 50px; /* Set a suitable width */
-            height: auto;
-            z-index: 2; /* Ensure it stays above other elements */
         }
     </style>
 </head>
@@ -170,7 +95,7 @@
     </div>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/Projector'; // Redirect URI after authorization
+        const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
         const scopes = [
             'user-read-currently-playing',
             'user-read-playback-state',
@@ -198,14 +123,18 @@
             .then(data => {
                 if (data.item) {
                     updateTrackInfo(data.item);
-                    updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
                 }
             })
             .catch(error => console.error('Error fetching currently playing song:', error));
         }
 
         function updateTrackInfo(item) {
+            const songName = item.name;
+            const artists = item.artists.map(artist => artist.name).join(', ');
             const albumImage = item.album.images[0].url;
+
+            document.getElementById('trackName').textContent = songName;
+            document.getElementById('artistName').textContent = artists;
 
             if (albumImage !== currentAlbumImage) {
                 currentAlbumImage = albumImage;
