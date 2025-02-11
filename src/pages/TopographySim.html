@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topographic Mountain Simulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #grid-container {
+      display: grid;
+      grid-template-columns: repeat(50, 10px);
+      grid-template-rows: repeat(50, 10px);
+      gap: 1px;
+      margin: 20px auto;
+      width: max-content;
+      border: 2px solid #333;
+    }
+
+    .cell {
+      width: 10px;
+      height: 10px;
+      background-color: #e0e0e0;
+      transition: background-color 0.1s;
+    }
+
+    #reset-button, #eraser-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #eraser-button {
+      background-color: #ffcccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Topographic Mountain Simulation</h1>
+  <p>Click and hold to raise the terrain. Use the eraser to lower the terrain.</p>
+  <div id="grid-container"></div>
+  <button id="reset-button">Reset</button>
+  <button id="eraser-button">Eraser</button>
+
+  <script>
+    const gridContainer = document.getElementById('grid-container');
+    const resetButton = document.getElementById('reset-button');
+    const eraserButton = document.getElementById('eraser-button');
+    const gridSize = 50; // Size of the grid (50x50)
+    const maxHeight = 10; // Maximum height of the terrain
+    let grid = []; // 2D array to store height values
+    let isMouseDown = false;
+    let isEraserMode = false; // Tracks whether eraser mode is active
+
+    // Initialize the grid
+    function initializeGrid() {
+      grid = Array.from({ length: gridSize }, () => Array.from({ length: gridSize }, () => 0));
+      renderGrid();
+    }
+
+    // Render the grid
+    function renderGrid() {
+      gridContainer.innerHTML = '';
+      for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          cell.style.backgroundColor = getColorForHeight(grid[y][x]);
+
+          // Add contour lines
+          if (y > 0 && Math.abs(grid[y][x] - grid[y - 1][x]) >= 1) {
+            cell.style.borderTop = '1px solid #000';
+          }
+          if (x > 0 && Math.abs(grid[y][x] - grid[y][x - 1]) >= 1) {
+            cell.style.borderLeft = '1px solid #000';
+          }
+
+          cell.addEventListener('mousedown', () => handleMouseDown(x, y));
+          cell.addEventListener('mouseenter', () => handleMouseEnter(x, y));
+          gridContainer.appendChild(cell);
+        }
+      }
+    }
+
+    // Get color based on height
+    function getColorForHeight(height) {
+      const colors = ['#e0e0e0', '#a8d8a8', '#78c878', '#58b858', '#389838', '#187818', '#006400', '#004000', '#002000', '#000000'];
+      return colors[Math.min(Math.floor(height), maxHeight - 1)];
+    }
+
+    // Handle mouse down
+    function handleMouseDown(x, y) {
+      isMouseDown = true;
+      modifyTerrain(x, y);
+    }
+
+    // Handle mouse enter (while holding down)
+    function handleMouseEnter(x, y) {
+      if (isMouseDown) {
+        modifyTerrain(x, y);
+      }
+    }
+
+    // Modify terrain (raise or lower based on mode)
+    function modifyTerrain(x, y) {
+      const radius = 2; // Smaller radius for less spreading
+      const modifiedCells = []; // Track modified cells for smoothing
+
+      for (let dy = -radius; dy <= radius; dy++) {
+        for (let dx = -radius; dx <= radius; dx++) {
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance <= radius) {
+              if (isEraserMode) {
+                // Lower the terrain in eraser mode
+                grid[ny][nx] = Math.max(grid[ny][nx] - 0.5, 0); // Adjust erosion strength
+              } else {
+                // Raise the terrain in build mode
+                const heightIncrease = Math.max(0, (radius - distance) / radius);
+                grid[ny][nx] = Math.min(grid[ny][nx] + heightIncrease, maxHeight);
+              }
+              modifiedCells.push({ x: nx, y: ny }); // Track modified cells
+            }
+          }
+        }
+      }
+
+      // Smooth only the modified cells
+      smoothTerrain(modifiedCells);
+      renderGrid();
+    }
+
+    // Smooth the terrain (only for modified cells)
+    function smoothTerrain(modifiedCells) {
+      const newGrid = JSON.parse(JSON.stringify(grid)); // Deep copy of the grid
+      modifiedCells.forEach(({ x, y }) => {
+        let sum = 0;
+        let count = 0;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+              sum += grid[ny][nx];
+              count++;
+            }
+          }
+        }
+        newGrid[y][x] = sum / count; // Average the heights
+      });
+      grid = newGrid;
+    }
+
+    // Reset the grid
+    resetButton.addEventListener('click', initializeGrid);
+
+    // Toggle eraser mode
+    eraserButton.addEventListener('click', () => {
+      isEraserMode = !isEraserMode;
+      eraserButton.style.backgroundColor = isEraserMode ? '#ccffcc' : '#ffcccc';
+      eraserButton.textContent = isEraserMode ? 'Builder' : 'Eraser';
+    });
+
+    // Handle mouse up
+    document.addEventListener('mouseup', () => {
+      isMouseDown = false;
+    });
+
+    // Initialize the simulation
+    initializeGrid();
+  </script>
+</body>
+</html>
