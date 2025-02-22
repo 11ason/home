@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NowPlaying | 11ason</title>
+    <title>Lyrics Display</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
     <style>
         body {
@@ -15,48 +15,10 @@
             margin: 0;
             font-family: 'Nunito', sans-serif;
             background-color: #000;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: background 1s ease;
-            backdrop-filter: blur(100px);
-        }
-
-.blur-background {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: auto;
-    height: auto;
-    border-radius: 30px;
-    opacity: 0.5; /* Adjust opacity for a subtle effect */
-    z-index: 0;
-    filter: blur(50px);
-    background-size: cover;  /* Ensures the image covers the entire background */
-    background-position: center;  /* Centers the image */
-    background-repeat: no-repeat;  /* Prevents duplication */
-}
-
-        .main-container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-            max-width: 1000px;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.18);
-            padding: 20px;
-            border-radius: 30px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
-            backdrop-filter: blur(10px);
         }
 
         #lyrics-container {
-            position: relative;
-            height: 100px;
+            text-align: center;
         }
 
         .lyric {
@@ -69,19 +31,15 @@
             font-weight: bold;
             font-size: 28px;
         }
-
-        #previous-lyric, #next-lyric {
-            color: rgba(255, 255, 255, 0.500);
-            font-size: 20px;
-        }
     </style>
 </head>
 <body>
-<div class="main-container">
     <div id="lyrics-container">
         <div id="previous-lyric" class="lyric"></div>
         <div id="current-lyric" class="lyric"></div>
         <div id="next-lyric" class="lyric"></div>
+    </div>
+</body>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
         const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
@@ -118,6 +76,30 @@
             })
             .catch(error => console.error('Error fetching currently playing song:', error));
         }
+
+        function updateTrackInfo(item) {
+            const songName = item.name;
+            const artists = item.artists.map(artist => artist.name).join(', ');
+            const albumImage = item.album.images[0].url;
+
+            document.getElementById('trackName').textContent = songName;
+            document.getElementById('artistName').textContent = artists;
+
+            if (albumImage !== currentAlbumImage) {
+                currentAlbumImage = albumImage;
+                const albumImageElement = document.getElementById('albumImage');
+                const backgroundOverlay = document.querySelector('.blur-background');
+
+                albumImageElement.style.opacity = '0';
+                setTimeout(() => {
+                    albumImageElement.src = albumImage;
+                    albumImageElement.style.opacity = '1';
+                    // Removed setting the body background image.
+                    backgroundOverlay.style.backgroundImage = `url(${albumImage})`;
+                }, 300);
+            }
+        }
+
         function updatePlaybackInfo(progressMs, durationMs) {
             playbackStartTime = Date.now() - (progressMs + syncOffset);
             currentTrackDuration = durationMs / 1000;
@@ -126,10 +108,19 @@
             updateTimestamps();
         }
 
+        function updateProgressBar() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const progressPercentage = (now / currentTrackDuration) * 100;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+        }
+
         function updateTimestamps() {
             const now = (Date.now() - playbackStartTime) / 1000;
             const elapsed = formatTime(now);
             const total = formatTime(currentTrackDuration);
+
+            document.getElementById('elapsed-time').textContent = elapsed;
+            document.getElementById('total-time').textContent = total;
         }
 
         function formatTime(seconds) {
@@ -194,12 +185,29 @@
                 document.getElementById('next-lyric').textContent = '';
             }
         }
-      
+
+        let currentAlbumImage = '';
         let playbackStartTime = 0;
         let currentTrackDuration = 0;
         let lastProgressUpdate = 0;
         let lyrics = [];
         let syncOffset = -3000; // To be calculated based on the sync method used
+
+        // New function to adjust the background overlay dimensions to match the main container
+        function adjustBackground() {
+            const mainContainer = document.querySelector('.main-container');
+            const blurBackground = document.querySelector('.blur-background');
+            if (mainContainer && blurBackground) {
+                const rect = mainContainer.getBoundingClientRect();
+                blurBackground.style.width = rect.width + 'px';
+                blurBackground.style.height = rect.height + 'px';
+                blurBackground.style.top = mainContainer.offsetTop + 'px';
+                blurBackground.style.left = mainContainer.offsetLeft + 'px';
+            }
+        }
+
+        window.addEventListener('resize', adjustBackground);
+        document.addEventListener('DOMContentLoaded', adjustBackground);
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
