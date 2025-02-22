@@ -201,6 +201,90 @@
             document.getElementById('albumImage').src = albumImage;
             document.getElementById('backgroundImage').style.backgroundImage = `url(${albumImage})`;
         }
+        function updatePlaybackInfo(progressMs, durationMs) {
+            playbackStartTime = Date.now() - (progressMs + syncOffset);
+            currentTrackDuration = durationMs / 1000;
+            lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
+            updateProgressBar();
+            updateTimestamps();
+        }
+
+        function updateProgressBar() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const progressPercentage = (now / currentTrackDuration) * 100;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+        }
+
+        function updateTimestamps() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const elapsed = formatTime(now);
+            const total = formatTime(currentTrackDuration);
+
+            document.getElementById('elapsed-time').textContent = elapsed;
+            document.getElementById('total-time').textContent = total;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function fetchLyrics(trackName, artistName, albumName, duration) {
+            const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.syncedLyrics) {
+                        lyrics = parseLRC(data.syncedLyrics);
+                        displayLyrics();
+                    }
+                })
+                .catch(error => console.error('Error fetching lyrics:', error));
+        }
+
+        function parseLRC(lrcText) {
+            const lines = lrcText.split('\n');
+            return lines.map(line => {
+                const timeMatch = line.match(/\[(\d{2}):(\d{2}\.\d{2})\]/);
+                if (timeMatch) {
+                    const time = parseFloat(timeMatch[1]) * 60 + parseFloat(timeMatch[2]);
+                    const text = line.replace(/\[.*?\]/g, '').trim();
+                    return { time, text };
+                }
+                return null;
+            }).filter(line => line !== null);
+        }
+
+        function displayLyrics() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+
+            if (lyricIndex > 0) {
+                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
+            } else {
+                document.getElementById('previous-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length) {
+                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
+            } else {
+                document.getElementById('current-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length - 1) {
+                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
+            } else {
+                document.getElementById('next-lyric').textContent = '';
+            }
+        }
+
+        let currentAlbumImage = '';
+        let playbackStartTime = 0;
+        let currentTrackDuration = 0;
+        let lastProgressUpdate = 0;
+        let lyrics = [];
+        let syncOffset = -1500; // To be calculated based on the sync method used
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
