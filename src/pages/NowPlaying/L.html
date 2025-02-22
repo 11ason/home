@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyrics Display</title>
+    <title>NowPlaying | 11ason</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
     <style>
         body {
@@ -15,10 +15,57 @@
             margin: 0;
             font-family: 'Nunito', sans-serif;
             background-color: #000;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background 1s ease;
+            backdrop-filter: blur(100px);
+        }
+
+.blur-background {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    height: auto;
+    border-radius: 30px;
+    opacity: 0.5; /* Adjust opacity for a subtle effect */
+    z-index: 0;
+    filter: blur(50px);
+    background-size: cover;  /* Ensures the image covers the entire background */
+    background-position: center;  /* Centers the image */
+    background-repeat: no-repeat;  /* Prevents duplication */
+}
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.18);
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
+            backdrop-filter: blur(10px);
+        }
+
+        #albumImage {
+            width: 350px;
+            height: 350px;
+            border-radius: 15px;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-right: 50px;
         }
 
         #lyrics-container {
-            text-align: center;
+            position: relative;
+            height: 100px;
         }
 
         .lyric {
@@ -31,15 +78,96 @@
             font-weight: bold;
             font-size: 28px;
         }
+
+        #previous-lyric, #next-lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 10px;
+            position: relative;
+            text-align: center;
+            height: 40px; /* Adjust height as needed to accommodate timestamps */
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #bbbbbb34;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #ffffff85;
+            width: 0%;
+        }
+
+        #time {
+            font-weight: bold;
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.76);
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
+        }
+
+        #elapsed-time {
+            font-size: 12px;
+        }
+
+        #total-time {
+            font-size: 12px;
+        }
+
+        #songInfo {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        #trackInfo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 100px;
+            font-size: 22px;
+        }
+
+        #trackName, #artistName {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        #smallImage {
+            position: relative;
+            top: -160px; /* Adjust this value to change the position */
+            left: 960px; /* Adjust this value to change the horizontal position */
+            width: 50px; /* Set a suitable width */
+            height: auto;
+            z-index: 2; /* Ensure it stays above other elements */
+        }
     </style>
 </head>
 <body>
+<div class="main-container">
     <div id="lyrics-container">
         <div id="previous-lyric" class="lyric"></div>
         <div id="current-lyric" class="lyric"></div>
         <div id="next-lyric" class="lyric"></div>
     </div>
-</body>
+</div>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
         const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
@@ -82,20 +210,11 @@
             const artists = item.artists.map(artist => artist.name).join(', ');
             const albumImage = item.album.images[0].url;
 
-            document.getElementById('trackName').textContent = songName;
-            document.getElementById('artistName').textContent = artists;
-
             if (albumImage !== currentAlbumImage) {
                 currentAlbumImage = albumImage;
-                const albumImageElement = document.getElementById('albumImage');
-                const backgroundOverlay = document.querySelector('.blur-background');
 
                 albumImageElement.style.opacity = '0';
                 setTimeout(() => {
-                    albumImageElement.src = albumImage;
-                    albumImageElement.style.opacity = '1';
-                    // Removed setting the body background image.
-                    backgroundOverlay.style.backgroundImage = `url(${albumImage})`;
                 }, 300);
             }
         }
@@ -111,16 +230,12 @@
         function updateProgressBar() {
             const now = (Date.now() - playbackStartTime) / 1000;
             const progressPercentage = (now / currentTrackDuration) * 100;
-            document.getElementById('progress').style.width = `${progressPercentage}%`;
         }
 
         function updateTimestamps() {
             const now = (Date.now() - playbackStartTime) / 1000;
             const elapsed = formatTime(now);
             const total = formatTime(currentTrackDuration);
-
-            document.getElementById('elapsed-time').textContent = elapsed;
-            document.getElementById('total-time').textContent = total;
         }
 
         function formatTime(seconds) {
@@ -192,19 +307,6 @@
         let lastProgressUpdate = 0;
         let lyrics = [];
         let syncOffset = -3000; // To be calculated based on the sync method used
-
-        // New function to adjust the background overlay dimensions to match the main container
-        function adjustBackground() {
-            const mainContainer = document.querySelector('.main-container');
-            const blurBackground = document.querySelector('.blur-background');
-            if (mainContainer && blurBackground) {
-                const rect = mainContainer.getBoundingClientRect();
-                blurBackground.style.width = rect.width + 'px';
-                blurBackground.style.height = rect.height + 'px';
-                blurBackground.style.top = mainContainer.offsetTop + 'px';
-                blurBackground.style.left = mainContainer.offsetLeft + 'px';
-            }
-        }
 
         window.addEventListener('resize', adjustBackground);
         document.addEventListener('DOMContentLoaded', adjustBackground);
