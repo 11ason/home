@@ -22,19 +22,20 @@
             backdrop-filter: blur(100px);
         }
 
-        .background-overlay {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        max-width: 1000px;
-        margin-bottom: 20px;
-        padding: 20px;
-        border-radius: 30px;
-        opacity: 0.2; /* Adjust opacity for a subtle effect */
-        z-index: 0;
-        filter: blur(20px);
+        /* Modified: Change class to .blur-background, set to absolute so it sits behind .main-container */
+        .blur-background {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 30px;
+            opacity: 0.2; /* Adjust opacity for a subtle effect */
+            z-index: 0;
+            filter: blur(20px);
         }
 
         .main-container {
@@ -150,13 +151,13 @@
         }
 
         #smallImage {
-    position: relative;
-    top: -160px; /* Adjust this value to change the position */
-    left: 960px; /* Adjust this value to change the horizontal position */
-    width: 50px; /* Set a suitable width */
-    height: auto;
-    z-index: 2; /* Ensure it stays above other elements */
-}
+            position: relative;
+            top: -160px; /* Adjust this value to change the position */
+            left: 960px; /* Adjust this value to change the horizontal position */
+            width: 50px; /* Set a suitable width */
+            height: auto;
+            z-index: 2; /* Ensure it stays above other elements */
+        }
     </style>
 </head>
 <body>
@@ -226,27 +227,27 @@
         }
 
         function updateTrackInfo(item) {
-    const songName = item.name;
-    const artists = item.artists.map(artist => artist.name).join(', ');
-    const albumImage = item.album.images[0].url;
+            const songName = item.name;
+            const artists = item.artists.map(artist => artist.name).join(', ');
+            const albumImage = item.album.images[0].url;
 
-    document.getElementById('trackName').textContent = songName;
-    document.getElementById('artistName').textContent = artists;
+            document.getElementById('trackName').textContent = songName;
+            document.getElementById('artistName').textContent = artists;
 
-    if (albumImage !== currentAlbumImage) {
-        currentAlbumImage = albumImage;
-        const albumImageElement = document.getElementById('albumImage');
-        const backgroundOverlay = document.getElementById('backgroundOverlay');
+            if (albumImage !== currentAlbumImage) {
+                currentAlbumImage = albumImage;
+                const albumImageElement = document.getElementById('albumImage');
+                const backgroundOverlay = document.querySelector('.blur-background');
 
-        albumImageElement.style.opacity = '0';
-        setTimeout(() => {
-            albumImageElement.src = albumImage;
-            albumImageElement.style.opacity = '1';
-            document.body.style.backgroundImage = `url(${albumImage})`;
-            backgroundOverlay.style.backgroundImage = `url(${albumImage})`;
-        }, 300);
-    }
-}
+                albumImageElement.style.opacity = '0';
+                setTimeout(() => {
+                    albumImageElement.src = albumImage;
+                    albumImageElement.style.opacity = '1';
+                    // Removed setting the body background image.
+                    backgroundOverlay.style.backgroundImage = `url(${albumImage})`;
+                }, 300);
+            }
+        }
 
 
         function updatePlaybackInfo(progressMs, durationMs) {
@@ -279,25 +280,25 @@
         }
 
         function fetchLyrics(trackName, artistName, albumName, duration) {
-    const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const lyricsContainer = document.getElementById('lyrics-container');
+            const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const lyricsContainer = document.getElementById('lyrics-container');
 
-            if (data.syncedLyrics) {
-                lyrics = parseLRC(data.syncedLyrics);
-                lyricsContainer.style.display = 'block'; // Show lyrics if available
-                displayLyrics();
-            } else {
-                lyricsContainer.style.display = 'none'; // Hide if no lyrics found
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching lyrics:', error);
-            document.getElementById('lyrics-container').style.display = 'none'; // Hide if an error occurs
-        });
-}
+                    if (data.syncedLyrics) {
+                        lyrics = parseLRC(data.syncedLyrics);
+                        lyricsContainer.style.display = 'block'; // Show lyrics if available
+                        displayLyrics();
+                    } else {
+                        lyricsContainer.style.display = 'none'; // Hide if no lyrics found
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching lyrics:', error);
+                    document.getElementById('lyrics-container').style.display = 'none'; // Hide if an error occurs
+                });
+        }
 
 
         function parseLRC(lrcText) {
