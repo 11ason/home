@@ -27,10 +27,9 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            width: 100%;
-            max-width: 1000px;
-            margin-bottom: 20px;
-            padding: 20px;
+            /* These properties will be overridden by JS to match .main-container's dimensions */
+            width: auto;
+            height: auto;
             border-radius: 30px;
             opacity: 0.2; /* Adjust opacity for a subtle effect */
             z-index: 0;
@@ -248,7 +247,6 @@
             }
         }
 
-
         function updatePlaybackInfo(progressMs, durationMs) {
             playbackStartTime = Date.now() - (progressMs + syncOffset);
             currentTrackDuration = durationMs / 1000;
@@ -299,7 +297,6 @@
                 });
         }
 
-
         function parseLRC(lrcText) {
             const lines = lrcText.split('\n');
             return lines.map(line => {
@@ -342,6 +339,22 @@
         let lastProgressUpdate = 0;
         let lyrics = [];
         let syncOffset = -2000; // To be calculated based on the sync method used
+
+        // New function to adjust the background overlay dimensions to match the main container
+        function adjustBackground() {
+            const mainContainer = document.querySelector('.main-container');
+            const blurBackground = document.querySelector('.blur-background');
+            if (mainContainer && blurBackground) {
+                const rect = mainContainer.getBoundingClientRect();
+                blurBackground.style.width = rect.width + 'px';
+                blurBackground.style.height = rect.height + 'px';
+                blurBackground.style.top = mainContainer.offsetTop + 'px';
+                blurBackground.style.left = mainContainer.offsetLeft + 'px';
+            }
+        }
+
+        window.addEventListener('resize', adjustBackground);
+        document.addEventListener('DOMContentLoaded', adjustBackground);
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
