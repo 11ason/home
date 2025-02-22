@@ -24,7 +24,13 @@
 
         .main-container {
     position: relative;
-    overflow: hidden; /* Ensures the pseudo-element stays within bounds */
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease;
 }
 
 .main-container::before {
@@ -34,13 +40,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: blur(10px) brightness(50%); /* Apply blur and darkening */
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(10px); /* Blur effect */
     z-index: -1; /* Place behind content */
-    transition: background-image 0.5s ease;
 }
+
 
 
         #albumImage {
@@ -232,13 +236,11 @@
             albumImageElement.src = albumImage;
             albumImageElement.style.opacity = '1';
             
-            // Apply the new background image with blur/dark effect
-            document.querySelector('.main-container').style.setProperty('--bg-image', `url(${albumImage})`);
-            document.querySelector('.main-container::before').style.backgroundImage = `url(${albumImage})`;
+            // Apply the new background image
+            document.querySelector('.main-container').style.backgroundImage = `url(${albumImage})`;
         }, 300);
     }
 }
-
 
         function updatePlaybackInfo(progressMs, durationMs) {
             playbackStartTime = Date.now() - (progressMs + syncOffset);
