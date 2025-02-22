@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify OAuth 2.0</title>
     <style>
-        /* Import a modern font for a sleeker look */
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
         
-        /* General body styling */
         body {
             margin: 0;
             padding: 0;
@@ -23,10 +21,9 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Container for the content */
         .container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background to make the text readable */
+            background: rgba(0, 0, 0, 0.7);
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
@@ -34,7 +31,6 @@
             max-width: 500px;
         }
 
-        /* Styling for the header */
         h1 {
             font-size: 2rem;
             margin-bottom: 20px;
@@ -42,7 +38,6 @@
             font-weight: 600;
         }
 
-        /* Button styling */
         button {
             margin-top: 20px;
             padding: 12px 20px;
@@ -57,18 +52,15 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Button hover effect */
         button:hover {
             background-color: #17a347;
             transform: scale(1.05);
         }
 
-        /* Button active (when clicked) effect */
         button:active {
             transform: scale(1);
         }
 
-        /* Small description text */
         p {
             margin: 0;
             font-size: 1rem;
@@ -76,9 +68,8 @@
             line-height: 1.6;
         }
 
-        /* Space between buttons */
         .button-container {
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         .button-container button {
@@ -89,20 +80,38 @@
 <body>
     <div class="container">
         <h1>NowPlaying</h1>
-        <p>Press the button below to authorize with spotify</p>
-        <button onclick="authorizeSpotify()">Launch</button>
+        <p>Press a button below to authorize with Spotify & launch app.</p>
+        <div class="button-container">
+            <button onclick="authorizeSpotify()">Desktop Mode</button>
+            <button onclick="launchProjectorMode()">Projector Mode</button>
+        </div>
+    </div>
 
     <script>
     function authorizeSpotify() {
-        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
+        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
+        const redirect_url_app = 'https://11ason.space/NowPlaying/app';
         const scopes = [
-            'user-read-currently-playing', // Read access to a user’s currently playing content
-            'user-read-playback-state', // Read access to user's playback state
-            'streaming' // Control playback of a Spotify track
+            'user-read-currently-playing',
+            'user-read-playback-state',
+            'streaming'
         ]; 
 
-        const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_url_app)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+
+        window.location.href = authUrl;
+    }
+
+    function launchProjectorMode() {
+        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
+        const redirect_url_P = 'https://11ason.space/NowPlaying/p';
+        const scopes = [
+            'user-read-currently-playing',
+            'user-read-playback-state',
+            'streaming'
+        ]; 
+
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_url_P)}&scope=${encodeURIComponent(scopes.join(' '))}`;
 
         window.location.href = authUrl;
     }
@@ -117,11 +126,9 @@
         return params;
     }
 
-    // Automatically capture the hash params and store them for future use
     window.onload = function() {
         const hashParams = getHashParams();
         if (hashParams.access_token) {
-            // Store the access_token and other params in localStorage or sessionStorage for use across pages if needed
             localStorage.setItem('spotify_access_token', hashParams.access_token);
         }
     };
