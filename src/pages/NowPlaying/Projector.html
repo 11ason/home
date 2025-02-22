@@ -72,6 +72,12 @@
             font-size: 26px;
         }
 
+        #previous-lyric, #next-lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
+
+
         .progress-bar-container {
             width: 100%;
             max-width: 900px;
@@ -147,7 +153,9 @@
         let currentAlbumImage = '';
         let playbackStartTime = 0;
         let currentTrackDuration = 0;
+        let lastProgressUpdate = 0;
         let lyrics = [];
+        let syncOffset = -0; // To be calculated based on the sync method used
 
         function getAccessToken() {
             const params = new URLSearchParams(window.location.hash.substring(1));
@@ -163,6 +171,7 @@
                 if (data.item) {
                     updateTrackInfo(data.item);
                     updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
+                    fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
                 }
             })
             .catch(console.error);
@@ -190,6 +199,70 @@
             document.getElementById('progress').style.width = `${(now / currentTrackDuration) * 100}%`;
         }
 
+        function updateTimestamps() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const elapsed = formatTime(now);
+            const total = formatTime(currentTrackDuration);
+
+            document.getElementById('elapsed-time').textContent = elapsed;
+            document.getElementById('total-time').textContent = total;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function fetchLyrics(trackName, artistName, albumName, duration) {
+            const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.syncedLyrics) {
+                        lyrics = parseLRC(data.syncedLyrics);
+                        displayLyrics();
+                    }
+                })
+                .catch(error => console.error('Error fetching lyrics:', error));
+        }
+
+        function parseLRC(lrcText) {
+            const lines = lrcText.split('\n');
+            return lines.map(line => {
+                const timeMatch = line.match(/\[(\d{2}):(\d{2}\.\d{2})\]/);
+                if (timeMatch) {
+                    const time = parseFloat(timeMatch[1]) * 60 + parseFloat(timeMatch[2]);
+                    const text = line.replace(/\[.*?\]/g, '').trim();
+                    return { time, text };
+                }
+                return null;
+            }).filter(line => line !== null);
+        }
+
+        function displayLyrics() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+
+            if (lyricIndex > 0) {
+                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
+            } else {
+                document.getElementById('previous-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length) {
+                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
+            } else {
+                document.getElementById('current-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length - 1) {
+                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
+            } else {
+                document.getElementById('next-lyric').textContent = '';
+            }
+        }
+
         function refreshToken() {
             window.location.href = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
         }
@@ -206,4 +279,3 @@
     </script>
 </body>
 </html>
-
