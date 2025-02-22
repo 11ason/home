@@ -22,31 +22,33 @@
             transition: background 1s ease;
         }
 
-        /* Background Blur Mask */
-        .mask-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9); /* Semi-transparent overlay */
-            backdrop-filter: blur(15px);
-            z-index: -1; /* Moves it behind the content */
-        }
+/* Background Blur Mask */
+.mask-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* Inverted from black to white */
+    backdrop-filter: blur(15px);
+    mix-blend-mode: difference; /* Creates an inverted effect */
+    z-index: -1; /* Moves it behind the content */
+}
 
-        .main-container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-            max-width: 900px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        }
+.main-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.3); /* Inverted from black to white */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
 
         #albumImage {
             width: 250px;
@@ -102,21 +104,49 @@
             width: 0%;
             transition: width 0.3s ease;
         }
-
         #time {
+            font-weight: bold;
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.76);
             display: flex;
             justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
+        }
+
+        #elapsed-time {
             font-size: 12px;
-            color: white;
-            padding: 5px 10px;
+        }
+
+        #total-time {
+            font-size: 12px;
         }
 
         #songInfo {
             text-align: center;
             color: white;
-            margin-top: 10px;
-            font-size: 20px;
+            margin-top: 20px;
+            font-size: 22px;
         }
+
+        #trackInfo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 100px;
+            font-size: 22px;
+        }
+
+        #trackName, #artistName {
+            margin: 0;
+            font-size: 22px;
+        }
+
     </style>
 </head>
 <body>
@@ -129,23 +159,22 @@
             <div id="current-lyric" class="lyric"></div>
             <div id="next-lyric" class="lyric"></div>
         </div>
+</div>
     </div>
-
     <div class="progress-bar-container">
         <div class="progress-bar">
             <div class="progress" id="progress"></div>
         </div>
         <div id="time">
-            <span id="elapsed-time">00:00</span>
-            <span id="total-time">00:00</span>
+            <div id="elapsed-time">00:00</div>
+            <div id="total-time">00:00</div>
         </div>
     </div>
-
     <div id="songInfo">
-        <h2 id="trackName">Track Name</h2>
-        <span id="artistName">Artist Name</span>
-    </div>
-
+        <div id="trackInfo">
+            <h2 id="trackName">Track Name</h2>
+            <span id="artistName">Artist Name</span>
+        </div>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
         const redirect_uri = 'https://11ason.space/NowPlaying/app';
