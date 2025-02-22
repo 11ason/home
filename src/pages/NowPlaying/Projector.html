@@ -26,14 +26,13 @@
             width: 100%;
             max-width: 1000px;
             margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.5); /* Keeps the background dark */
+            background: rgba(0, 0, 0, 0.5);
             padding: 20px;
             border-radius: 30px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
             overflow: hidden;
         }
 
-        /* Blurred and darkened background */
         .background-image {
             position: absolute;
             top: 0;
@@ -42,8 +41,8 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            filter: blur(20px) brightness(50%); /* Blur + Darken */
-            z-index: -1; /* Behind other elements */
+            filter: blur(20px) brightness(50%);
+            z-index: -1;
         }
 
         #albumImage {
@@ -58,6 +57,7 @@
         #lyrics-container {
             position: relative;
             height: 100px;
+            text-align: center;
         }
 
         .lyric {
@@ -75,7 +75,6 @@
             color: rgba(255, 255, 255, 0.500);
             font-size: 20px;
         }
-
 
         .progress-bar-container {
             width: 100%;
@@ -128,7 +127,7 @@
             gap: 100px;
             font-size: 22px;
         }
-        
+
         #trackName, #artistName {
             margin: 0;
             font-size: 22px;
@@ -176,69 +175,29 @@
     </div>
 
     <script>
-        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.space/NowPlaying/app';
-        const scopes = ['user-read-currently-playing', 'user-read-playback-state', 'streaming'];
+        let playbackStartTime = 0;
+        let lyrics = [];
 
-        function getAccessToken() {
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-            return params.get('access_token');
+        async function fetchNowPlaying(accessToken) {
+            const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                updateUI(data);
+                fetchLyrics(data.item.name, data.item.artists[0].name, data.item.album.name, data.item.duration_ms / 1000);
+            }
         }
 
-        function refreshToken() {
-            const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
-            window.location.href = authUrl;
-        }
+        function updateUI(data) {
+            document.getElementById('trackName').textContent = data.item.name;
+            document.getElementById('artistName').textContent = data.item.artists[0].name;
+            document.getElementById('albumImage').src = data.item.album.images[0].url;
+            document.getElementById('backgroundImage').style.backgroundImage = `url(${data.item.album.images[0].url})`;
 
-        function fetchCurrentlyPlayingSong(accessToken) {
-            fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-                headers: { 'Authorization': 'Bearer ' + accessToken }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.item) {
-                    updateTrackInfo(data.item);
-                }
-            })
-            .catch(error => console.error('Error fetching song:', error));
-        }
-
-        function updateTrackInfo(item) {
-            const albumImage = item.album.images[0].url;
-            document.getElementById('trackName').textContent = item.name;
-            document.getElementById('artistName').textContent = item.artists.map(artist => artist.name).join(', ');
-
-            document.getElementById('albumImage').src = albumImage;
-            document.getElementById('backgroundImage').style.backgroundImage = `url(${albumImage})`;
-        }
-        function updatePlaybackInfo(progressMs, durationMs) {
-            playbackStartTime = Date.now() - (progressMs + syncOffset);
-            currentTrackDuration = durationMs / 1000;
-            lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
-            updateProgressBar();
-            updateTimestamps();
-        }
-
-        function updateProgressBar() {
-            const now = (Date.now() - playbackStartTime) / 1000;
-            const progressPercentage = (now / currentTrackDuration) * 100;
-            document.getElementById('progress').style.width = `${progressPercentage}%`;
-        }
-
-        function updateTimestamps() {
-            const now = (Date.now() - playbackStartTime) / 1000;
-            const elapsed = formatTime(now);
-            const total = formatTime(currentTrackDuration);
-
-            document.getElementById('elapsed-time').textContent = elapsed;
-            document.getElementById('total-time').textContent = total;
-        }
-
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            playbackStartTime = Date.now() - data.progress_ms;
+            updateProgress(data.progress_ms, data.item.duration_ms);
         }
 
         function fetchLyrics(trackName, artistName, albumName, duration) {
@@ -270,42 +229,15 @@
         function displayLyrics() {
             const now = (Date.now() - playbackStartTime) / 1000;
             const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
-
-            if (lyricIndex > 0) {
-                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
-            } else {
-                document.getElementById('previous-lyric').textContent = '';
-            }
-
-            if (lyricIndex < lyrics.length) {
-                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
-            } else {
-                document.getElementById('current-lyric').textContent = '';
-            }
-
-            if (lyricIndex < lyrics.length - 1) {
-                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
-            } else {
-                document.getElementById('next-lyric').textContent = '';
-            }
+            document.getElementById('previous-lyric').textContent = lyricIndex > 0 ? lyrics[lyricIndex - 1].text : '';
+            document.getElementById('current-lyric').textContent = lyricIndex < lyrics.length ? lyrics[lyricIndex].text : '';
+            document.getElementById('next-lyric').textContent = lyricIndex < lyrics.length - 1 ? lyrics[lyricIndex + 1].text : '';
+            requestAnimationFrame(displayLyrics);
         }
 
-        let currentAlbumImage = '';
-        let playbackStartTime = 0;
-        let currentTrackDuration = 0;
-        let lastProgressUpdate = 0;
-        let lyrics = [];
-        let syncOffset = -1500; // To be calculated based on the sync method used
-
         document.addEventListener('DOMContentLoaded', () => {
-            let accessToken = getAccessToken();
-            if (accessToken) {
-                fetchCurrentlyPlayingSong(accessToken);
-                setInterval(() => { fetchCurrentlyPlayingSong(accessToken); }, 1000);
-                setInterval(() => { refreshToken(); }, 3300000);
-            } else {
-                refreshToken();
-            }
+            let accessToken = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
+            if (accessToken) setInterval(() => fetchNowPlaying(accessToken), 1000);
         });
     </script>
 </body>
