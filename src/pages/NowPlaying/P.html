@@ -22,19 +22,21 @@
             backdrop-filter: blur(100px);
         }
 
-        .blur-background {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            /* These properties will be overridden by JS to match .main-container's dimensions */
-            width: auto;
-            height: auto;
-            border-radius: 30px;
-            opacity: 0.2; /* Adjust opacity for a subtle effect */
-            z-index: 0;
-            filter: blur(140px);
-        }
+.blur-background {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    height: auto;
+    border-radius: 30px;
+    opacity: 0.2; /* Adjust opacity for a subtle effect */
+    z-index: 0;
+    filter: blur(80px);
+    background-size: cover;  /* Ensures the image covers the entire background */
+    background-position: center;  /* Centers the image */
+    background-repeat: no-repeat;  /* Prevents duplication */
+}
 
         .main-container {
             position: relative;
