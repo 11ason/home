@@ -136,19 +136,20 @@
         }
 
         #smallImage {
-    position: relative;
-    top: -160px; /* Adjust this value to change the position */
-    left: 960px; /* Adjust this value to change the horizontal position */
-    width: 50px; /* Set a suitable width */
-    height: auto;
-    z-index: 2; /* Ensure it stays above other elements */
-}
+            position: relative;
+            top: -160px; /* Adjust this value to change the position */
+            left: 960px; /* Adjust this value to change the horizontal position */
+            width: 50px; /* Set a suitable width */
+            height: auto;
+            z-index: 2; /* Ensure it stays above other elements */
+        }
     </style>
 </head>
 <body>
     <div class="blur-background"></div>
 <div class="main-container">
-    <a href="https://www.spotify.com/" target="_blank">
+    <!-- Spotify logo link will be updated dynamically -->
+    <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
         <img id="smallImage" src="https://github.com/11ason/Sitefiles/blob/main/Spotify_Primary_Logo_RGB_White.png?raw=true" alt="Small Image">
     </a>
     <img id="albumImage" src="cover.jpg" alt="Album Cover">
@@ -206,6 +207,7 @@
                     updateTrackInfo(data.item);
                     updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
                     fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
+                    updateSpotifyLink(data.item.album.external_urls.spotify); // Update the Spotify link
                 }
             })
             .catch(error => console.error('Error fetching currently playing song:', error));
@@ -230,6 +232,11 @@
                     document.body.style.backgroundImage = `url(${albumImage})`;
                 }, 300);
             }
+        }
+
+        function updateSpotifyLink(albumUrl) {
+            const spotifyLink = document.getElementById('spotify-link');
+            spotifyLink.href = albumUrl; // Update the href with the album's Spotify URL
         }
 
         function updatePlaybackInfo(progressMs, durationMs) {
@@ -340,6 +347,10 @@
                 refreshToken();
             }
         });
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
