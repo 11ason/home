@@ -1,163 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify OAuth 2.0</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
-        
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-image: url('https://raw.githubusercontent.com/11ason/Sitefiles/main/now-playing-bg.webp');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NowPlaying Menu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
-        .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
-            width: 90%;
-            max-width: 500px;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://raw.githubusercontent.com/11ason/Sitefiles/main/now-playing-bg.webp');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #1db954;
-            font-weight: 600;
-        }
+    .container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+      width: 90%;
+      max-width: 500px;
+    }
 
-        button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            background-color: #1db954;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #1db954;
+      font-weight: 600;
+    }
 
-        button2 {
-            margin-top: 20px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            background-color: #b91d1d;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background-color: #1db954;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
 
-        button:hover {
-            background-color: #17a347;
-            transform: scale(1.05);
-        }
-        
-        button2:hover {
-            background-color: #9c1010;
-            transform: scale(1.05);
-            
-        button:active {
-            transform: scale(1);
-        }
+    button:hover {
+      background-color: #17a347;
+      transform: scale(1.05);
+    }
 
-        p {
-            margin: 0;
-            font-size: 1rem;
-            color: #ddd;
-            line-height: 1.6;
-        }
+    button:active {
+      transform: scale(1);
+    }
 
-        .button-container {
-            margin-top: 20px;
-        }
+    .disconnect-btn {
+      background-color: #b91d1d;
+    }
 
-        .button-container button {
-            margin: 10px;
-        }
-    </style>
+    .disconnect-btn:hover {
+      background-color: #9c1010;
+      transform: scale(1.05);
+    }
+
+    p {
+      margin: 0;
+      font-size: 1rem;
+      color: #ddd;
+      line-height: 1.6;
+    }
+
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>NowPlaying</h1>
-        <p>Launch App or Disconnect Account Below</p>
-        <div class="button-container">
-            <button onclick="authorizeSpotify()">Desktop Mode</button>
-            <button onclick="launchProjectorMode()">Projector Mode</button>
-            </div>
-            <button2 onclick="launchDisconnect()">Disconnect</button2>
-        </div>
+  <div class="container">
+    <h1>NowPlaying</h1>
+    <p>Launch App or Disconnect Account Below</p>
+    <div class="button-container">
+      <button onclick="authorizeSpotify()">Desktop Mode</button>
+      <button onclick="launchProjectorMode()">Projector Mode</button>
+      <button class="disconnect-btn" onclick="launchDisconnect()">Disconnect</button>
     </div>
+  </div>
 
-    <script>
+  <script>
     function launchDisconnect() {
-
-        const Url = `https://www.spotify.com/ca-en/account/apps/`;
-
-        window.location.href = Url;
+      const Url = `https://www.spotify.com/ca-en/account/apps/`;
+      window.location.href = Url;
     }
+
     function authorizeSpotify() {
-        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
-        const redirect_url_app = 'https://11ason.space/NowPlaying/app';
-        const scopes = [
-            'user-read-currently-playing',
-            'user-read-playback-state',
-            'streaming'
-        ]; 
-
-        const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_url_app)}&scope=${encodeURIComponent(scopes.join(' '))}`;
-
-        window.location.href = authUrl;
+      const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
+      const redirect_url_app = 'https://11ason.space/NowPlaying/app';
+      const scopes = [
+        'user-read-currently-playing',
+        'user-read-playback-state',
+        'streaming'
+      ];
+      const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_url_app)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+      window.location.href = authUrl;
     }
 
     function launchProjectorMode() {
-        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
-        const redirect_url_P = 'https://11ason.space/NowPlaying/p';
-        const scopes = [
-            'user-read-currently-playing',
-            'user-read-playback-state',
-            'streaming'
-        ]; 
-
-        const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_url_P)}&scope=${encodeURIComponent(scopes.join(' '))}`;
-
-        window.location.href = authUrl;
+      const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
+      const redirect_url_P = 'https://11ason.space/NowPlaying/p';
+      const scopes = [
+        'user-read-currently-playing',
+        'user-read-playback-state',
+        'streaming'
+      ];
+      const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_url_P)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+      window.location.href = authUrl;
     }
 
     function getHashParams() {
-        const hash = window.location.hash.substring(1);
-        const params = {};
-        hash.split('&').forEach(part => {
-            const [key, value] = part.split('=');
-            params[key] = value;
-        });
-        return params;
+      const hash = window.location.hash.substring(1);
+      const params = {};
+      hash.split('&').forEach(part => {
+        const [key, value] = part.split('=');
+        params[key] = value;
+      });
+      return params;
     }
 
-    window.onload = function() {
-        const hashParams = getHashParams();
-        if (hashParams.access_token) {
-            localStorage.setItem('spotify_access_token', hashParams.access_token);
-        }
+    window.onload = function () {
+      const hashParams = getHashParams();
+      if (hashParams.access_token) {
+        localStorage.setItem('spotify_access_token', hashParams.access_token);
+      }
     };
-    </script>
+  </script>
 </body>
 </html>
