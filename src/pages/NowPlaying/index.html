@@ -38,8 +38,19 @@
       font-weight: 600;
     }
 
-    button {
+    .button-container {
       margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    button {
       padding: 12px 20px;
       font-size: 16px;
       font-weight: 600;
@@ -63,6 +74,7 @@
 
     .disconnect-btn {
       background-color: #b91d1d;
+      margin-top: 15px;
     }
 
     .disconnect-btn:hover {
@@ -76,19 +88,16 @@
       color: #ddd;
       line-height: 1.6;
     }
-.button-row {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
 
-    .button-container {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      align-items: center;
+    .footer-link {
+      margin-top: 30px;
+      font-size: 0.95rem;
+      color: #ccc;
+      text-decoration: underline;
+    }
+
+    .footer-link:hover {
+      color: #fff;
     }
   </style>
 </head>
@@ -96,12 +105,19 @@
   <div class="container">
     <h1>NowPlaying</h1>
     <p>Launch App or Disconnect Account Below</p>
-<div class="button-container">
-  <div class="button-row">
-    <button onclick="authorizeSpotify()">Desktop Mode</button>
-    <button onclick="launchProjectorMode()">Projector Mode</button>
-  </div>
-  <button class="disconnect-btn" onclick="launchDisconnect()">Disconnect</button>
+
+    <div class="button-container">
+      <div class="button-row">
+        <button onclick="authorizeSpotify()">Desktop Mode</button>
+        <button onclick="launchProjectorMode()">Projector Mode</button>
+      </div>
+      <button class="disconnect-btn" onclick="launchDisconnect()">Disconnect</button>
+    </div>
+
+    <!-- Privacy Policy link -->
+    <p class="footer-link">
+      <a href="https://11ason.space/nowplaying/privacy" target="_blank">Privacy Policy</a>
+    </p>
   </div>
 
   <script>
