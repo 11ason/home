@@ -52,11 +52,29 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        button2 {
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background-color: #b91d1d;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
         button:hover {
             background-color: #17a347;
             transform: scale(1.05);
         }
-
+        
+        button2:hover {
+            background-color: #9c1010;
+            transform: scale(1.05);
+            
         button:active {
             transform: scale(1);
         }
@@ -80,14 +98,21 @@
 <body>
     <div class="container">
         <h1>NowPlaying</h1>
-        <p>Press a button below to authorize with Spotify & launch app.</p>
+        <p>Launch App or Disconnect Account Below</p>
         <div class="button-container">
             <button onclick="authorizeSpotify()">Desktop Mode</button>
             <button onclick="launchProjectorMode()">Projector Mode</button>
+            <button2 onclick="launchDisconnect()">Disconnect</button2>
         </div>
     </div>
 
     <script>
+    function launchDisconnect() {
+
+        const Url = `https://www.spotify.com/ca-en/account/apps/`;
+
+        window.location.href = Url;
+    }
     function authorizeSpotify() {
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
         const redirect_url_app = 'https://11ason.space/NowPlaying/app';
