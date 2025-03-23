@@ -76,6 +76,12 @@
       color: #ddd;
       line-height: 1.6;
     }
+.button-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
     .button-container {
       margin-top: 20px;
@@ -90,11 +96,12 @@
   <div class="container">
     <h1>NowPlaying</h1>
     <p>Launch App or Disconnect Account Below</p>
-    <div class="button-container">
-      <button onclick="authorizeSpotify()">Desktop Mode</button>
-      <button onclick="launchProjectorMode()">Projector Mode</button>
-      <button class="disconnect-btn" onclick="launchDisconnect()">Disconnect</button>
-    </div>
+<div class="button-container">
+  <div class="button-row">
+    <button onclick="authorizeSpotify()">Desktop Mode</button>
+    <button onclick="launchProjectorMode()">Projector Mode</button>
+  </div>
+  <button class="disconnect-btn" onclick="launchDisconnect()">Disconnect</button>
   </div>
 
   <script>
