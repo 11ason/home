@@ -329,8 +329,7 @@
                 return null;
             }).filter(line => line !== null);
         }
-
-async function controlPlayback(action) {
+        async function controlPlayback(action, accessToken) {
     const methods = {
         rewind: 'previous',
         play: 'play',
@@ -372,21 +371,39 @@ async function controlPlayback(action) {
 
 // Toggle play/pause icon based on the action
 document.getElementById('play-pause').addEventListener('click', () => {
+    if (!accessToken) {
+        alert('Access token is missing. Please authenticate again.');
+        return;
+    }
+    
     const currentIcon = document.getElementById('play-pause').innerHTML;
     
     if (currentIcon.includes('play')) {
         // If it's a play icon, toggle to pause
-        controlPlayback('play');
+        controlPlayback('play', accessToken);
     } else {
         // If it's a pause icon, toggle to play
-        controlPlayback('pause');
+        controlPlayback('pause', accessToken);
     }
 });
 
+// Event listeners for other controls (rewind, skip)
+document.getElementById('rewind').addEventListener('click', () => {
+    if (!accessToken) {
+        alert('Access token is missing. Please authenticate again.');
+        return;
+    }
+    controlPlayback('rewind', accessToken); // Pass the accessToken here
+});
 
-        document.getElementById('rewind').addEventListener('click', () => controlPlayback('rewind'));
-        document.getElementById('play-pause').addEventListener('click', () => controlPlayback('play'));
-        document.getElementById('skip').addEventListener('click', () => controlPlayback('skip'));
+document.getElementById('skip').addEventListener('click', () => {
+    if (!accessToken) {
+        alert('Access token is missing. Please authenticate again.');
+        return;
+    }
+    controlPlayback('skip', accessToken); // Pass the accessToken here
+});
+
         function displayLyrics() {
             const now = (Date.now() - playbackStartTime) / 1000;
             const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
