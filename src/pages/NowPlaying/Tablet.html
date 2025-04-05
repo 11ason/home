@@ -6,7 +6,7 @@
     <title>NowPlaying:</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
+  <style>
         body {
             display: flex;
             flex-direction: column;
@@ -31,6 +31,8 @@
             justify-content: flex-start;
             width: 100%;
             max-width: 1000px;
+            position: relative;
+            margin-bottom: 20px;
             background: rgba(0, 0, 0, 0.096);
             padding: 20px;
             border-radius: 30px;
@@ -47,72 +49,392 @@
             margin-right: 50px;
         }
 
+        #lyrics-container {
+            position: relative;
+            height: 100px;
+        }
+
+        .lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
+
+        #current-lyric {
+            color: rgba(255, 255, 255, 0.842);
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        #previous-lyric, #next-lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 10px;
+            position: relative;
+            text-align: center;
+            height: 40px; /* Adjust height as needed to accommodate timestamps */
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #bbbbbb34;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #ffffff85;
+            width: 0%;
+        }
         .controls {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
             margin-top: 20px;
         }
 
         .controls button {
-            background: rgba(255, 255, 255, 0.2);
+            background: none;
             border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
             color: white;
-            transition: background 0.3s ease;
+            font-size: 30px;
+            cursor: pointer;
+            margin: 0 20px;
+            transition: color 0.3s ease;
         }
 
         .controls button:hover {
-            background: rgba(255, 255, 255, 0.4);
+            color: #1DB954;
+        }
+
+        #time {
+            font-weight: bold;
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.76);
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
+        }
+
+        #elapsed-time {
+            font-size: 12px;
+        }
+
+        #total-time {
+            font-size: 12px;
+        }
+
+        #songInfo {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        #trackInfo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 100px;
+            font-size: 22px;
+        }
+
+        #trackName, #artistName {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        #smallImage {
+            position: relative;
+            top: -160px; /* Adjust this value to change the position */
+            left: 960px; /* Adjust this value to change the horizontal position */
+            width: 50px; /* Set a suitable width */
+            height: auto;
+            z-index: 2; /* Ensure it stays above other elements */
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <img id="albumImage" src="cover.jpg" alt="Album Cover">
-        <div id="lyrics-container">
-            <div id="previous-lyric" class="lyric"></div>
-            <div id="current-lyric" class="lyric"></div>
-            <div id="next-lyric" class="lyric"></div>
+    <div class="blur-background"></div>
+<div class="main-container">
+    <!-- Spotify logo link will be updated dynamically -->
+    <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
+        <img id="smallImage" src="https://github.com/11ason/Sitefiles/blob/main/Spotify_Primary_Logo_RGB_White.png?raw=true" alt="Small Image">
+    </a>
+    <img id="albumImage" src="cover.jpg" alt="Album Cover">
+    <div id="lyrics-container">
+        <div id="previous-lyric" class="lyric"></div>
+        <div id="current-lyric" class="lyric"></div>
+        <div id="next-lyric" class="lyric"></div>
+    </div>
+</div>
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div id="time">
+            <div id="elapsed-time">00:00</div>
+            <div id="total-time">00:00</div>
         </div>
     </div>
-    <div class="controls">
-        <button id="rewind"><i class="fa-solid fa-backward"></i></button>
-        <button id="playPause"><i class="fa-solid fa-play"></i></button>
-        <button id="skip"><i class="fa-solid fa-forward"></i></button>
+    <div id="songInfo">
+        <div id="trackInfo">
+            <h2 id="trackName">Track Name</h2>
+            <span id="artistName">Artist Name</span>
+        </div>
+        <div class="controls">
+            <button id="rewind"><i class="fa-solid fa-backward"></i></button>
+            <button id="play-pause"><i class="fa-solid fa-play"></i></button>
+            <button id="skip"><i class="fa-solid fa-forward"></i></button>
+        </div>
     </div>
     <script>
-        const accessToken = getAccessToken();
-        function controlPlayback(action) {
-            fetch(`https://api.spotify.com/v1/me/player/${action}`, {
-                method: 'PUT',
-                headers: { 'Authorization': 'Bearer ' + accessToken }
-            }).catch(error => console.error('Error controlling playback:', error));
+        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
+        const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
+        const scopes = [
+            'user-read-currently-playing',
+            'user-read-playback-state',
+            'streaming'
+        ];
+        const playerUrl = 'https://api.spotify.com/v1/me/player'; // Define the player URL
+
+        function getAccessToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            return params.get('access_token');
         }
 
-        document.getElementById('playPause').addEventListener('click', () => {
-            fetch('https://api.spotify.com/v1/me/player', {
-                headers: { 'Authorization': 'Bearer ' + accessToken }
+        function refreshToken() {
+            const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+            window.location.href = authUrl;
+        }
+
+        function fetchCurrentlyPlayingSong(accessToken) {
+            fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
             })
             .then(response => response.json())
             .then(data => {
-                const playPauseButton = document.getElementById('playPause').querySelector('i');
-                if (data.is_playing) {
-                    controlPlayback('pause');
-                    playPauseButton.className = 'fa-solid fa-play';
-                } else {
-                    controlPlayback('play');
-                    playPauseButton.className = 'fa-solid fa-pause';
+                if (data.item) {
+                    updateTrackInfo(data.item);
+                    updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
+                    fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
+                    updateSpotifyLink(data.item.album.external_urls.spotify); // Update the Spotify link
                 }
-            });
+            })
+            .catch(error => console.error('Error fetching currently playing song:', error));
+        }
+
+        function updateTrackInfo(item) {
+            const songName = item.name;
+            const artists = item.artists.map(artist => artist.name).join(', ');
+            const albumImage = item.album.images[0].url;
+
+            document.getElementById('trackName').textContent = songName;
+            document.getElementById('artistName').textContent = artists;
+            document.title = `${songName} - ${artists} | NowPlaying`;
+
+            if (albumImage !== currentAlbumImage) {
+                currentAlbumImage = albumImage;
+                const albumImageElement = document.getElementById('albumImage');
+                albumImageElement.style.opacity = '0';
+                setTimeout(() => {
+                    albumImageElement.src = albumImage;
+                    albumImageElement.style.opacity = '1';
+                    document.body.style.backgroundImage = `url(${albumImage})`;
+                }, 300);
+            }
+        }
+
+        function updateSpotifyLink(albumUrl) {
+            const spotifyLink = document.getElementById('spotify-link');
+            spotifyLink.href = albumUrl; // Update the href with the album's Spotify URL
+        }
+
+        function updatePlaybackInfo(progressMs, durationMs) {
+            playbackStartTime = Date.now() - (progressMs + syncOffset);
+            currentTrackDuration = durationMs / 1000;
+            lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
+            updateProgressBar();
+            updateTimestamps();
+        }
+
+        function updateProgressBar() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const progressPercentage = (now / currentTrackDuration) * 100;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+        }
+
+        function updateTimestamps() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const elapsed = formatTime(now);
+            const total = formatTime(currentTrackDuration);
+
+            document.getElementById('elapsed-time').textContent = elapsed;
+            document.getElementById('total-time').textContent = total;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function fetchLyrics(trackName, artistName, albumName, duration) {
+    const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const lyricsContainer = document.getElementById('lyrics-container');
+
+            if (data.syncedLyrics) {
+                lyrics = parseLRC(data.syncedLyrics);
+                lyricsContainer.style.display = 'block'; // Show lyrics if available
+                displayLyrics();
+            } else {
+                lyricsContainer.style.display = 'none'; // Hide if no lyrics found
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching lyrics:', error);
+            document.getElementById('lyrics-container').style.display = 'none'; // Hide if an error occurs
         });
-        
-        document.getElementById('rewind').addEventListener('click', () => controlPlayback('previous'));
-        document.getElementById('skip').addEventListener('click', () => controlPlayback('next'));
+}
+
+
+        function parseLRC(lrcText) {
+            const lines = lrcText.split('\n');
+            return lines.map(line => {
+                const timeMatch = line.match(/\[(\d{2}):(\d{2}\.\d{2})\]/);
+                if (timeMatch) {
+                    const time = parseFloat(timeMatch[1]) * 60 + parseFloat(timeMatch[2]);
+                    const text = line.replace(/\[.*?\]/g, '').trim();
+                    return { time, text };
+                }
+                return null;
+            }).filter(line => line !== null);
+        }
+
+async function controlPlayback(action) {
+    const methods = {
+        rewind: 'previous',
+        play: 'play',
+        pause: 'pause',
+        skip: 'next'
+    };
+    
+    let endpoint = `${playerUrl}/${methods[action]}`;
+
+    // If the action is 'play', check if the track is playing or paused
+    if (action === 'play' || action === 'pause') {
+        const response = await fetch(`${playerUrl}/currently-playing`, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        const data = await response.json();
+
+        if (data && data.is_playing) {
+            // If the track is playing, we should send the pause request
+            endpoint = `${playerUrl}/pause`;
+            document.getElementById('play-pause').innerHTML = '<i class="fa-solid fa-play"></i>'; // Change to play icon
+        } else {
+            // If the track is paused, we should send the play request
+            endpoint = `${playerUrl}/play`;
+            document.getElementById('play-pause').innerHTML = '<i class="fa-solid fa-pause"></i>'; // Change to pause icon
+        }
+    }
+
+    // Send the control action (play, pause, skip, rewind)
+    await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
+// Toggle play/pause icon based on the action
+document.getElementById('play-pause').addEventListener('click', () => {
+    const currentIcon = document.getElementById('play-pause').innerHTML;
+    
+    if (currentIcon.includes('play')) {
+        // If it's a play icon, toggle to pause
+        controlPlayback('play');
+    } else {
+        // If it's a pause icon, toggle to play
+        controlPlayback('pause');
+    }
+});
+
+
+        document.getElementById('rewind').addEventListener('click', () => controlPlayback('rewind'));
+        document.getElementById('play-pause').addEventListener('click', () => controlPlayback('play'));
+        document.getElementById('skip').addEventListener('click', () => controlPlayback('skip'));
+        function displayLyrics() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+
+            if (lyricIndex > 0) {
+                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
+            } else {
+                document.getElementById('previous-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length) {
+                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
+            } else {
+                document.getElementById('current-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length - 1) {
+                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
+            } else {
+                document.getElementById('next-lyric').textContent = '';
+            }
+        }
+
+        let currentAlbumImage = '';
+        let playbackStartTime = 0;
+        let currentTrackDuration = 0;
+        let lastProgressUpdate = 0;
+        let lyrics = [];
+        let syncOffset = 0; // To be calculated based on the sync method used
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let accessToken = getAccessToken();
+            if (accessToken) {
+                fetchCurrentlyPlayingSong(accessToken);
+                setInterval(() => {
+                    fetchCurrentlyPlayingSong(accessToken);
+                }, 1000); // Refresh song info every 1 second
+                setInterval(() => {
+                    refreshToken();
+                }, 3300000); // Refresh access token every 55 minutes
+            } else {
+                refreshToken();
+            }
+        });
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
