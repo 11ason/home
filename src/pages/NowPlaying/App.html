@@ -143,6 +143,38 @@
             height: auto;
             z-index: 2; /* Ensure it stays above other elements */
         }
+        #offset-slider-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+#offset-slider-container:hover,
+#offset-slider-container.show {
+    opacity: 1;
+}
+
+#offset-slider {
+    width: 200px;
+    accent-color: white;
+}
+
+#offset-value {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
     </style>
 </head>
 <body>
@@ -175,6 +207,10 @@
             <span id="artistName">Artist Name</span>
         </div>
     </div>
+    <div id="offset-slider-container">
+    <input type="range" id="offset-slider" min="-3000" max="3000" step="100" value="-2000">
+    <label id="offset-value">Offset: -2.0s</label>
+</div>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
         const redirect_uri = 'https://11ason.space/NowPlaying/app'; // Redirect URI after authorization
@@ -332,6 +368,29 @@
         let lastProgressUpdate = 0;
         let lyrics = [];
         let syncOffset = -2000; // To be calculated based on the sync method used
+        
+const offsetSlider = document.getElementById('offset-slider');
+const offsetValue = document.getElementById('offset-value');
+const offsetContainer = document.getElementById('offset-slider-container');
+
+offsetSlider.addEventListener('input', () => {
+    syncOffset = parseInt(offsetSlider.value);
+    offsetValue.textContent = `Offset: ${(syncOffset / 1000).toFixed(1)}s`;
+});
+
+// Auto-hide logic
+let activityTimeout;
+
+function showSliderTemporarily() {
+    offsetContainer.classList.add('show');
+    clearTimeout(activityTimeout);
+    activityTimeout = setTimeout(() => {
+        offsetContainer.classList.remove('show');
+    }, 4000); // Hide after 4 seconds of inactivity
+}
+
+document.addEventListener('mousemove', showSliderTemporarily);
+document.addEventListener('touchstart', showSliderTemporarily);
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
