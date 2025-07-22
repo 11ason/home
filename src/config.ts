@@ -37,13 +37,13 @@ export const navBarConfig: NavBarConfig = {
   links: [
     {
       name: '☆',
-      url: 'https://11ason.space/landing/',     // Internal links should not include the base path, as it is automatically added
+      url: 'https://11ason.netlify.app/landing/',     // Internal links should not include the base path, as it is automatically added
       external: true,
     },
     LinkPreset.Archive,
         {
       name: 'Gallery',
-      url: 'https:///11ason.space/gallery',     // Internal links should not include the base path, as it is automatically added
+      url: 'https://11ason.netlify.app/gallery',     // Internal links should not include the base path, as it is automatically added
       external: true,                               // Show an external link icon and will open in a new tab
     },
     {
@@ -53,7 +53,7 @@ export const navBarConfig: NavBarConfig = {
     },
     {
       name: 'Now ▷',
-      url: 'https://11ason.space/nowplaying/',     // Internal links should not include the base path, as it is automatically added
+      url: 'https://11ason.netlify.app/nowplaying/',     // Internal links should not include the base path, as it is automatically added
       external: true,
     },
   ],
