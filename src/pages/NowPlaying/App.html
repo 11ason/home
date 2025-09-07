@@ -6,7 +6,7 @@
     <title>NowPlaying:</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Merriweather:wght@400;700&family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -205,10 +205,51 @@
     100% { transform: scale(1); }
 }
 
+#font-selector-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.3s;
+}
+#font-selector-label {
+    color: #fff;
+    font-size: 14px;
+    margin-right: 6px;
+}
+#font-selector {
+    background: rgba(0,0,0,0.2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 14px;
+    outline: none;
+}
+#font-selector:focus {
+    box-shadow: 0 0 0 2px #fff3;
+}
 
     </style>
 </head>
 <body>
+    <div id="font-selector-container">
+        <span id="font-selector-label">Font:</span>
+        <select id="font-selector">
+            <option value="Inter" selected>Inter</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Lato">Lato</option>
+            <option value="Merriweather">Merriweather</option>
+            <option value="Fira Sans">Fira Sans</option>
+        </select>
+    </div>
     <div class="blur-background"></div>
 <div class="main-container">
     <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
@@ -468,6 +509,31 @@ function showSliderTemporarily() {
 
 document.addEventListener('mousemove', showSliderTemporarily);
 document.addEventListener('touchstart', showSliderTemporarily);
+
+// Font selector logic
+const fontSelector = document.getElementById('font-selector');
+const fontOptions = {
+    'Inter': '"Inter", sans-serif',
+    'Roboto': '"Roboto", sans-serif',
+    'Lato': '"Lato", sans-serif',
+    'Merriweather': '"Merriweather", serif',
+    'Fira Sans': '"Fira Sans", sans-serif'
+};
+function setFont(fontName) {
+    document.body.style.fontFamily = fontOptions[fontName] || fontOptions['Inter'];
+    localStorage.setItem('selectedFont', fontName);
+}
+fontSelector.addEventListener('change', (e) => {
+    setFont(e.target.value);
+});
+// On load, apply saved font
+const savedFont = localStorage.getItem('selectedFont');
+if (savedFont && fontOptions[savedFont]) {
+    fontSelector.value = savedFont;
+    setFont(savedFont);
+} else {
+    setFont('Inter');
+}
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
