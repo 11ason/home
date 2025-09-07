@@ -591,6 +591,25 @@ if (savedFont && fontOptions[savedFont]) {
     setFont('Inter');
 }
 // Font size scaling logic (JS only)
+const fontSizeSlider = document.getElementById('font-size-slider');
+const fontSizeValue = document.getElementById('font-size-value');
+function setFontSize(factor) {
+    document.documentElement.style.setProperty('--font-scale', factor);
+    fontSizeValue.textContent = `${parseFloat(factor).toFixed(2)}x`;
+    localStorage.setItem('fontScale', factor);
+    fontSizeSlider.value = factor;
+}
+fontSizeSlider.addEventListener('input', (e) => {
+    setFontSize(e.target.value);
+});
+// On load, apply saved font size
+const savedFontScale = localStorage.getItem('fontScale');
+if (savedFontScale) {
+    setFontSize(savedFontScale);
+} else {
+    setFontSize(1);
+}
+// Add font scaling CSS dynamically
 (function() {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -607,28 +626,7 @@ if (savedFont && fontOptions[savedFont]) {
         }
     `;
     document.head.appendChild(style);
-
-    // Font size slider logic
-    const fontSizeSlider = document.getElementById('font-size-slider');
-    const fontSizeValue = document.getElementById('font-size-value');
-    function setFontSize(factor) {
-        document.documentElement.style.setProperty('--font-scale', factor);
-        fontSizeValue.textContent = `${parseFloat(factor).toFixed(2)}x`;
-        localStorage.setItem('fontScale', factor);
-        fontSizeSlider.value = factor;
-    }
-    fontSizeSlider.addEventListener('input', (e) => {
-        setFontSize(e.target.value);
-    });
-    // On load, apply saved font size
-    const savedFontScale = localStorage.getItem('fontScale');
-    if (savedFontScale) {
-        setFontSize(savedFontScale);
-    } else {
-        setFontSize(1);
-    }
 })();
-
     </script>
 </body>
 </html>
