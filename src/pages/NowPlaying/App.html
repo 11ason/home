@@ -236,6 +236,46 @@
 #font-selector:focus {
     box-shadow: 0 0 0 2px #fff3;
 }
+#font-size-slider-container {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 21;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.3s;
+}
+#font-size-label {
+    color: #fff;
+    font-size: 14px;
+    margin-right: 6px;
+}
+#font-size-slider {
+    width: 100px;
+    accent-color: #fff;
+}
+#font-size-value {
+    color: #fff;
+    font-size: 14px;
+    min-width: 32px;
+    text-align: right;
+}
+
+#font-selector-container,
+#font-size-slider-container {
+    opacity: 0;
+    pointer-events: none;
+}
+#font-selector-container.show,
+#font-size-slider-container.show {
+    opacity: 1;
+    pointer-events: auto;
+}
 
     </style>
 </head>
@@ -252,6 +292,11 @@
             <option value="Ubuntu">Ubuntu</option>
             <option value="Funnel Display">Funnel Display</option>
         </select>
+    </div>
+    <div id="font-size-slider-container">
+        <span id="font-size-label">Font Size:</span>
+        <input type="range" id="font-size-slider" min="0.7" max="1.5" step="0.01" value="1">
+        <span id="font-size-value">1.00x</span>
     </div>
     <div class="blur-background"></div>
 <div class="main-container">
@@ -529,17 +574,38 @@ function setFont(fontName) {
     document.body.style.fontFamily = fontOptions[fontName] || fontOptions['Inter'];
     localStorage.setItem('selectedFont', fontName);
 }
-fontSelector.addEventListener('change', (e) => {
-    setFont(e.target.value);
-});
-// On load, apply saved font
-const savedFont = localStorage.getItem('selectedFont');
-if (savedFont && fontOptions[savedFont]) {
-    fontSelector.value = savedFont;
-    setFont(savedFont);
-} else {
-    setFont('Inter');
+// Font size slider logic
+const fontSizeSlider = document.getElementById('font-size-slider');
+const fontSizeValue = document.getElementById('font-size-value');
+function setFontSize(factor) {
+    document.documentElement.style.setProperty('--font-scale', factor);
+    fontSizeValue.textContent = `${parseFloat(factor).toFixed(2)}x`;
+    localStorage.setItem('fontScale', factor);
 }
+fontSizeSlider.addEventListener('input', (e) => {
+    setFontSize(e.target.value);
+});
+// On load, apply saved font size
+const savedFontScale = localStorage.getItem('fontScale');
+if (savedFontScale) {
+    fontSizeSlider.value = savedFontScale;
+    setFontSize(savedFontScale);
+} else {
+    setFontSize(1);
+}
+// Apply scaling to all relevant font sizes
+const style = document.createElement('style');
+style.innerHTML = `
+    body, .main-container, #songInfo, #trackInfo, #trackName, #artistName, .lyric, #current-lyric, #previous-lyric, #next-lyric, #elapsed-time, #total-time, #offset-value, #font-selector-label, #font-size-label, #font-size-value {
+        font-size: calc(var(--font-scale, 1) * 1em) !important;
+    }
+    #current-lyric { font-size: calc(var(--font-scale, 1) * 28px) !important; }
+    #previous-lyric, #next-lyric { font-size: calc(var(--font-scale, 1) * 20px) !important; }
+    #trackName, #artistName, #trackInfo, #songInfo { font-size: calc(var(--font-scale, 1) * 22px) !important; }
+    #offset-value { font-size: calc(var(--font-scale, 1) * 14px) !important; }
+    #elapsed-time, #total-time { font-size: calc(var(--font-scale, 1) * 12px) !important; }
+`;
+document.head.appendChild(style);
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
