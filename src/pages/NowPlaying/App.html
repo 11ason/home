@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NowPlaying:</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -13,7 +15,8 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Nunito', sans-serif;
+            font-family: "Inter", sans-serif;
+            font-optical-sizing: auto;
             background-color: #000;
             background-size: cover;
             background-position: center;
@@ -159,6 +162,21 @@
     transition: opacity 0.3s ease;
     z-index: 10;
 }
+/* Base thumb transition */
+#offset-slider::-webkit-slider-thumb {
+    transition: box-shadow 0.4s ease;
+}
+#offset-slider::-moz-range-thumb {
+    transition: box-shadow 0.4s ease;
+}
+
+/* Glow state when saved */
+#offset-slider.saved-thumb::-webkit-slider-thumb {
+    box-shadow: 0 0 8px 4px lightgreen;
+}
+#offset-slider.saved-thumb::-moz-range-thumb {
+    box-shadow: 0 0 8px 4px lightgreen;
+}
 
 #offset-slider-container:hover,
 #offset-slider-container.show {
@@ -169,18 +187,30 @@
     width: 200px;
     accent-color: white;
 }
-
+        
 #offset-value {
     color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
+    transition: color 0.4s ease;
 }
+
+#offset-value.saved {
+    color: lightgreen;
+    animation: pulse 0.4s ease;
+}
+
+@keyframes pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 
     </style>
 </head>
 <body>
     <div class="blur-background"></div>
 <div class="main-container">
-    <!-- Spotify logo link will be updated dynamically -->
     <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
         <img id="smallImage" src="https://github.com/11ason/Sitefiles/blob/main/Spotify_Primary_Logo_RGB_White.png?raw=true" alt="Small Image">
     </a>
@@ -191,7 +221,6 @@
         <div id="next-lyric" class="lyric"></div>
     </div>
 </div>
-    </div>
     <div class="progress-bar-container">
         <div class="progress-bar">
             <div class="progress" id="progress"></div>
@@ -208,8 +237,8 @@
         </div>
     </div>
     <div id="offset-slider-container">
-    <input type="range" id="offset-slider" min="-4000" max="4000" step="100" value="-1000">
-    <label id="offset-value">Offset: -1.0s</label>
+    <input type="range" id="offset-slider" min="-6000" max="6000" step="100" value="-2000">
+    <label id="offset-value">Offset: -2.0s</label>
 </div>
     <script>
         const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
@@ -285,7 +314,8 @@
 
         function updateProgressBar() {
             const now = (Date.now() - playbackStartTime) / 1000;
-            const progressPercentage = (now / currentTrackDuration) * 100;
+            let progressPercentage = (now / currentTrackDuration) * 100;
+            progressPercentage = Math.max(0, Math.min(100, progressPercentage));
             document.getElementById('progress').style.width = `${progressPercentage}%`;
         }
 
@@ -304,24 +334,39 @@
             return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
-        function fetchLyrics(trackName, artistName, albumName, duration) {
+        // --- Lyrics cache ---
+const lyricsCache = {};
+
+function getLyricsCacheKey(trackName, artistName, albumName, duration) {
+    return `${trackName}|${artistName}|${albumName}|${duration}`;
+}
+
+function fetchLyrics(trackName, artistName, albumName, duration) {
+    const cacheKey = getLyricsCacheKey(trackName, artistName, albumName, duration);
+    if (lyricsCache[cacheKey]) {
+        // Use cached lyrics
+        lyrics = lyricsCache[cacheKey];
+        document.getElementById('lyrics-container').style.display = 'block';
+        displayLyrics();
+        return;
+    }
     const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
             const lyricsContainer = document.getElementById('lyrics-container');
-
             if (data.syncedLyrics) {
                 lyrics = parseLRC(data.syncedLyrics);
-                lyricsContainer.style.display = 'block'; // Show lyrics if available
+                lyricsCache[cacheKey] = lyrics; // Cache the parsed lyrics
+                lyricsContainer.style.display = 'block';
                 displayLyrics();
             } else {
-                lyricsContainer.style.display = 'none'; // Hide if no lyrics found
+                lyricsContainer.style.display = 'none';
             }
         })
         .catch(error => {
             console.error('Error fetching lyrics:', error);
-            document.getElementById('lyrics-container').style.display = 'none'; // Hide if an error occurs
+            document.getElementById('lyrics-container').style.display = 'none';
         });
 }
 
@@ -338,10 +383,17 @@
                 return null;
             }).filter(line => line !== null);
         }
-
         function displayLyrics() {
             const now = (Date.now() - playbackStartTime) / 1000;
             const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
+
+            if (lyricIndex === -1) {
+                // No lyric found after current time, show last lyric as current
+                document.getElementById('previous-lyric').textContent = lyrics.length > 1 ? lyrics[lyrics.length - 2].text : '';
+                document.getElementById('current-lyric').textContent = lyrics.length > 0 ? lyrics[lyrics.length - 1].text : '';
+                document.getElementById('next-lyric').textContent = '';
+                return;
+            }
 
             if (lyricIndex > 0) {
                 document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
@@ -366,13 +418,38 @@
         let playbackStartTime = 0;
         let currentTrackDuration = 0;
         let lastProgressUpdate = 0;
-        let lyrics = [];
-        let syncOffset = -1000; // To be calculated based on the sync method used
-        
+        const lyrics = [];
+        let syncOffset = -2000; // Lyrics sync offset in milliseconds; loaded from localStorage if available, otherwise defaults to -2000
 const offsetSlider = document.getElementById('offset-slider');
 const offsetValue = document.getElementById('offset-value');
 const offsetContainer = document.getElementById('offset-slider-container');
 
+function saveOffset() {
+    localStorage.setItem("lyricsOffset", syncOffset);
+
+    // Flash green + pulse on label
+    offsetValue.classList.add("saved");
+
+    // Glow effect on slider thumb
+    offsetSlider.classList.add("saved-thumb");
+
+    // Remove both after 0.4s (sync)
+    setTimeout(() => {
+        offsetValue.classList.remove("saved");
+        offsetSlider.classList.remove("saved-thumb");
+    }, 400);
+}
+offsetSlider.addEventListener('mouseup', saveOffset);
+offsetSlider.addEventListener('touchend', saveOffset);
+// Load saved offset from localStorage
+const savedOffset = localStorage.getItem("lyricsOffset");
+if (savedOffset !== null) {
+    syncOffset = parseInt(savedOffset, 10);
+    offsetSlider.value = syncOffset;
+    offsetValue.textContent = `Offset: ${(syncOffset / 1000).toFixed(1)}s`;
+}
+
+// Update preview while dragging
 offsetSlider.addEventListener('input', () => {
     syncOffset = parseInt(offsetSlider.value);
     offsetValue.textContent = `Offset: ${(syncOffset / 1000).toFixed(1)}s`;
@@ -406,10 +483,6 @@ document.addEventListener('touchstart', showSliderTemporarily);
                 refreshToken();
             }
         });
-    </script>
-</body>
-</html>
-
     </script>
 </body>
 </html>
