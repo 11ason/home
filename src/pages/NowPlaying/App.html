@@ -547,16 +547,20 @@ offsetSlider.addEventListener('input', () => {
 // Auto-hide logic
 let activityTimeout;
 
-function showSliderTemporarily() {
+function showAllControlsTemporarily() {
     offsetContainer.classList.add('show');
+    document.getElementById('font-selector-container').classList.add('show');
+    document.getElementById('font-size-slider-container').classList.add('show');
     clearTimeout(activityTimeout);
     activityTimeout = setTimeout(() => {
         offsetContainer.classList.remove('show');
+        document.getElementById('font-selector-container').classList.remove('show');
+        document.getElementById('font-size-slider-container').classList.remove('show');
     }, 4000); // Hide after 4 seconds of inactivity
 }
 
-document.addEventListener('mousemove', showSliderTemporarily);
-document.addEventListener('touchstart', showSliderTemporarily);
+document.addEventListener('mousemove', showAllControlsTemporarily);
+document.addEventListener('touchstart', showAllControlsTemporarily);
 
 // Font selector logic
 const fontSelector = document.getElementById('font-selector');
