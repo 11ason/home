@@ -577,39 +577,18 @@ const fontOptions = {
 function setFont(fontName) {
     document.body.style.fontFamily = fontOptions[fontName] || fontOptions['Inter'];
     localStorage.setItem('selectedFont', fontName);
+    fontSelector.value = fontName;
 }
-// Font size slider logic
-const fontSizeSlider = document.getElementById('font-size-slider');
-const fontSizeValue = document.getElementById('font-size-value');
-function setFontSize(factor) {
-    document.documentElement.style.setProperty('--font-scale', factor);
-    fontSizeValue.textContent = `${parseFloat(factor).toFixed(2)}x`;
-    localStorage.setItem('fontScale', factor);
-}
-fontSizeSlider.addEventListener('input', (e) => {
-    setFontSize(e.target.value);
+fontSelector.addEventListener('change', (e) => {
+    setFont(e.target.value);
 });
-// On load, apply saved font size
-const savedFontScale = localStorage.getItem('fontScale');
-if (savedFontScale) {
-    fontSizeSlider.value = savedFontScale;
-    setFontSize(savedFontScale);
+// On load, apply saved font
+const savedFont = localStorage.getItem('selectedFont');
+if (savedFont && fontOptions[savedFont]) {
+    setFont(savedFont);
 } else {
-    setFontSize(1);
+    setFont('Inter');
 }
-// Apply scaling to all relevant font sizes
-const style = document.createElement('style');
-style.innerHTML = `
-    body, .main-container, #songInfo, #trackInfo, #trackName, #artistName, .lyric, #current-lyric, #previous-lyric, #next-lyric, #elapsed-time, #total-time, #offset-value, #font-selector-label, #font-size-label, #font-size-value {
-        font-size: calc(var(--font-scale, 1) * 1em) !important;
-    }
-    #current-lyric { font-size: calc(var(--font-scale, 1) * 28px) !important; }
-    #previous-lyric, #next-lyric { font-size: calc(var(--font-scale, 1) * 20px) !important; }
-    #trackName, #artistName, #trackInfo, #songInfo { font-size: calc(var(--font-scale, 1) * 22px) !important; }
-    #offset-value { font-size: calc(var(--font-scale, 1) * 14px) !important; }
-    #elapsed-time, #total-time { font-size: calc(var(--font-scale, 1) * 12px) !important; }
-`;
-document.head.appendChild(style);
 
         document.addEventListener('DOMContentLoaded', () => {
             let accessToken = getAccessToken();
