@@ -368,6 +368,14 @@ function setTextAndBarColor(isLight) {
     // Track info
     document.getElementById('trackName').style.color = textColor;
     document.getElementById('artistName').style.color = textColor;
+    // Font selector and offset slider
+    document.getElementById('font-selector-container').style.color = textColor;
+    document.getElementById('font-selector').style.background = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
+    document.getElementById('font-selector').style.color = textColor;
+    document.getElementById('offset-slider-container').style.color = textColor;
+    document.getElementById('offset-slider-container').style.background = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+    document.getElementById('offset-slider').style.accentColor = textColor;
+    document.getElementById('offset-value').style.color = textColor;
 }
 
 // Call this after album art/background changes
