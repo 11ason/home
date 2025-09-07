@@ -418,7 +418,7 @@ function fetchLyrics(trackName, artistName, albumName, duration) {
         let playbackStartTime = 0;
         let currentTrackDuration = 0;
         let lastProgressUpdate = 0;
-        const lyrics = [];
+        let lyrics = [];
         let syncOffset = -2000; // Lyrics sync offset in milliseconds; loaded from localStorage if available, otherwise defaults to -2000
 const offsetSlider = document.getElementById('offset-slider');
 const offsetValue = document.getElementById('offset-value');
