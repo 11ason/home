@@ -320,6 +320,20 @@ async function refreshAccessToken() {
             .then(response => response.json())
             .then(data => {
                 if (data.item) {
+
+                    // Detect track end / change
+                    if (data.item.id !== lastTrackId) {
+                        lastTrackId = data.item.id;
+
+                        // lyrics cache flush
+                        for (const key in lyricsCache) delete lyricsCache[key];
+                        lyrics = [];
+
+        document.getElementById('previous-lyric').textContent = '';
+        document.getElementById('current-lyric').textContent = '';
+        document.getElementById('next-lyric').textContent = '';
+    }
+
                     updateTrackInfo(data.item);
                     updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
                     fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
@@ -342,6 +356,11 @@ async function refreshAccessToken() {
             document.getElementById('spotify-link').href = albumUrl;
 
             if (albumImage !== currentAlbumImage) {
+                // Track changed, clear lyrics state
+                lyrics = [];
+                document.getElementById('previous-lyric').textContent = '';
+                document.getElementById('current-lyric').textContent = '';
+                document.getElementById('next-lyric').textContent = '';
                 currentAlbumImage = albumImage;
                 const albumImageElement = document.getElementById('albumImage');
                 const backgroundOverlay = document.querySelector('.blur-background');
@@ -441,7 +460,7 @@ async function refreshAccessToken() {
                 document.getElementById('next-lyric').textContent = '';
             }
         }
-
+        let lastTrackId = null;
         let currentAlbumImage = '';
         let playbackStartTime = 0;
         let currentTrackDuration = 0;
@@ -514,4 +533,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     </script>
 </body>
 </html>
+
 
