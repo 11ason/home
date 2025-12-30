@@ -1,254 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NowPlaying: </title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Nunito', sans-serif;
-            background-color: #000;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: background 1s ease;
-            backdrop-filter: blur(100px);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NowPlaying: </title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap">
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'Nunito', sans-serif;
+        background-color: #000;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition: background 1s ease;
+    }
 
-        .blur-background {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: auto;
-            height: auto;
-            border-radius: 30px;
-            opacity: 0.5; /* Adjust opacity for a subtle effect */
-            z-index: 0;
-            filter: blur(50px);
-            background-size: cover;  /* Ensures the image covers the entire background */
-            background-position: center;  /* Centers the image */
-            background-repeat: no-repeat;  /* Prevents duplication */
-        }
+    .blur-background {
+        position: absolute;
+        border-radius: 30px;
+        opacity: 0.5;
+        z-index: 0;
+        filter: blur(50px);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition: background-image 0.5s ease;
+    }
 
-        .main-container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-            max-width: 1000px;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.18);
-            padding: 20px;
-            border-radius: 30px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
-            backdrop-filter: blur(10px);
-        }
+    .main-container {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        max-width: 1000px;
+        margin-bottom: 20px;
+        background: rgba(0, 0, 0, 0.18);
+        padding: 20px;
+        border-radius: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
+        backdrop-filter: blur(10px);
+    }
 
-        #albumImage {
-            width: 350px;
-            height: 350px;
-            border-radius: 15px;
-            transition: opacity 0.3s ease, transform 0.5s ease;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            margin-right: 50px;
-        }
+    #albumImage {
+        width: 350px;
+        height: 350px;
+        border-radius: 15px;
+        transition: opacity 0.3s ease, transform 0.5s ease;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        margin-right: 50px;
+    }
 
-        #lyrics-container {
-            position: relative;
-            height: 100px;
-        }
+    #lyrics-container { position: relative; height: 100px; }
+    .lyric { font-size: 20px; }
+    #current-lyric { font-weight: bold; font-size: 28px; }
 
-        .lyric {
-            color: rgba(255, 255, 255, 0.500);
-            font-size: 20px;
-        }
+    .progress-bar-container {
+        width: 100%;
+        max-width: 1000px;
+        margin-top: 10px;
+        position: relative;
+        text-align: center;
+        height: 40px;
+    }
 
-        #current-lyric {
-            color: rgba(255, 255, 255, 0.842);
-            font-weight: bold;
-            font-size: 28px;
-        }
+    .progress-bar { width: 100%; height: 10px; background-color: #bbbbbb34; border-radius: 5px; overflow: hidden; }
+    .progress { height: 100%; background-color: #ffffff85; width: 0%; }
 
-        #previous-lyric, #next-lyric {
-            color: rgba(255, 255, 255, 0.500);
-            font-size: 20px;
-        }
+    #time {
+        font-weight: bold;
+        width: 100%;
+        font-size: 12px;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0 10px;
+    }
 
-        .progress-bar-container {
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 10px;
-            position: relative;
-            text-align: center;
-            height: 40px; /* Adjust height as needed to accommodate timestamps */
-        }
+    #songInfo { text-align: center; color: white; margin-top: 20px; font-size: 22px; }
+    #trackInfo { display: flex; justify-content: center; align-items: center; gap: 100px; font-size: 22px; }
+    #trackName, #artistName { margin: 0; font-size: 22px; }
 
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #bbbbbb34;
-            border-radius: 5px;
-            overflow: hidden;
-        }
+    #smallImage {
+        position: relative;
+        top: -160px;
+        left: 960px;
+        width: 50px;
+        height: auto;
+        z-index: 2;
+    }
 
-        .progress {
-            height: 100%;
-            background-color: #ffffff85;
-            width: 0%;
-        }
+    #offset-slider-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 10px 20px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+    }
 
-        #time {
-            font-weight: bold;
-            width: 100%;
-            font-size: 12px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.76);
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0 10px;
-        }
+    #offset-slider-container:hover, #offset-slider-container.show { opacity: 1; }
+    #offset-slider { width: 200px; accent-color: white; }
+    #offset-value { font-size: 14px; }
 
-        #elapsed-time {
-            font-size: 12px;
-        }
-
-        #total-time {
-            font-size: 12px;
-        }
-
-        #songInfo {
-            text-align: center;
-            color: white;
-            margin-top: 20px;
-            font-size: 22px;
-        }
-
-        #trackInfo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 100px;
-            font-size: 22px;
-        }
-
-        #trackName, #artistName {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        #smallImage {
-            position: relative;
-            top: -160px; /* Adjust this value to change the position */
-            left: 960px; /* Adjust this value to change the horizontal position */
-            width: 50px; /* Set a suitable width */
-            height: auto;
-            z-index: 2; /* Ensure it stays above other elements */
-        }
-        #offset-slider-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 20px;
-    padding: 10px 20px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-}
-
-#offset-slider-container:hover,
-#offset-slider-container.show {
-    opacity: 1;
-}
-
-#offset-slider {
-    width: 200px;
-    accent-color: white;
-}
-
-#offset-value {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
-}
-
-    </style>
+</style>
 </head>
 <body>
-    <div class="blur-background"></div>
-    <div class="main-container">
-        <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
-            <img id="smallImage" src="https://github.com/11ason/Sitefiles/blob/main/Spotify_Primary_Logo_RGB_White.png?raw=true" alt="Spotify Logo">
-        </a>
-        <img id="albumImage" src="cover.jpg" alt="Album Cover">
-        <div id="lyrics-container">
-            <div id="previous-lyric" class="lyric"></div>
-            <div id="current-lyric" class="lyric"></div>
-            <div id="next-lyric" class="lyric"></div>
-        </div>
+<div class="blur-background"></div>
+
+<div class="main-container">
+    <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
+        <img id="smallImage" src="https://github.com/11ason/Sitefiles/blob/main/Spotify_Primary_Logo_RGB_White.png?raw=true" alt="Spotify Logo">
+    </a>
+    <img id="albumImage" src="cover.jpg" alt="Album Cover">
+    <div id="lyrics-container">
+        <div id="previous-lyric" class="lyric"></div>
+        <div id="current-lyric" class="lyric"></div>
+        <div id="next-lyric" class="lyric"></div>
     </div>
-    <div class="progress-bar-container">
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
-        <div id="time">
-            <div id="elapsed-time">00:00</div>
-            <div id="total-time">00:00</div>
-        </div>
+</div>
+
+<div class="progress-bar-container">
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
     </div>
-    <div id="songInfo">
-        <div id="trackInfo">
-            <h2 id="trackName">Track Name</h2>
-            <span id="artistName">Artist Name</span>
-        </div>
+    <div id="time">
+        <div id="elapsed-time">00:00</div>
+        <div id="total-time">00:00</div>
     </div>
-    <div id="offset-slider-container">
+</div>
+
+<div id="songInfo">
+    <div id="trackInfo">
+        <h2 id="trackName">Track Name</h2>
+        <span id="artistName">Artist Name</span>
+    </div>
+</div>
+
+<div id="offset-slider-container">
     <input type="range" id="offset-slider" min="-4000" max="4000" step="100" value="-1000">
     <label id="offset-value">Offset: -1.0s</label>
 </div>
 
-    <script>
-        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
-        const redirect_uri = 'https://11ason.netlify.app/NowPlaying/p'; // Redirect URI after authorization
-        const scopes = [
-            'user-read-currently-playing',
-            'user-read-playback-state',
-            'streaming'
-        ];
+<script>
+const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc';
+const redirect_uri = 'https://11ason.netlify.app/NowPlaying/p';
+const scopes = ['user-read-currently-playing','user-read-playback-state','streaming'];
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 
-function base64urlencode(buffer) {
-    return btoa(String.fromCharCode(...new Uint8Array(buffer)))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, "");
-}
+let lyricsCache = {};
+let lyrics = [];
+let lastTrackId = null;
+let currentAlbumImage = '';
+let playbackStartTime = 0;
+let currentTrackDuration = 0;
+let syncOffset = -1000;
 
-async function sha256(plain) {
-    return crypto.subtle.digest(
-        "SHA-256",
-        new TextEncoder().encode(plain)
-    );
-}
+function base64urlencode(buffer) { return btoa(String.fromCharCode(...new Uint8Array(buffer))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+async function sha256(plain) { return crypto.subtle.digest("SHA-256", new TextEncoder().encode(plain)); }
 
 async function createPKCE() {
     const verifier = crypto.randomUUID() + crypto.randomUUID();
@@ -270,44 +199,10 @@ async function startSpotifyAuth() {
     window.location.href = `${AUTH_ENDPOINT}?${params}`;
 }
 
-function handleTrackChange(item) {
-    // Reset lyrics
-    lyrics = [];
-    document.getElementById('previous-lyric').textContent = '';
-    document.getElementById('current-lyric').textContent = '';
-    document.getElementById('next-lyric').textContent = '';
-
-    // Reset playback state
-    playbackStartTime = Date.now() - (item.progress_ms + syncOffset);
-    currentTrackDuration = item.duration_ms / 1000;
-
-    // Clear any old last progress update
-    lastProgressUpdate = 0;
-
-    // Reset the last track ID
-    lastTrackId = item.id;
-
-    // Clear the lyrics cache entirely (optional, forces fresh fetch)
-    for (const key in lyricsCache) delete lyricsCache[key];
-}
-
 async function exchangeCodeForToken(code) {
     const verifier = localStorage.getItem("pkce_verifier");
-
-    const body = new URLSearchParams({
-        client_id,
-        grant_type: "authorization_code",
-        code,
-        redirect_uri,
-        code_verifier: verifier
-    });
-
-    const res = await fetch(TOKEN_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body
-    });
-
+    const body = new URLSearchParams({ client_id, grant_type: "authorization_code", code, redirect_uri, code_verifier: verifier });
+    const res = await fetch(TOKEN_ENDPOINT, { method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body });
     const data = await res.json();
     localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("refresh_token", data.refresh_token);
@@ -316,235 +211,177 @@ async function exchangeCodeForToken(code) {
 }
 
 async function refreshAccessToken() {
-    const body = new URLSearchParams({
-        client_id,
-        grant_type: "refresh_token",
-        refresh_token: localStorage.getItem("refresh_token")
-    });
-
-    const res = await fetch(TOKEN_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body
-    });
-
+    const body = new URLSearchParams({ client_id, grant_type: "refresh_token", refresh_token: localStorage.getItem("refresh_token") });
+    const res = await fetch(TOKEN_ENDPOINT, { method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body });
     const data = await res.json();
     localStorage.setItem("access_token", data.access_token);
     return data.access_token;
 }
-        function fetchCurrentlyPlayingSong(accessToken) {
-            fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-                headers: {
-                    'Authorization': 'Bearer ' + accessToken
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.item) {
-                    if (data.item.id !== lastTrackId) {
-                        handleTrackChange(data.item);
-                    }
 
+function handleTrackChange(item) {
+    // Clear lyrics cache for old song
+    lyricsCache = {};
+    lyrics = [];
+    lastTrackId = item.id;
+    playbackStartTime = Date.now() - (item.progress_ms + syncOffset);
+    currentTrackDuration = item.duration_ms / 1000;
 
-                    updateTrackInfo(data.item);
-                    updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
-                    fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
-                }
-            })
-            .catch(error => console.error('Error fetching currently playing song:', error));
-        }
-
-        function updateTrackInfo(item) {
-            const songName = item.name;
-            const artists = item.artists.map(artist => artist.name).join(', ');
-            const albumImage = item.album.images[0].url;
-            const albumUrl = item.external_urls.spotify; // Get the link for the current album/track
-
-            document.getElementById('trackName').textContent = songName;
-            document.getElementById('artistName').textContent = artists;
-            document.title = `${songName} - ${artists} | NowPlaying`;
-
-            // Update the Spotify link for the logo
-            document.getElementById('spotify-link').href = albumUrl;
-
-            if (albumImage !== currentAlbumImage) {
-                // Track changed, clear lyrics state
-                lyrics = [];
-                document.getElementById('previous-lyric').textContent = '';
-                document.getElementById('current-lyric').textContent = '';
-                document.getElementById('next-lyric').textContent = '';
-                currentAlbumImage = albumImage;
-                const albumImageElement = document.getElementById('albumImage');
-                const backgroundOverlay = document.querySelector('.blur-background');
-
-                albumImageElement.style.opacity = '0';
-                setTimeout(() => {
-                    albumImageElement.src = albumImage;
-                    albumImageElement.style.opacity = '1';
-                    // Removed setting the body background image.
-                    backgroundOverlay.style.backgroundImage = `url(${albumImage})`;
-                }, 300);
-            }
-        }
-
-        function updatePlaybackInfo(progressMs, durationMs) {
-            playbackStartTime = Date.now() - (progressMs + syncOffset);
-            currentTrackDuration = durationMs / 1000;
-            lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
-            updateProgressBar();
-            updateTimestamps();
-        }
-
-        function updateProgressBar() {
-            const now = (Date.now() - playbackStartTime) / 1000;
-            const progressPercentage = (now / currentTrackDuration) * 100;
-            document.getElementById('progress').style.width = `${progressPercentage}%`;
-        }
-
-        function updateTimestamps() {
-            const now = (Date.now() - playbackStartTime) / 1000;
-            const elapsed = formatTime(now);
-            const total = formatTime(currentTrackDuration);
-
-            document.getElementById('elapsed-time').textContent = elapsed;
-            document.getElementById('total-time').textContent = total;
-        }
-
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        }
-
-        function fetchLyrics(trackName, artistName, albumName, duration) {
-            const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const lyricsContainer = document.getElementById('lyrics-container');
-
-                    if (data.syncedLyrics) {
-                        lyrics = parseLRC(data.syncedLyrics);
-                        lyricsContainer.style.display = 'block'; // Show lyrics if available
-                        displayLyrics();
-                    } else {
-                        lyricsContainer.style.display = 'none'; // Hide if no lyrics found
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching lyrics:', error);
-                    document.getElementById('lyrics-container').style.display = 'none'; // Hide if an error occurs
-                });
-        }
-
-        function parseLRC(lrcText) {
-            const lines = lrcText.split('\n');
-            return lines.map(line => {
-                const timeMatch = line.match(/\[(\d{2}):(\d{2}\.\d{2})\]/);
-                if (timeMatch) {
-                    const time = parseFloat(timeMatch[1]) * 60 + parseFloat(timeMatch[2]);
-                    const text = line.replace(/\[.*?\]/g, '').trim();
-                    return { time, text };
-                }
-                return null;
-            }).filter(line => line !== null);
-        }
-
-        function displayLyrics() {
-            const now = (Date.now() - playbackStartTime) / 1000;
-            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
-
-            if (lyricIndex > 0) {
-                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
-            } else {
-                document.getElementById('previous-lyric').textContent = '';
-            }
-
-            if (lyricIndex < lyrics.length) {
-                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
-            } else {
-                document.getElementById('current-lyric').textContent = '';
-            }
-
-            if (lyricIndex < lyrics.length - 1) {
-                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
-            } else {
-                document.getElementById('next-lyric').textContent = '';
-            }
-        }
-        let lastTrackId = null;
-        let currentAlbumImage = '';
-        let playbackStartTime = 0;
-        let currentTrackDuration = 0;
-        let lastProgressUpdate = 0;
-        let lyrics = [];
-        let syncOffset = -1000; // To be calculated based on the sync method used
-
-        // New function to adjust the background overlay dimensions to match the main container
-        function adjustBackground() {
-            const mainContainer = document.querySelector('.main-container');
-            const blurBackground = document.querySelector('.blur-background');
-            if (mainContainer && blurBackground) {
-                const rect = mainContainer.getBoundingClientRect();
-                blurBackground.style.width = rect.width + 'px';
-                blurBackground.style.height = rect.height + 'px';
-                blurBackground.style.top = mainContainer.offsetTop + 'px';
-                blurBackground.style.left = mainContainer.offsetLeft + 'px';
-            }
-        }
-const offsetSlider = document.getElementById('offset-slider');
-const offsetValue = document.getElementById('offset-value');
-const offsetContainer = document.getElementById('offset-slider-container');
-
-offsetSlider.addEventListener('input', () => {
-    syncOffset = parseInt(offsetSlider.value);
-    offsetValue.textContent = `Offset: ${(syncOffset / 1000).toFixed(1)}s`;
-});
-
-// Auto-hide logic
-let activityTimeout;
-
-function showSliderTemporarily() {
-    offsetContainer.classList.add('show');
-    clearTimeout(activityTimeout);
-    activityTimeout = setTimeout(() => {
-        offsetContainer.classList.remove('show');
-    }, 4000); // Hide after 4 seconds of inactivity
+    document.getElementById('previous-lyric').textContent = '';
+    document.getElementById('current-lyric').textContent = '';
+    document.getElementById('next-lyric').textContent = '';
 }
 
-document.addEventListener('mousemove', showSliderTemporarily);
-document.addEventListener('touchstart', showSliderTemporarily);
+function fetchCurrentlyPlayingSong(accessToken) {
+    fetch('https://api.spotify.com/v1/me/player/currently-playing', { headers:{'Authorization':'Bearer '+accessToken} })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.item){
+            if(data.item.id !== lastTrackId) handleTrackChange(data.item);
+            updateTrackInfo(data.item);
+            updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
+            fetchLyrics(data.item.name, data.item.artists.map(a=>a.name).join(', '), data.item.album.name, data.item.duration_ms/1000);
+        }
+    }).catch(err=>console.error('Error fetching currently playing song:',err));
+}
 
-        window.addEventListener('resize', adjustBackground);
-        document.addEventListener('DOMContentLoaded', adjustBackground);
+function updateTrackInfo(item){
+    const songName=item.name;
+    const artists=item.artists.map(a=>a.name).join(', ');
+    const albumImage=item.album.images[0].url;
+    const albumUrl=item.external_urls.spotify;
+    document.getElementById('trackName').textContent=songName;
+    document.getElementById('artistName').textContent=artists;
+    document.title = `${songName} - ${artists} | NowPlaying`;
+    document.getElementById('spotify-link').href=albumUrl;
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const params = new URLSearchParams(window.location.search);
-    let accessToken = localStorage.getItem("access_token");
-
-    if (params.get("code")) {
-        accessToken = await exchangeCodeForToken(params.get("code"));
+    const blurBg=document.querySelector('.blur-background');
+    if(albumImage!==currentAlbumImage){
+        currentAlbumImage=albumImage;
+        const albumEl=document.getElementById('albumImage');
+        albumEl.style.opacity='0';
+        setTimeout(()=>{
+            albumEl.src=albumImage;
+            albumEl.style.opacity='1';
+            blurBg.style.backgroundImage=`url(${albumImage})`;
+            adjustBackground();
+            updateContrast(albumImage);
+        },300);
     }
+}
 
-    if (!accessToken) {
-        startSpotifyAuth();
+function updatePlaybackInfo(progressMs,durationMs){
+    playbackStartTime=Date.now()-(progressMs+syncOffset);
+    currentTrackDuration=durationMs/1000;
+    updateProgressBar();
+    updateTimestamps();
+}
+
+function updateProgressBar(){
+    const now=(Date.now()-playbackStartTime)/1000;
+    const progressPct=(now/currentTrackDuration)*100;
+    document.getElementById('progress').style.width=`${progressPct}%`;
+}
+
+function updateTimestamps(){
+    const now=(Date.now()-playbackStartTime)/1000;
+    const formatTime=(s)=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+    document.getElementById('elapsed-time').textContent=formatTime(now);
+    document.getElementById('total-time').textContent=formatTime(currentTrackDuration);
+}
+
+function fetchLyrics(trackName, artistName, albumName, duration){
+    const cacheKey=`${trackName}|${artistName}|${albumName}|${duration}`;
+    if(lyricsCache[cacheKey]){
+        lyrics=lyricsCache[cacheKey];
+        displayLyrics();
         return;
     }
+    const apiUrl=`https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+    fetch(apiUrl)
+    .then(res=>res.json())
+    .then(data=>{
+        const lyricsContainer=document.getElementById('lyrics-container');
+        if(data.syncedLyrics){
+            lyrics=parseLRC(data.syncedLyrics);
+            lyricsCache[cacheKey]=lyrics;
+            lyricsContainer.style.display='block';
+            displayLyrics();
+        }else lyricsContainer.style.display='none';
+    })
+    .catch(err=>{console.error('Error fetching lyrics:',err); document.getElementById('lyrics-container').style.display='none';});
+}
 
-    fetchCurrentlyPlayingSong(accessToken);
+function parseLRC(text){ return text.split('\n').map(l=>{ const m=l.match(/\[(\d{2}):(\d{2}\.\d{2})\]/); if(m){ const t=parseFloat(m[1])*60+parseFloat(m[2]); return {time:t,text:l.replace(/\[.*?\]/g,'').trim()}; } return null; }).filter(l=>l!==null); }
 
-    setInterval(() => {
-        fetchCurrentlyPlayingSong(accessToken);
-    }, 1000);
+function displayLyrics(){
+    const now=(Date.now()-playbackStartTime)/1000;
+    const idx=lyrics.findIndex(l=>l.time>now);
+    document.getElementById('previous-lyric').textContent=idx>0?lyrics[idx-1].text:'';
+    document.getElementById('current-lyric').textContent=idx<lyrics.length?lyrics[idx]?.text:'';
+    document.getElementById('next-lyric').textContent=idx<lyrics.length-1?lyrics[idx+1].text:'';
+}
 
-    setInterval(async () => {
-        accessToken = await refreshAccessToken();
-    }, 1000 * 60 * 50);
+function adjustBackground(){
+    const main=document.querySelector('.main-container');
+    const blur=document.querySelector('.blur-background');
+    if(main && blur){
+        const rect=main.getBoundingClientRect();
+        blur.style.width=rect.width+'px';
+        blur.style.height=rect.height+'px';
+        blur.style.top=main.offsetTop+'px';
+        blur.style.left=main.offsetLeft+'px';
+    }
+}
+
+function updateContrast(imgUrl){
+    const img=new Image();
+    img.crossOrigin="Anonymous";
+    img.src=imgUrl;
+    img.onload=function(){
+        const c=document.createElement('canvas');
+        c.width=img.width; c.height=img.height;
+        const ctx=c.getContext('2d');
+        ctx.drawImage(img,0,0,img.width,img.height);
+        const d=ctx.getImageData(0,0,img.width,img.height).data;
+        let tot=0;
+        for(let i=0;i<d.length;i+=4){ tot+=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]; }
+        const light=tot/(img.width*img.height)>180;
+        const color=light?'#111':'#fff';
+        const faded=light?'rgba(0,0,0,0.5)':'rgba(255,255,255,0.5)';
+        document.querySelectorAll('.lyric').forEach(el=>el.style.color=faded);
+        document.getElementById('current-lyric').style.color=color;
+        document.getElementById('elapsed-time').style.color=color;
+        document.getElementById('total-time').style.color=color;
+        document.getElementById('trackName').style.color=color;
+        document.getElementById('artistName').style.color=color;
+        document.getElementById('offset-value').style.color=color;
+    }
+}
+
+// Lyrics offset slider
+const offsetSlider=document.getElementById('offset-slider');
+const offsetValue=document.getElementById('offset-value');
+offsetSlider.addEventListener('input',()=>{ syncOffset=parseInt(offsetSlider.value); offsetValue.textContent=`Offset: ${(syncOffset/1000).toFixed(1)}s`; });
+
+// Auto-hide
+let activityTimeout;
+document.addEventListener('mousemove',()=>{ offsetSlider.parentElement.classList.add('show'); clearTimeout(activityTimeout); activityTimeout=setTimeout(()=>{ offsetSlider.parentElement.classList.remove('show'); },4000); });
+document.addEventListener('touchstart',()=>{ offsetSlider.parentElement.classList.add('show'); clearTimeout(activityTimeout); activityTimeout=setTimeout(()=>{ offsetSlider.parentElement.classList.remove('show'); },4000); });
+
+// Adjust on resize
+window.addEventListener('resize', adjustBackground);
+document.addEventListener('DOMContentLoaded', adjustBackground);
+
+// Main load
+document.addEventListener("DOMContentLoaded", async ()=>{
+    const params=new URLSearchParams(window.location.search);
+    let token=localStorage.getItem("access_token");
+    if(params.get("code")) token=await exchangeCodeForToken(params.get("code"));
+    if(!token){ startSpotifyAuth(); return; }
+    fetchCurrentlyPlayingSong(token);
+    setInterval(()=>{ fetchCurrentlyPlayingSong(token); },1000);
+    setInterval(async()=>{ token=await refreshAccessToken(); },1000*60*50);
 });
-
-    </script>
+</script>
 </body>
 </html>
-
-
-
