@@ -270,6 +270,27 @@ async function startSpotifyAuth() {
     window.location.href = `${AUTH_ENDPOINT}?${params}`;
 }
 
+function handleTrackChange(item) {
+    // Reset lyrics
+    lyrics = [];
+    document.getElementById('previous-lyric').textContent = '';
+    document.getElementById('current-lyric').textContent = '';
+    document.getElementById('next-lyric').textContent = '';
+
+    // Reset playback state
+    playbackStartTime = Date.now() - (item.progress_ms + syncOffset);
+    currentTrackDuration = item.duration_ms / 1000;
+
+    // Clear any old last progress update
+    lastProgressUpdate = 0;
+
+    // Reset the last track ID
+    lastTrackId = item.id;
+
+    // Clear the lyrics cache entirely (optional, forces fresh fetch)
+    for (const key in lyricsCache) delete lyricsCache[key];
+}
+
 async function exchangeCodeForToken(code) {
     const verifier = localStorage.getItem("pkce_verifier");
 
@@ -320,19 +341,10 @@ async function refreshAccessToken() {
             .then(response => response.json())
             .then(data => {
                 if (data.item) {
-
-                    // Detect track end / change
                     if (data.item.id !== lastTrackId) {
-                        lastTrackId = data.item.id;
+                        handleTrackChange(data.item);
+                    }
 
-                        // lyrics cache flush
-                        for (const key in lyricsCache) delete lyricsCache[key];
-                        lyrics = [];
-
-        document.getElementById('previous-lyric').textContent = '';
-        document.getElementById('current-lyric').textContent = '';
-        document.getElementById('next-lyric').textContent = '';
-    }
 
                     updateTrackInfo(data.item);
                     updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
@@ -533,5 +545,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     </script>
 </body>
 </html>
+
 
 
