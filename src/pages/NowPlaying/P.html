@@ -334,30 +334,16 @@ function adjustBackground(){
 }
 
 function updateContrast(imgUrl){
-    const img=new Image();
-    img.crossOrigin="Anonymous";
-    img.src=imgUrl;
-    img.onload=function(){
-        const c=document.createElement('canvas');
-        c.width=img.width; c.height=img.height;
-        const ctx=c.getContext('2d');
-        ctx.drawImage(img,0,0,img.width,img.height);
-        const d=ctx.getImageData(0,0,img.width,img.height).data;
-        let tot=0;
-        for(let i=0;i<d.length;i+=4){ tot+=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]; }
-        const light=tot/(img.width*img.height)>180;
-        const color=light?'#111':'#fff';
-        const faded=light?'rgba(0,0,0,0.5)':'rgba(255,255,255,0.5)';
-        document.querySelectorAll('.lyric').forEach(el=>el.style.color=faded);
-        document.getElementById('current-lyric').style.color=color;
-        document.getElementById('elapsed-time').style.color=color;
-        document.getElementById('total-time').style.color=color;
-        document.getElementById('trackName').style.color=color;
-        document.getElementById('artistName').style.color=color;
-        document.getElementById('offset-value').style.color=color;
-    }
+    // Remove all brightness detection logic
+    document.querySelectorAll('.lyric').forEach(el => el.style.color = '#fff');
+    document.getElementById('current-lyric').style.color = '#fff';
+    document.getElementById('elapsed-time').style.color = '#fff';
+    document.getElementById('total-time').style.color = '#fff';
+    document.getElementById('trackName').style.color = '#fff';
+    document.getElementById('artistName').style.color = '#fff';
+    document.getElementById('offset-value').style.color = '#fff';
 }
-
+    
 // Lyrics offset slider
 const offsetSlider=document.getElementById('offset-slider');
 const offsetValue=document.getElementById('offset-value');
@@ -385,3 +371,4 @@ document.addEventListener("DOMContentLoaded", async ()=>{
 </script>
 </body>
 </html>
+
