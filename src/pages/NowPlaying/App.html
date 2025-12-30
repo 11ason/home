@@ -1,250 +1,706 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NowPlaying:</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NowPlaying:</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Merriweather:wght@400;700&family=Fira+Sans:wght@400;700&family=Nunito:wght@400;700&family=Ubuntu:wght@400;700&family=Funnel+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            font-optical-sizing: auto;
+            background-color: #000;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background 1s ease;
+            backdrop-filter: blur(100px);
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Merriweather:wght@400;700&family=Fira+Sans:wght@400;700&family=Nunito:wght@400;700&family=Ubuntu:wght@400;700&family=Funnel+Display:wght@400;700&display=swap" rel="stylesheet">
+        .main-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.096);
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.226);
+            backdrop-filter: blur(10px);
+        }
 
-<style>
-/* 🔒 ALL YOUR ORIGINAL CSS — UNCHANGED */
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    font-family: "Inter", sans-serif;
-    background-color: #000;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    backdrop-filter: blur(100px);
-}
-.main-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 1000px;
-    background: rgba(0,0,0,0.1);
-    padding: 20px;
-    border-radius: 30px;
+        #albumImage {
+            width: 350px;
+            height: 350px;
+            border-radius: 15px;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-right: 50px;
+        }
+
+        #lyrics-container {
+            position: relative;
+            height: 100px;
+        }
+
+        .lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
+
+        #current-lyric {
+            color: rgba(255, 255, 255, 0.842);
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        #previous-lyric, #next-lyric {
+            color: rgba(255, 255, 255, 0.500);
+            font-size: 20px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 10px;
+            position: relative;
+            text-align: center;
+            height: 40px; /* Adjust height as needed to accommodate timestamps */
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #bbbbbb34;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #ffffff85;
+            width: 0%;
+        }
+
+        #time {
+            font-weight: bold;
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.76);
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
+        }
+
+        #elapsed-time {
+            font-size: 12px;
+        }
+
+        #total-time {
+            font-size: 12px;
+        }
+
+        #songInfo {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        #trackInfo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 100px;
+            font-size: 22px;
+        }
+
+        #trackName, #artistName {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        #smallImage {
+            position: relative;
+            top: -160px; /* Adjust this value to change the position */
+            left: 960px; /* Adjust this value to change the horizontal position */
+            width: 50px; /* Set a suitable width */
+            height: auto;
+            z-index: 2; /* Ensure it stays above other elements */
+        }
+        #offset-slider-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-}
-#albumImage {
-    width: 350px;
-    height: 350px;
-    border-radius: 15px;
-    margin-right: 50px;
-    transition: opacity 0.3s ease;
-}
-.lyric { color: rgba(255,255,255,0.5); font-size: 20px; }
-#current-lyric { color: rgba(255,255,255,0.85); font-size: 28px; font-weight: bold; }
-
-.progress-bar-container {
-    width: 100%;
-    max-width: 1000px;
-    margin-top: 10px;
-}
-.progress-bar {
-    height: 10px;
-    background: #bbbbbb34;
-    border-radius: 5px;
-    overflow: hidden;
-}
-.progress { height: 100%; width: 0%; background: #ffffff85; }
-
-#time {
     display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: rgba(255,255,255,0.76);
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
 }
-</style>
+/* Base thumb transition */
+#offset-slider::-webkit-slider-thumb {
+    transition: box-shadow 0.4s ease;
+}
+#offset-slider::-moz-range-thumb {
+    transition: box-shadow 0.4s ease;
+}
+
+/* Glow state when saved */
+#offset-slider.saved-thumb::-webkit-slider-thumb {
+    box-shadow: 0 0 8px 4px lightgreen;
+}
+#offset-slider.saved-thumb::-moz-range-thumb {
+    box-shadow: 0 0 8px 4px lightgreen;
+}
+
+#offset-slider-container:hover,
+#offset-slider-container.show {
+    opacity: 1;
+}
+
+#offset-slider {
+    width: 200px;
+    accent-color: white;
+}
+        
+#offset-value {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    transition: color 0.4s ease;
+}
+
+#offset-value.saved {
+    color: lightgreen;
+    animation: pulse 0.4s ease;
+}
+
+@keyframes pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+#font-selector-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+#font-selector-container.show {
+    opacity: 1;
+}
+#font-selector-label {
+    color: #fff;
+    font-size: 14px;
+    margin-right: 6px;
+}
+#font-selector {
+    background: rgba(0,0,0,0.2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 14px;
+    outline: none;
+}
+#font-selector:focus {
+    box-shadow: 0 0 0 2px #fff3;
+}
+    </style>
 </head>
-
 <body>
-
+    <div id="font-selector-container">
+        <span id="font-selector-label">Font:</span>
+        <select id="font-selector">
+            <option value="Inter" selected>Inter</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Lato">Lato</option>
+            <option value="Merriweather">Merriweather</option>
+            <option value="Fira Sans">Fira Sans</option>
+            <option value="Nunito">Nunito</option>
+            <option value="Ubuntu">Ubuntu</option>
+            <option value="Funnel Display">Funnel Display</option>
+        </select>
+    </div>
+    <div class="blur-background"></div>
 <div class="main-container">
-    <img id="albumImage">
+    <a id="spotify-link" href="https://www.spotify.com/" target="_blank">
+        <img id="smallImage" src="https://github.com/11ason/Sitefiles/blob/main/Spotify_Primary_Logo_RGB_White.png?raw=true" alt="Small Image">
+    </a>
+    <img id="albumImage" src="cover.jpg" alt="Album Cover">
     <div id="lyrics-container">
         <div id="previous-lyric" class="lyric"></div>
         <div id="current-lyric" class="lyric"></div>
         <div id="next-lyric" class="lyric"></div>
     </div>
 </div>
-
-<div class="progress-bar-container">
-    <div class="progress-bar">
-        <div id="progress" class="progress"></div>
+    <div class="progress-bar-container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div id="time">
+            <div id="elapsed-time">00:00</div>
+            <div id="total-time">00:00</div>
+        </div>
     </div>
-    <div id="time">
-        <span id="elapsed-time">00:00</span>
-        <span id="total-time">00:00</span>
+    <div id="songInfo">
+        <div id="trackInfo">
+            <h2 id="trackName">Track Name</h2>
+            <span id="artistName">Artist Name</span>
+        </div>
     </div>
+    <div id="offset-slider-container">
+    <input type="range" id="offset-slider" min="-6000" max="6000" step="100" value="-2000">
+    <label id="offset-value">Offset: -2.0s</label>
 </div>
+    <script>
+        const client_id = 'f3dc168c6bd742aab6d7e39ab22864dc'; // Replace with your Spotify client ID
+        const redirect_uri = 'https://11ason.netlify.app/NowPlaying/app'; // Redirect URI after authorization
+        const scopes = [
+            'user-read-currently-playing',
+            'user-read-playback-state',
+            'streaming'
+        ];
+const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 
-<h2 id="trackName"></h2>
-<div id="artistName"></div>
-
-<script>
-/* =========================================================
-   🔐 PKCE AUTH (NEW — ONLY AUTH CHANGED)
-========================================================= */
-
-const client_id = "f3dc168c6bd742aab6d7e39ab22864dc";
-const redirect_uri = "https://11ason.netlify.app/NowPlaying/app";
-const scopes = [
-  "user-read-currently-playing",
-  "user-read-playback-state"
-];
-
-function base64urlencode(str) {
-  return btoa(String.fromCharCode(...new Uint8Array(str)))
-    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+function base64urlencode(buffer) {
+    return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
 }
 
 async function sha256(plain) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(plain);
-  return crypto.subtle.digest("SHA-256", data);
+    return crypto.subtle.digest(
+        "SHA-256",
+        new TextEncoder().encode(plain)
+    );
 }
 
 async function createPKCE() {
-  const verifier = base64urlencode(crypto.getRandomValues(new Uint8Array(32)));
-  const challenge = base64urlencode(await sha256(verifier));
-  localStorage.setItem("pkce_verifier", verifier);
-  return challenge;
+    const verifier = crypto.randomUUID() + crypto.randomUUID();
+    localStorage.setItem("pkce_verifier", verifier);
+    const challenge = base64urlencode(await sha256(verifier));
+    return challenge;
 }
 
-async function authorize() {
-  const challenge = await createPKCE();
-  const params = new URLSearchParams({
-    client_id,
-    response_type: "code",
-    redirect_uri,
-    scope: scopes.join(" "),
-    code_challenge_method: "S256",
-    code_challenge: challenge
-  });
-  location.href = `https://accounts.spotify.com/authorize?${params}`;
+async function startSpotifyAuth() {
+    const challenge = await createPKCE();
+    const params = new URLSearchParams({
+        client_id,
+        response_type: "code",
+        redirect_uri,
+        scope: scopes.join(" "),
+        code_challenge_method: "S256",
+        code_challenge: challenge
+    });
+    window.location.href = `${AUTH_ENDPOINT}?${params}`;
 }
 
-async function exchangeToken(code) {
-  const verifier = localStorage.getItem("pkce_verifier");
-  const body = new URLSearchParams({
-    client_id,
-    grant_type: "authorization_code",
-    code,
-    redirect_uri,
-    code_verifier: verifier
-  });
+async function exchangeCodeForToken(code) {
+    const verifier = localStorage.getItem("pkce_verifier");
 
-  const res = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body
-  });
-  const data = await res.json();
-  localStorage.setItem("access_token", data.access_token);
-  localStorage.setItem("refresh_token", data.refresh_token);
-  history.replaceState({}, "", redirect_uri);
-  return data.access_token;
+    const body = new URLSearchParams({
+        client_id,
+        grant_type: "authorization_code",
+        code,
+        redirect_uri,
+        code_verifier: verifier
+    });
+
+    const res = await fetch(TOKEN_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body
+    });
+
+    const data = await res.json();
+    localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("refresh_token", data.refresh_token);
+    history.replaceState({}, "", redirect_uri);
+    return data.access_token;
 }
 
-async function refreshToken() {
-  const body = new URLSearchParams({
-    client_id,
-    grant_type: "refresh_token",
-    refresh_token: localStorage.getItem("refresh_token")
-  });
+async function refreshAccessToken() {
+    const body = new URLSearchParams({
+        client_id,
+        grant_type: "refresh_token",
+        refresh_token: localStorage.getItem("refresh_token")
+    });
 
-  const res = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body
-  });
-  const data = await res.json();
-  localStorage.setItem("access_token", data.access_token);
-  return data.access_token;
+    const res = await fetch(TOKEN_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body
+    });
+
+    const data = await res.json();
+    localStorage.setItem("access_token", data.access_token);
+    return data.access_token;
 }
 
-/* =========================================================
-   🎵 YOUR ORIGINAL LOGIC (UNCHANGED)
-========================================================= */
+        function fetchCurrentlyPlayingSong(accessToken) {
+            fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.item) {
+                    updateTrackInfo(data.item);
+                    updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
+                    fetchLyrics(data.item.name, data.item.artists.map(artist => artist.name).join(', '), data.item.album.name, data.item.duration_ms / 1000);
+                    updateSpotifyLink(data.item.album.external_urls.spotify); // Update the Spotify link
+                }
+            })
+            .catch(error => console.error('Error fetching currently playing song:', error));
+        }
 
-let playbackStartTime = 0;
-let currentTrackDuration = 0;
-let lyrics = [];
-let currentAlbumImage = "";
-
-function fetchCurrentlyPlayingSong(token) {
-  fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-    headers: { Authorization: "Bearer " + token }
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (!data?.item) return;
-    updateTrackInfo(data.item);
-    updatePlaybackInfo(data.progress_ms, data.item.duration_ms);
-  });
+        // Utility to get average lightness from a background image
+function getAverageLightness(imgUrl, callback) {
+    const img = new window.Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = imgUrl;
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
+        let total = 0;
+        for (let i = 0; i < imageData.length; i += 4) {
+            // Perceived luminance formula
+            const r = imageData[i], g = imageData[i+1], b = imageData[i+2];
+            total += 0.299*r + 0.587*g + 0.114*b;
+        }
+        const avg = total / (img.width * img.height);
+        callback(avg);
+    };
+    img.onerror = function() {
+        // fallback: assume dark
+        callback(0);
+    };
 }
 
-function updateTrackInfo(item) {
-  document.getElementById("trackName").textContent = item.name;
-  document.getElementById("artistName").textContent =
-    item.artists.map(a => a.name).join(", ");
-
-  if (item.album.images[0].url !== currentAlbumImage) {
-    currentAlbumImage = item.album.images[0].url;
-    document.getElementById("albumImage").src = currentAlbumImage;
-    document.body.style.backgroundImage = `url(${currentAlbumImage})`;
-  }
+function setTextAndBarColor(isLight) {
+    const textColor = isLight ? '#111' : '#fff';
+    const fadedText = isLight ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
+    const progressBar = document.getElementById('progress');
+    document.body.style.setProperty('--main-text', textColor);
+    document.body.style.setProperty('--faded-text', fadedText);
+    document.body.style.setProperty('--progress-bar', isLight ? '#222' : '#ffffff85');
+    document.body.style.setProperty('--progress-bg', isLight ? '#bbb' : '#bbbbbb34');
+    // Progress bar color
+    if (progressBar) progressBar.style.backgroundColor = isLight ? '#222' : '#ffffff85';
+    // Lyrics
+    document.querySelectorAll('.lyric').forEach(el => el.style.color = fadedText);
+    const currentLyric = document.getElementById('current-lyric');
+    if (currentLyric) currentLyric.style.color = textColor;
+    // Timestamps
+    document.getElementById('elapsed-time').style.color = textColor;
+    document.getElementById('total-time').style.color = textColor;
+    // Track info
+    document.getElementById('trackName').style.color = textColor;
+    document.getElementById('artistName').style.color = textColor;
+    // Font selector and offset slider
+    document.getElementById('font-selector-container').style.color = textColor;
+    document.getElementById('font-selector').style.background = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
+    document.getElementById('font-selector').style.color = textColor;
+    document.getElementById('offset-slider-container').style.color = textColor;
+    document.getElementById('offset-slider-container').style.background = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+    document.getElementById('offset-slider').style.accentColor = textColor;
+    document.getElementById('offset-value').style.color = textColor;
 }
 
-function updatePlaybackInfo(progressMs, durationMs) {
-  playbackStartTime = Date.now() - progressMs;
-  currentTrackDuration = durationMs / 1000;
+// Call this after album art/background changes
+function updateContrastForBackground(imgUrl) {
+    getAverageLightness(imgUrl, avg => {
+        setTextAndBarColor(avg > 180); // threshold: 0-255
+    });
 }
 
-function updateProgress() {
-  const now = (Date.now() - playbackStartTime) / 1000;
-  const pct = Math.min(100, (now / currentTrackDuration) * 100);
-  document.getElementById("progress").style.width = pct + "%";
-  document.getElementById("elapsed-time").textContent = formatTime(now);
-  document.getElementById("total-time").textContent = formatTime(currentTrackDuration);
+        function updateTrackInfo(item) {
+            const songName = item.name;
+            const artists = item.artists.map(artist => artist.name).join(', ');
+            const albumImage = item.album.images[0].url;
+
+            document.getElementById('trackName').textContent = songName;
+            document.getElementById('artistName').textContent = artists;
+            document.title = `${songName} - ${artists} | NowPlaying`;
+
+            if (albumImage !== currentAlbumImage) {
+                currentAlbumImage = albumImage;
+                const albumImageElement = document.getElementById('albumImage');
+                albumImageElement.style.opacity = '0';
+                setTimeout(() => {
+                    albumImageElement.src = albumImage;
+                    albumImageElement.style.opacity = '1';
+                    document.body.style.backgroundImage = `url(${albumImage})`;
+                    updateContrastForBackground(albumImage); // <-- update contrast
+                }, 300);
+            }
+        }
+
+        function updateSpotifyLink(albumUrl) {
+            const spotifyLink = document.getElementById('spotify-link');
+            spotifyLink.href = albumUrl; // Update the href with the album's Spotify URL
+        }
+
+        function updatePlaybackInfo(progressMs, durationMs) {
+            playbackStartTime = Date.now() - (progressMs + syncOffset);
+            currentTrackDuration = durationMs / 1000;
+            lastProgressUpdate = (Date.now() - playbackStartTime) / 1000;
+            updateProgressBar();
+            updateTimestamps();
+        }
+
+        function updateProgressBar() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            let progressPercentage = (now / currentTrackDuration) * 100;
+            progressPercentage = Math.max(0, Math.min(100, progressPercentage));
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+        }
+
+        function updateTimestamps() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const elapsed = formatTime(now);
+            const total = formatTime(currentTrackDuration);
+
+            document.getElementById('elapsed-time').textContent = elapsed;
+            document.getElementById('total-time').textContent = total;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // --- Lyrics cache ---
+const lyricsCache = {};
+
+function getLyricsCacheKey(trackName, artistName, albumName, duration) {
+    return `${trackName}|${artistName}|${albumName}|${duration}`;
 }
 
-function formatTime(s) {
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+function fetchLyrics(trackName, artistName, albumName, duration) {
+    const cacheKey = getLyricsCacheKey(trackName, artistName, albumName, duration);
+    if (lyricsCache[cacheKey]) {
+        // Use cached lyrics
+        lyrics = lyricsCache[cacheKey];
+        document.getElementById('lyrics-container').style.display = 'block';
+        displayLyrics();
+        return;
+    }
+    const apiUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(trackName)}&artist_name=${encodeURIComponent(artistName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const lyricsContainer = document.getElementById('lyrics-container');
+            if (data.syncedLyrics) {
+                lyrics = parseLRC(data.syncedLyrics);
+                lyricsCache[cacheKey] = lyrics; // Cache the parsed lyrics
+                lyricsContainer.style.display = 'block';
+                displayLyrics();
+            } else {
+                lyricsContainer.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching lyrics:', error);
+            document.getElementById('lyrics-container').style.display = 'none';
+        });
 }
 
-/* =========================================================
-   🚀 BOOTSTRAP
-========================================================= */
 
-(async () => {
-  const params = new URLSearchParams(location.search);
-  let token = localStorage.getItem("access_token");
+        function parseLRC(lrcText) {
+            const lines = lrcText.split('\n');
+            return lines.map(line => {
+                const timeMatch = line.match(/\[(\d{2}):(\d{2}\.\d{2})\]/);
+                if (timeMatch) {
+                    const time = parseFloat(timeMatch[1]) * 60 + parseFloat(timeMatch[2]);
+                    const text = line.replace(/\[.*?\]/g, '').trim();
+                    return { time, text };
+                }
+                return null;
+            }).filter(line => line !== null);
+        }
+        function displayLyrics() {
+            const now = (Date.now() - playbackStartTime) / 1000;
+            const lyricIndex = lyrics.findIndex(lyric => lyric.time > now);
 
-  if (params.get("code")) {
-    token = await exchangeToken(params.get("code"));
-  } else if (!token) {
-    authorize();
-    return;
-  }
+            if (lyricIndex === -1) {
+                // No lyric found after current time, show last lyric as current
+                document.getElementById('previous-lyric').textContent = lyrics.length > 1 ? lyrics[lyrics.length - 2].text : '';
+                document.getElementById('current-lyric').textContent = lyrics.length > 0 ? lyrics[lyrics.length - 1].text : '';
+                document.getElementById('next-lyric').textContent = '';
+                return;
+            }
 
-  fetchCurrentlyPlayingSong(token);
-  setInterval(() => fetchCurrentlyPlayingSong(token), 1000);
-  setInterval(updateProgress, 250);
-  setInterval(refreshToken, 1000 * 60 * 50);
-})();
-</script>
+            if (lyricIndex > 0) {
+                document.getElementById('previous-lyric').textContent = lyrics[lyricIndex - 1].text;
+            } else {
+                document.getElementById('previous-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length) {
+                document.getElementById('current-lyric').textContent = lyrics[lyricIndex].text;
+            } else {
+                document.getElementById('current-lyric').textContent = '';
+            }
+
+            if (lyricIndex < lyrics.length - 1) {
+                document.getElementById('next-lyric').textContent = lyrics[lyricIndex + 1].text;
+            } else {
+                document.getElementById('next-lyric').textContent = '';
+            }
+        }
+
+        let currentAlbumImage = '';
+        let playbackStartTime = 0;
+        let currentTrackDuration = 0;
+        let lastProgressUpdate = 0;
+        let lyrics = [];
+        let syncOffset = -2000; // Lyrics sync offset in milliseconds; loaded from localStorage if available, otherwise defaults to -2000
+const offsetSlider = document.getElementById('offset-slider');
+const offsetValue = document.getElementById('offset-value');
+const offsetContainer = document.getElementById('offset-slider-container');
+
+function saveOffset() {
+    localStorage.setItem("lyricsOffset", syncOffset);
+
+    // Flash green + pulse on label
+    offsetValue.classList.add("saved");
+
+    // Glow effect on slider thumb
+    offsetSlider.classList.add("saved-thumb");
+
+    // Remove both after 0.4s (sync)
+    setTimeout(() => {
+        offsetValue.classList.remove("saved");
+        offsetSlider.classList.remove("saved-thumb");
+    }, 400);
+}
+offsetSlider.addEventListener('mouseup', saveOffset);
+offsetSlider.addEventListener('touchend', saveOffset);
+// Load saved offset from localStorage
+const savedOffset = localStorage.getItem("lyricsOffset");
+if (savedOffset !== null) {
+    syncOffset = parseInt(savedOffset, 10);
+    offsetSlider.value = syncOffset;
+    offsetValue.textContent = `Offset: ${(syncOffset / 1000).toFixed(1)}s`;
+}
+
+// Update preview while dragging
+offsetSlider.addEventListener('input', () => {
+    syncOffset = parseInt(offsetSlider.value);
+    offsetValue.textContent = `Offset: ${(syncOffset / 1000).toFixed(1)}s`;
+});
+
+// Auto-hide logic
+let activityTimeout;
+
+function showAllControlsTemporarily() {
+    offsetContainer.classList.add('show');
+    document.getElementById('font-selector-container').classList.add('show');
+    clearTimeout(activityTimeout);
+    activityTimeout = setTimeout(() => {
+        offsetContainer.classList.remove('show');
+        document.getElementById('font-selector-container').classList.remove('show');
+    }, 4000); // Hide after 4 seconds of inactivity
+}
+
+document.addEventListener('mousemove', showAllControlsTemporarily);
+document.addEventListener('touchstart', showAllControlsTemporarily);
+
+// Font selector logic
+const fontSelector = document.getElementById('font-selector');
+const fontOptions = {
+    'Inter': '"Inter", sans-serif',
+    'Roboto': '"Roboto", sans-serif',
+    'Lato': '"Lato", sans-serif',
+    'Merriweather': '"Merriweather", serif',
+    'Fira Sans': '"Fira Sans", sans-serif',
+    'Nunito': '"Nunito", sans-serif',
+    'Ubuntu': '"Ubuntu", sans-serif',
+    'Funnel Display': '"Funnel Display", sans-serif'
+};
+function setFont(fontName) {
+    document.body.style.fontFamily = fontOptions[fontName] || fontOptions['Inter'];
+    localStorage.setItem('selectedFont', fontName);
+    fontSelector.value = fontName;
+}
+fontSelector.addEventListener('change', (e) => {
+    setFont(e.target.value);
+});
+// On load, apply saved font
+const savedFont = localStorage.getItem('selectedFont');
+if (savedFont && fontOptions[savedFont]) {
+    setFont(savedFont);
+} else {
+    setFont('Nunito');
+}
+document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    let accessToken = localStorage.getItem("access_token");
+
+    if (params.get("code")) {
+        accessToken = await exchangeCodeForToken(params.get("code"));
+    }
+
+    if (!accessToken) {
+        startSpotifyAuth();
+        return;
+    }
+
+    fetchCurrentlyPlayingSong(accessToken);
+
+    setInterval(() => {
+        fetchCurrentlyPlayingSong(accessToken);
+    }, 1000);
+
+    setInterval(async () => {
+        accessToken = await refreshAccessToken();
+    }, 1000 * 60 * 50);
+});
+
+    </script>
 </body>
 </html>
